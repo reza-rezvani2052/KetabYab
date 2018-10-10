@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>about.png</file>
+        <file>close.png</file>
+        <file>search.png</file>
+        <file>show-all.png</file>
+        <file>navigation/go-first.png</file>
+        <file>navigation/go-last.png</file>
+        <file>navigation/go-next.png</file>
+        <file>navigation/go-previous.png</file>
+        <file>goto.png</file>
+        <file>app-icon.png</file>
+        <file>database_restore.png</file>
+        <file>database_save.png</file>
+        <file>insert.png</file>
+        <file>ok.png</file>
+        <file>refresh.png</file>
+        <file>remove.png</file>
+        <file>advanced-search.png</file>
+        <file>thesis-management.png</file>
+        <file>help.png</file>
+        <file>cancel.png</file>
+        <file>review.png</file>
+        <file>user-login.png</file>
+        <file>nahad-logo.png</file>
+        <file>employee.jpg</file>
+        <file>fonts/BYekan.ttf</file>
+    </qresource>
+</RCC>

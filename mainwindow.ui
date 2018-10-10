@@ -1,0 +1,1262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>611</width>
+    <height>454</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>کتاب یاب</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::RightToLeft</enum>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMenuBar, QStatusBar{
+        background-color: rgba(186, 186, 186, 255); 
+	    /*background-color: rgba(240, 240, 240, 255)  */
+		background-color: rgba(200, 200, 200, 255); 
+        color: rgb(0, 0, 106);
+}
+QStatusBar::item {
+        border: none;
+}
+QMenuBar::item {
+        padding: 4px 8px;
+        border:1px solid transparent;
+}
+QMenuBar::item:selected { /* when selected using mouse or keyboard */
+        background:  #a8a8a8; 
+        border:1px solid rgb(127, 127, 127);
+        background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(190, 190, 190, 255), stop:1 rgba(255, 255, 255, 255));
+}
+QMenuBar::item:pressed {
+        border-color:rgb(127, 127, 127);
+        border-style: solid;
+        border-width:1px 1px 0 1px;
+        /*background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+                stop:0 rgba(255, 255, 255, 255),
+                stop:1 rgba(190, 190, 190, 255));*/
+        background-color: rgb(186, 186, 186);
+}
+
+QToolBar {
+        border: 1px solid rgb(80,80,80);
+        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255), stop:0.485876 rgba(175, 175, 175, 255), stop:0.525424 rgba(140, 140, 140, 255), stop:1 rgba(150, 150, 150, 255));
+        border-radius: 0px;
+}
+
+QToolBar::handle {
+    border:1px solid rgb(80,80,80);
+        margin: 3px 5px 2px 5px;
+        border-radius: 5px;
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout_6">
+    <item row="0" column="0">
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="pageBooks">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QTabWidget" name="tabWidgetBooks">
+          <property name="styleSheet">
+           <string notr="true"> /* Style the tab using the tab sub-control. Note that
+     it reads QTabBar _not_ QTabWidget */
+ QTabBar::tab {
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #E1E1E1, stop: 0.4 #DDDDDD,
+                                 stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3);
+     border: 2px solid #C4C4C3;
+     border-bottom-color: #C2C7CB; /* same as the pane color */
+     border-top-left-radius: 4px;
+     border-top-right-radius: 4px;
+     min-width: 8ex;
+     padding: 2px;
+ }
+
+ QTabBar::tab:selected, QTabBar::tab:hover {
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #fafafa, stop: 0.4 #f4f4f4,
+                                 stop: 0.5 #e7e7e7, stop: 1.0 #fafafa);
+ }
+
+ QTabBar::tab:selected {
+     border-color: #9B9B9B;
+     border-bottom-color: #C2C7CB; /* same as pane color */
+ }
+
+ QTabBar::tab:!selected {
+     margin-top: 2px; /* make non-selected tabs look smaller */
+ }
+</string>
+          </property>
+          <property name="tabPosition">
+           <enum>QTabWidget::South</enum>
+          </property>
+          <property name="tabShape">
+           <enum>QTabWidget::Rounded</enum>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <widget class="QWidget" name="tabTableView">
+           <attribute name="title">
+            <string>  نمای جدول  </string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QTableWidget" name="tableBooks">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::SingleSelection</enum>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <property name="sortingEnabled">
+               <bool>true</bool>
+              </property>
+              <property name="cornerButtonEnabled">
+               <bool>true</bool>
+              </property>
+              <column>
+               <property name="text">
+                <string>رکورد</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>عنوان کتاب</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>پدید آور</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>مترجم</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>انتشارات</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>موضوع</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>شماره ثبت</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabFormView">
+           <attribute name="title">
+            <string>  نمای فرم  </string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QGroupBox" name="groupBox_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QGroupBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #E0E0E0, stop: 1 #FFFFFF);
+    border: 2px solid gray;
+    border-radius: 5px;
+   /* margin-top: 4ex; /* leave space at the top for the title */
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center; /* position at the top center */
+    padding: 0 3px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFOECE, stop: 1 #FFFFFF);
+}
+</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_4">
+               <property name="topMargin">
+                <number>9</number>
+               </property>
+               <property name="rightMargin">
+                <number>9</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item row="7" column="0">
+                <widget class="QLabel" name="label_12">
+                 <property name="text">
+                  <string>موضوع:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="1">
+                <widget class="QLineEdit" name="ledBookTopic">
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="15" column="1">
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>عنوان کتاب:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>انتشارات</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="1">
+                <widget class="QLineEdit" name="ledBookPub">
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>پدید آور:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>مترجم:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="ledBookTitle">
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="9" column="1">
+                <widget class="QLineEdit" name="ledBookRegisterNumber">
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="17" column="0">
+                <widget class="QLineEdit" name="ledGoToRecordN">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>75</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;شماره رکورد را در اینجا وارد کنید و سپس کلید &lt;span style=&quot; font-weight:600;&quot;&gt;اینتر&lt;/span&gt; را فشار دهید&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+padding: 2px;
+border-style: solid;
+border: 2px solid blue;
+border-radius: 5px;
+}
+</string>
+                 </property>
+                 <property name="maxLength">
+                  <number>10</number>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="9" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>شماره ثبت:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QLineEdit" name="ledBookTranslator">
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="ledBookWriter">
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="17" column="1">
+                <widget class="QStackedWidget" name="stackedWidgetDbMode">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="currentIndex">
+                  <number>0</number>
+                 </property>
+                 <widget class="QWidget" name="pageNavigationMode">
+                  <layout class="QGridLayout" name="gridLayout_7">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item row="0" column="0">
+                    <layout class="QHBoxLayout" name="horizontalLayout_4">
+                     <item>
+                      <spacer name="horizontalSpacer">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btnLast">
+                       <property name="maximumSize">
+                        <size>
+                         <width>31</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="rc/rc.qrc">
+                         <normaloff>:/navigation/go-last.png</normaloff>:/navigation/go-last.png</iconset>
+                       </property>
+                       <property name="shortcut">
+                        <string>Ctrl+Right</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btnNext">
+                       <property name="maximumSize">
+                        <size>
+                         <width>31</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="rc/rc.qrc">
+                         <normaloff>:/navigation/go-next.png</normaloff>:/navigation/go-next.png</iconset>
+                       </property>
+                       <property name="shortcut">
+                        <string>Right</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="lblRecordStatistics">
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::ActionsContextMenu</enum>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::RightToLeft</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">font-weight: bold;</string>
+                       </property>
+                       <property name="text">
+                        <string>0 از 0</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btnPrev">
+                       <property name="maximumSize">
+                        <size>
+                         <width>31</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="rc/rc.qrc">
+                         <normaloff>:/navigation/go-previous.png</normaloff>:/navigation/go-previous.png</iconset>
+                       </property>
+                       <property name="shortcut">
+                        <string>Left</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="btnFirst">
+                       <property name="maximumSize">
+                        <size>
+                         <width>31</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="rc/rc.qrc">
+                         <normaloff>:/navigation/go-first.png</normaloff>:/navigation/go-first.png</iconset>
+                       </property>
+                       <property name="shortcut">
+                        <string>Ctrl+Left</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_2">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                 <widget class="QWidget" name="pageEditMode">
+                  <layout class="QHBoxLayout" name="horizontalLayout_2">
+                   <item>
+                    <spacer name="horizontalSpacer_3">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>227</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btnUpdateAndOk">
+                     <property name="maximumSize">
+                      <size>
+                       <width>30</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <family>Tahoma</family>
+                      </font>
+                     </property>
+                     <property name="toolTip">
+                      <string>به روز رسانی پایان‌نامه - Ctrl+R</string>
+                     </property>
+                     <property name="layoutDirection">
+                      <enum>Qt::RightToLeft</enum>
+                     </property>
+                     <property name="text">
+                      <string notr="true"/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="rc/rc.qrc">
+                       <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
+                     </property>
+                     <property name="shortcut">
+                      <string notr="true">Ctrl+R</string>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btnRemove">
+                     <property name="enabled">
+                      <bool>true</bool>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>30</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <family>Tahoma</family>
+                      </font>
+                     </property>
+                     <property name="toolTip">
+                      <string>حذف کردن پایان‌نامه - Ctrl+D</string>
+                     </property>
+                     <property name="layoutDirection">
+                      <enum>Qt::RightToLeft</enum>
+                     </property>
+                     <property name="text">
+                      <string notr="true"/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="rc/rc.qrc">
+                       <normaloff>:/remove.png</normaloff>:/remove.png</iconset>
+                     </property>
+                     <property name="shortcut">
+                      <string notr="true">Ctrl+D</string>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btnCancelInsertOrUpdate">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>30</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <family>Tahoma</family>
+                      </font>
+                     </property>
+                     <property name="toolTip">
+                      <string>لغو کردن - Escape</string>
+                     </property>
+                     <property name="layoutDirection">
+                      <enum>Qt::RightToLeft</enum>
+                     </property>
+                     <property name="text">
+                      <string notr="true"/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="rc/rc.qrc">
+                       <normaloff>:/cancel.png</normaloff>:/cancel.png</iconset>
+                     </property>
+                     <property name="shortcut">
+                      <string>Esc</string>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btnInsertAndOk">
+                     <property name="enabled">
+                      <bool>true</bool>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>50</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <family>Tahoma</family>
+                      </font>
+                     </property>
+                     <property name="toolTip">
+                      <string>افزودن پایان‌نامه - Ctrl+I</string>
+                     </property>
+                     <property name="layoutDirection">
+                      <enum>Qt::RightToLeft</enum>
+                     </property>
+                     <property name="text">
+                      <string notr="true"/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="rc/rc.qrc">
+                       <normaloff>:/insert.png</normaloff>:/insert.png</iconset>
+                     </property>
+                     <property name="shortcut">
+                      <string notr="true">Ctrl+I</string>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_4">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>227</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageSearch">
+       <layout class="QGridLayout" name="gridLayout_5">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="1" column="0">
+         <widget class="QGroupBox" name="groupBoxSearch">
+          <property name="styleSheet">
+           <string notr="true">#groupBoxSearch {
+border: 1px solid gray;
+background-color: #CFC9CA;
+}
+</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+           <item row="0" column="0">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>جستجوی عبارت: </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="ledSearchTopic">
+               <property name="styleSheet">
+                <string notr="true">QLineEdit {
+padding: 3px;
+border: 2px solid gray;
+border-radius: 5px;
+	background-color: rgb(255,250, 200);
+}</string>
+               </property>
+               <property name="dragEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="placeholderText">
+                <string>عبارت مورد جستجو...</string>
+               </property>
+               <property name="clearButtonEnabled">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>در :</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cmbSearchTopic">
+               <property name="styleSheet">
+                <string notr="true">QComboBox{
+color: #333;
+border: 2px solid #555;
+border-radius: 5px;
+padding: 3px;
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #888);
+}
+
+QComboBox:hover {
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+}
+
+QComboBox:pressed {
+background: qradialgradient(cx: 0.4, cy: -0.1,
+fx: 0.4, fy: -0.1,
+radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+}
+</string>
+               </property>
+               <property name="currentIndex">
+                <number>0</number>
+               </property>
+               <item>
+                <property name="text">
+                 <string>شماره ثبت</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>عنوان پایان نامه</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>رشته تحصیلی</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>استاد راهنما</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>دانشجو</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>سال نگارش</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnSearch">
+               <property name="styleSheet">
+                <string notr="true">QPushButton{
+color: #333;
+border: 2px solid #555;
+border-radius: 5px;
+padding: 5px;
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #888);
+min-width: 60px;
+}
+
+QPushButton:hover {
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+}
+
+QPushButton:pressed {
+background: qradialgradient(cx: 0.4, cy: -0.1,
+fx: 0.4, fy: -0.1,
+radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+}
+</string>
+               </property>
+               <property name="text">
+                <string>جستجو</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QTableView" name="tableSearchResult">
+          <property name="locale">
+           <locale language="English" country="UnitedStates"/>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>611</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="mnuFile">
+    <property name="title">
+     <string>پرونده</string>
+    </property>
+    <addaction name="actReenter"/>
+    <addaction name="separator"/>
+    <addaction name="actBackup"/>
+    <addaction name="actRestore"/>
+    <addaction name="separator"/>
+    <addaction name="actQuit"/>
+   </widget>
+   <widget class="QMenu" name="mnuHelp">
+    <property name="title">
+     <string>راهنما</string>
+    </property>
+    <addaction name="actHelp"/>
+    <addaction name="separator"/>
+    <addaction name="actAbout"/>
+   </widget>
+   <widget class="QMenu" name="mnuOperation">
+    <property name="title">
+     <string>عملیات</string>
+    </property>
+    <addaction name="actGoToRecordN"/>
+    <addaction name="separator"/>
+    <addaction name="actSearch"/>
+    <addaction name="actAdvancedSearch"/>
+   </widget>
+   <widget class="QMenu" name="mnuView">
+    <property name="title">
+     <string>نمایش</string>
+    </property>
+    <addaction name="actNavigationMode"/>
+    <addaction name="actBooksManagement"/>
+    <addaction name="separator"/>
+    <addaction name="actShowAllBooks"/>
+   </widget>
+   <widget class="QMenu" name="mnuTableBooksContextMenu">
+    <property name="title">
+     <string>tableViewContextMenu</string>
+    </property>
+    <addaction name="actRemove"/>
+    <addaction name="actInsert"/>
+    <addaction name="separator"/>
+    <addaction name="actUpdate"/>
+   </widget>
+   <addaction name="mnuFile"/>
+   <addaction name="mnuOperation"/>
+   <addaction name="mnuView"/>
+   <addaction name="mnuHelp"/>
+   <addaction name="mnuTableBooksContextMenu"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="windowTitle">
+    <string>نوار ابزار استاندارد</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actShowAllBooks"/>
+   <addaction name="separator"/>
+   <addaction name="actSearch"/>
+   <addaction name="actAdvancedSearch"/>
+   <addaction name="separator"/>
+   <addaction name="actNavigationMode"/>
+   <addaction name="actBooksManagement"/>
+   <addaction name="separator"/>
+   <addaction name="actGoToRecordN"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actAbout">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/about.png</normaloff>:/about.png</iconset>
+   </property>
+   <property name="text">
+    <string>درباره برنامه</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="actAdvancedSearch">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/advanced-search.png</normaloff>:/advanced-search.png</iconset>
+   </property>
+   <property name="text">
+    <string>جستجوی پیشرفته...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F</string>
+   </property>
+  </action>
+  <action name="actBooksManagement">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/thesis-management.png</normaloff>:/thesis-management.png</iconset>
+   </property>
+   <property name="text">
+    <string>مدیریت پایان‌نامه ها</string>
+   </property>
+   <property name="toolTip">
+    <string>مدیریت پایان‌نامه ها - افزودن/ویرایش/حذف</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
+   </property>
+  </action>
+  <action name="actQuit">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/close.png</normaloff>:/close.png</iconset>
+   </property>
+   <property name="text">
+    <string>خروج</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actShowAllBooks">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/show-all.png</normaloff>:/show-all.png</iconset>
+   </property>
+   <property name="text">
+    <string>نمایش همه پایان‌نامه ها</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+A</string>
+   </property>
+  </action>
+  <action name="actGoToRecordN">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/goto.png</normaloff>:/goto.png</iconset>
+   </property>
+   <property name="text">
+    <string>رفتن به رکورد...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actBackup">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/database_save.png</normaloff>:/database_save.png</iconset>
+   </property>
+   <property name="text">
+    <string>تهیه نسخه پشتیبان</string>
+   </property>
+   <property name="toolTip">
+    <string>تهیه نسخه پشتیبان</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actRestore">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/database_restore.png</normaloff>:/database_restore.png</iconset>
+   </property>
+   <property name="text">
+    <string>بازیابی نسخه پشتیبان</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
+   </property>
+  </action>
+  <action name="actSearch">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/search.png</normaloff>:/search.png</iconset>
+   </property>
+   <property name="text">
+    <string>جستجو</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actHelp">
+   <property name="text">
+    <string>راهنما</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actNavigationMode">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/review.png</normaloff>:/review.png</iconset>
+   </property>
+   <property name="text">
+    <string>مرور کتاب‌ها</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
+  </action>
+  <action name="actReenter">
+   <property name="text">
+    <string>ورود دوباره به برنامه</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actRemove">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/remove.png</normaloff>:/remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>حذف پایان‌نامه</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actUpdate">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
+   </property>
+   <property name="text">
+    <string>بروزرسانی پایان‌نامه</string>
+   </property>
+  </action>
+  <action name="actInsert">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/insert.png</normaloff>:/insert.png</iconset>
+   </property>
+   <property name="text">
+    <string>افزودن پایان‌نامه</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>tableBooks</tabstop>
+  <tabstop>tabWidgetBooks</tabstop>
+  <tabstop>ledBookTitle</tabstop>
+  <tabstop>ledBookWriter</tabstop>
+  <tabstop>ledBookTranslator</tabstop>
+  <tabstop>ledBookPub</tabstop>
+  <tabstop>ledBookTopic</tabstop>
+  <tabstop>ledBookRegisterNumber</tabstop>
+  <tabstop>btnFirst</tabstop>
+  <tabstop>btnPrev</tabstop>
+  <tabstop>btnNext</tabstop>
+  <tabstop>btnLast</tabstop>
+  <tabstop>ledGoToRecordN</tabstop>
+  <tabstop>btnInsertAndOk</tabstop>
+  <tabstop>btnCancelInsertOrUpdate</tabstop>
+  <tabstop>btnRemove</tabstop>
+  <tabstop>btnUpdateAndOk</tabstop>
+  <tabstop>ledSearchTopic</tabstop>
+  <tabstop>cmbSearchTopic</tabstop>
+  <tabstop>btnSearch</tabstop>
+  <tabstop>tableSearchResult</tabstop>
+ </tabstops>
+ <resources>
+  <include location="rc/rc.qrc"/>
+ </resources>
+ <connections/>
+</ui>

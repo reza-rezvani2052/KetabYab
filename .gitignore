@@ -1,0 +1,5 @@
+*.exe
+*.user
+
+# Generated files
+bin/
