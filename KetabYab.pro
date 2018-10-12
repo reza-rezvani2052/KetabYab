@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql xml
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui widgets xml sql network
 
 TARGET = KetabYab
 TEMPLATE = app
@@ -32,7 +30,8 @@ SOURCES += \
     advancedsearchdialog.cpp \
     utility.cpp \
     databaseerrormanagementdialog.cpp \
-    advancedsearchselectedcolumnsdialog.cpp
+    advancedsearchselectedcolumnsdialog.cpp \
+    checkversiondialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,7 +42,8 @@ HEADERS += \
     advancedsearchdialog.h \
     utility.h \
     databaseerrormanagementdialog.h \
-    advancedsearchselectedcolumnsdialog.h
+    advancedsearchselectedcolumnsdialog.h \
+    checkversiondialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -52,7 +52,8 @@ FORMS += \
     popupdialog.ui \
     advancedsearchdialog.ui \
     databaseerrormanagementdialog.ui \
-    advancedsearchselectedcolumnsdialog.ui
+    advancedsearchselectedcolumnsdialog.ui \
+    checkversiondialog.ui
 
 RESOURCES += \
     rc/rc.qrc
@@ -68,12 +69,13 @@ win32{
     error("RC FILE is not set")
 }
 
-!exists( $$DESTDIR/db/thesis.db ) {
-     message( "Database file not found! ($$DESTDIR/db/thesis.db )" )
+!exists( $$DESTDIR/db/books.db ) {
+     message( "Database file not found! ($$DESTDIR/db/books.db )" )
 }
 
 !packagesExist(sqlite3) {
-    warning("Need more Package!")
+   warning("Need more Package!")
+#    error("sqlite3 NOT exist!")
 }
 
 

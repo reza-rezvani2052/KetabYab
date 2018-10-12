@@ -21,7 +21,7 @@ void readSettings()
     QSettings settings;;
     settings.beginGroup("Main");
     //...
-    QString defaultPath = qApp->applicationDirPath() + "/db/thesis.db";
+    QString defaultPath = qApp->applicationDirPath() + "/db/books.db";
 
     appInfo.databasePath = settings.value("DatabasePath", defaultPath).toString();
     //...
@@ -45,9 +45,14 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     qApp->setLayoutDirection(Qt::RightToLeft);
 
-    qApp->setApplicationName("PaYab");
-    qApp->setOrganizationName("ChalusplSoft");
-    qApp->setOrganizationDomain("http://www.chaluspl.com");
+    qApp->setApplicationName("KetabYab");
+    qApp->setOrganizationName("HosFa");
+    qApp->setOrganizationDomain("http://www.hosfa.ir");
+
+    //NOTE: با توجه باینکه در دیالوگ ؛درباره برنامه؛ بررسی بروزرسانی انجام میشود
+    // در صورت ارتقاء برنامه حتما این را افزایش دهم
+    // و در وبسایت کتابخانه این بروزرسانی را اعمال کنم
+    qApp->setApplicationVersion("1.0.0");
 
     //...
 

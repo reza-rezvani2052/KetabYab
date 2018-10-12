@@ -42,6 +42,7 @@ private slots:
     void on_tabWidgetBooks_currentChanged(int index);
 
     void on_actAbout_triggered();
+    void on_actCheckVersion_triggered();
     void on_actHelp_triggered();
 
     void on_actShowAllBooks_triggered();
@@ -64,8 +65,8 @@ private slots:
     void on_actRestore_triggered();
 
     void on_actReenter_triggered();
+    void on_actChangeLoginPass_triggered();
     void on_actQuit_triggered();
-
 
 private:
 

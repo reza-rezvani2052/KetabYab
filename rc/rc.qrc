@@ -17,7 +17,7 @@
         <file>refresh.png</file>
         <file>remove.png</file>
         <file>advanced-search.png</file>
-        <file>thesis-management.png</file>
+        <file>books-management.png</file>
         <file>help.png</file>
         <file>cancel.png</file>
         <file>review.png</file>
@@ -25,5 +25,6 @@
         <file>nahad-logo.png</file>
         <file>employee.jpg</file>
         <file>fonts/BYekan.ttf</file>
+        <file>progress.gif</file>
     </qresource>
 </RCC>

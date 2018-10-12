@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>611</width>
-    <height>454</height>
+    <width>655</width>
+    <height>489</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -259,95 +259,42 @@ QGroupBox::title {
                <property name="bottomMargin">
                 <number>0</number>
                </property>
-               <item row="7" column="0">
-                <widget class="QLabel" name="label_12">
-                 <property name="text">
-                  <string>موضوع:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="7" column="1">
-                <widget class="QLineEdit" name="ledBookTopic">
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
-                 <property name="readOnly">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="15" column="1">
-                <spacer name="verticalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_3">
-                 <property name="text">
-                  <string>عنوان کتاب:</string>
-                 </property>
-                </widget>
-               </item>
                <item row="6" column="0">
-                <widget class="QLabel" name="label_4">
-                 <property name="text">
-                  <string>انتشارات</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="6" column="1">
-                <widget class="QLineEdit" name="ledBookPub">
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
-                 <property name="readOnly">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_5">
-                 <property name="text">
-                  <string>پدید آور:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="0">
                 <widget class="QLabel" name="label_8">
                  <property name="text">
                   <string>مترجم:</string>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="1">
+               <item row="8" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>انتشارات</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>پدید آور:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="8" column="1">
+                <widget class="QLineEdit" name="ledBookPub">
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
                 <widget class="QLineEdit" name="ledBookTitle">
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
                  <property name="readOnly">
                   <bool>true</bool>
                  </property>
                 </widget>
                </item>
-               <item row="9" column="1">
-                <widget class="QLineEdit" name="ledBookRegisterNumber">
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                 <property name="readOnly">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="17" column="0">
+               <item row="19" column="0">
                 <widget class="QLineEdit" name="ledGoToRecordN">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
@@ -381,34 +328,21 @@ border-radius: 5px;
                  </property>
                 </widget>
                </item>
-               <item row="9" column="0">
-                <widget class="QLabel" name="label_7">
-                 <property name="text">
-                  <string>شماره ثبت:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="1">
+               <item row="6" column="1">
                 <widget class="QLineEdit" name="ledBookTranslator">
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
                  <property name="readOnly">
                   <bool>true</bool>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="1">
+               <item row="3" column="1">
                 <widget class="QLineEdit" name="ledBookWriter">
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
                  <property name="readOnly">
                   <bool>true</bool>
                  </property>
                 </widget>
                </item>
-               <item row="17" column="1">
+               <item row="19" column="1">
                 <widget class="QStackedWidget" name="stackedWidgetDbMode">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -593,7 +527,7 @@ border-radius: 5px;
                       </font>
                      </property>
                      <property name="toolTip">
-                      <string>به روز رسانی پایان‌نامه - Ctrl+R</string>
+                      <string>ویرایش کتاب - Ctrl+R</string>
                      </property>
                      <property name="layoutDirection">
                       <enum>Qt::RightToLeft</enum>
@@ -630,7 +564,7 @@ border-radius: 5px;
                       </font>
                      </property>
                      <property name="toolTip">
-                      <string>حذف کردن پایان‌نامه - Ctrl+D</string>
+                      <string>حذف کتاب - Ctrl+D</string>
                      </property>
                      <property name="layoutDirection">
                       <enum>Qt::RightToLeft</enum>
@@ -704,7 +638,7 @@ border-radius: 5px;
                       </font>
                      </property>
                      <property name="toolTip">
-                      <string>افزودن پایان‌نامه - Ctrl+I</string>
+                      <string>افزودن کتاب - Ctrl+I</string>
                      </property>
                      <property name="layoutDirection">
                       <enum>Qt::RightToLeft</enum>
@@ -739,6 +673,57 @@ border-radius: 5px;
                    </item>
                   </layout>
                  </widget>
+                </widget>
+               </item>
+               <item row="9" column="0">
+                <widget class="QLabel" name="label_12">
+                 <property name="text">
+                  <string>موضوع:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="17" column="1">
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="9" column="1">
+                <widget class="QLineEdit" name="ledBookTopic">
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>عنوان کتاب:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="ledBookRegisterNumber">
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>شماره ثبت:</string>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -872,32 +857,32 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
                </property>
                <item>
                 <property name="text">
+                 <string>عنوان کتاب</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>پدیدآور</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>مترجم</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>انتشارات</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>موضوع</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>شماره ثبت</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>عنوان پایان نامه</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>رشته تحصیلی</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>استاد راهنما</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>دانشجو</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>سال نگارش</string>
                 </property>
                </item>
               </widget>
@@ -966,8 +951,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>611</width>
-     <height>26</height>
+     <width>655</width>
+     <height>31</height>
     </rect>
    </property>
    <widget class="QMenu" name="mnuFile">
@@ -975,6 +960,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <string>پرونده</string>
     </property>
     <addaction name="actReenter"/>
+    <addaction name="actChangeLoginPass"/>
     <addaction name="separator"/>
     <addaction name="actBackup"/>
     <addaction name="actRestore"/>
@@ -986,6 +972,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <string>راهنما</string>
     </property>
     <addaction name="actHelp"/>
+    <addaction name="actCheckVersion"/>
     <addaction name="separator"/>
     <addaction name="actAbout"/>
    </widget>
@@ -993,6 +980,10 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <property name="title">
      <string>عملیات</string>
     </property>
+    <addaction name="actInsert"/>
+    <addaction name="actRemove"/>
+    <addaction name="actUpdate"/>
+    <addaction name="separator"/>
     <addaction name="actGoToRecordN"/>
     <addaction name="separator"/>
     <addaction name="actSearch"/>
@@ -1079,13 +1070,13 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    </property>
    <property name="icon">
     <iconset resource="rc/rc.qrc">
-     <normaloff>:/thesis-management.png</normaloff>:/thesis-management.png</iconset>
+     <normaloff>:/books-management.png</normaloff>:/books-management.png</iconset>
    </property>
    <property name="text">
-    <string>مدیریت پایان‌نامه ها</string>
+    <string>مدیریت کتاب‌ها</string>
    </property>
    <property name="toolTip">
-    <string>مدیریت پایان‌نامه ها - افزودن/ویرایش/حذف</string>
+    <string>مدیریت کتاب‌ها - افزودن/ویرایش/حذف</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+2</string>
@@ -1109,7 +1100,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <normaloff>:/show-all.png</normaloff>:/show-all.png</iconset>
    </property>
    <property name="text">
-    <string>نمایش همه پایان‌نامه ها</string>
+    <string>نمایش همه کتاب‌ها</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+A</string>
@@ -1206,7 +1197,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <normaloff>:/remove.png</normaloff>:/remove.png</iconset>
    </property>
    <property name="text">
-    <string>حذف پایان‌نامه</string>
+    <string>حذف کتاب</string>
    </property>
    <property name="shortcut">
     <string>Del</string>
@@ -1218,7 +1209,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
    </property>
    <property name="text">
-    <string>بروزرسانی پایان‌نامه</string>
+    <string>بروزرسانی کتاب</string>
    </property>
   </action>
   <action name="actInsert">
@@ -1227,7 +1218,17 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <normaloff>:/insert.png</normaloff>:/insert.png</iconset>
    </property>
    <property name="text">
-    <string>افزودن پایان‌نامه</string>
+    <string>افزودن کتاب</string>
+   </property>
+  </action>
+  <action name="actCheckVersion">
+   <property name="text">
+    <string>بررسی نسخه</string>
+   </property>
+  </action>
+  <action name="actChangeLoginPass">
+   <property name="text">
+    <string>تغییر کلمه عبور</string>
    </property>
   </action>
  </widget>
@@ -1240,7 +1241,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   <tabstop>ledBookTranslator</tabstop>
   <tabstop>ledBookPub</tabstop>
   <tabstop>ledBookTopic</tabstop>
-  <tabstop>ledBookRegisterNumber</tabstop>
   <tabstop>btnFirst</tabstop>
   <tabstop>btnPrev</tabstop>
   <tabstop>btnNext</tabstop>

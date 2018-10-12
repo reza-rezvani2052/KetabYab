@@ -153,12 +153,12 @@ QStringList allUserNames()
 }
 
 // این فعلن عملیاتی نیست-صرفا جهت آموزش هست
-QStringList getThesisRecord(const QString &register_number)
+QStringList getBookRecord(const QString &register_number)
 {
     QStringList allFields = QStringList();
     //TODO: *******************************
     QSqlQuery qry(
-                QString("SELECT * FROM table_thesis WHERE register_number='%1' ;").arg(register_number)
+                QString("SELECT * FROM table_books WHERE book_register_number='%1' ;").arg(register_number)
                 , appInfo.db );
     if (qry.next())
     {

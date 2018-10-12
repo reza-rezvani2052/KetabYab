@@ -18,6 +18,7 @@
 #include "popupdialog.h"
 #include "aboutdialog.h"
 #include "dbconnection.h"
+#include "checkversiondialog.h"
 #include "advancedsearchdialog.h"
 
 //---------------------------------------------------------------------
@@ -31,7 +32,7 @@ extern UserInfo userInfo;
     if (!_rowCount) \
     return;
 
-#define COLUMN_COUNT DB_Books_Fields::DB_Books_Fields_Count
+#define DB_BOOKS_COLUMN_COUNT DB_Books_Fields::DB_Books_Fields_Count
 
 //---------------------------------------------------------------------
 
@@ -127,21 +128,21 @@ void MainWindow::on_btnSearch_clicked()
 
     //...
 
-    QString qry = "SELECT * FROM table_books WHERE";
+    QString strQry = "SELECT * FROM table_books WHERE";
 
     switch ( ui->cmbSearchTopic->currentIndex()+1 )
     {
-    case BookTitle:         qry += " book_title LIKE " ;  break;
-    case BookWriter:        qry += " book_writer LIKE " ;     break;
-    case BookTranslator:    qry += " book_translator LIKE " ;   break;
-    case BookPub:           qry += " book_pub LIKE " ;     break;
-    case BookTopic:         qry += " book_topic LIKE " ;     break;
-    case BookRegisterNumber:qry += " book_register_number LIKE " ;  break;
+    case BookTitle:         strQry += " book_title LIKE " ;            break;
+    case BookWriter:        strQry += " book_writer LIKE " ;           break;
+    case BookTranslator:    strQry += " book_translator LIKE " ;       break;
+    case BookPub:           strQry += " book_pub LIKE " ;              break;
+    case BookTopic:         strQry += " book_topic LIKE " ;            break;
+    case BookRegisterNumber:strQry += " book_register_number LIKE ";   break;
     }
 
-    qry += QString("'\%%1\%'").arg( ui->ledSearchTopic->text().trimmed() );
+    strQry += QString("'\%%1\%'").arg( ui->ledSearchTopic->text().trimmed() );
 
-    qrySearchResult->setQuery (qry, appInfo.db);
+    qrySearchResult->setQuery (strQry, appInfo.db);
     //...
     qrySearchResult->setHeaderData (0, Qt::Horizontal, "عنوان کتاب");
     qrySearchResult->setHeaderData (2, Qt::Horizontal, "پدید آور");
@@ -174,7 +175,7 @@ void MainWindow::on_actAdvancedSearch_triggered()
         if (ui->tableBooks->rowCount() == 0)
         {
             qApp->beep();
-            createPopupDialog( QString("لیسست پایان نامه خالی می‌باشد") ,
+            createPopupDialog( QString("لیسست کتاب‌ها خالی می‌باشد") ,
                                QString() ,QPoint(), true, 2000, this )->show();
             return;
         }
@@ -188,10 +189,10 @@ void MainWindow::on_actAdvancedSearch_triggered()
         delete یا update
         داشت به کاربر هشدار دهم و یا اصلا اجرا نکنم
         */
-        QString qry = dialog.getAdvancedQueryString();
-        qrySearchResult->setQuery (qry, appInfo.db);
+        QString strQuery = dialog.getAdvancedQueryString();
+        qrySearchResult->setQuery (strQuery, appInfo.db);
 
-        //qDebug() << qry;
+        //qDebug() << strQuery;
 
         //...
 
@@ -234,11 +235,14 @@ void MainWindow::setAdminWidgetsEnable(bool val)
     ui->pageEditMode->setEnabled(val);
 
     if (!val) {
-        QString str = "در حالت کاربر میهمان این آیتم در دسترس نیست.";
+        QString str = "در حالت کاربر میهمان این آیتم در دسترس نمی‌باشد.";
         ui->actBackup->setStatusTip(str);
         ui->actRestore->setStatusTip(str);
         ui->actBooksManagement->setStatusTip(str);
+
+        //TODO: شاید نیاز باشد چیزی اضافه کنم...
     }
+
 }
 
 void MainWindow::on_actAbout_triggered()
@@ -345,7 +349,7 @@ void MainWindow::on_actBackup_triggered()
     QString backupPath = QFileDialog::getSaveFileName(
                 this, trUtf8("تعیین محل تشکیل فایل پشتیبان ") ,
                 toSavePath + "bk-" + userInfo.userName + "-" + _dateTime ,
-                trUtf8("فایل پایگاه داده اسکیولایت (*.db);;هر فایلی (*.*)")
+                trUtf8("فایل پایگاه داده (*.db);;هر فایلی (*.*)")
                 );
     if( backupPath.isEmpty() ) //user cancel kardeh ast
         return ;
@@ -387,7 +391,7 @@ void MainWindow::on_actRestore_triggered()
     QString backupPath = QFileDialog::getOpenFileName(
                 this, trUtf8("انتخاب فایل پشتیبان") ,
                 qApp->applicationDirPath() ,
-                trUtf8("فایل پایگاه داده اسکیولایت (*.db);;هر فایلی (*.*)")
+                trUtf8("فایل پایگاه داده (*.db);;هر فایلی (*.*)")
                 );
     if( backupPath.isEmpty() ) // user cancel kardeh ast
         return ;
@@ -463,9 +467,9 @@ void MainWindow::on_ledGoToRecordN_returnPressed()
         return;
     //...
 
-    int _rowCount = ui->tableBooks->rowCount();
+    int rowCount = ui->tableBooks->rowCount();
 
-    if( !_rowCount )
+    if( !rowCount )
     {
         qApp->beep();
         createPopupDialog(QString("  چیزی برای نمایش دادن وجود ندارد!  ") ,
@@ -474,7 +478,7 @@ void MainWindow::on_ledGoToRecordN_returnPressed()
         return;
     }
 
-    if ( _rowCount >= r )
+    if ( rowCount >= r )
     {
         ui->tableBooks->selectRow( r-1 );
         fillFormFromTable();
@@ -535,16 +539,10 @@ bool MainWindow::isFormViewsLineEditsEmpty(bool markLineEditIfIsEmpty)
 {
     bool ret = false;
     static QString defaultStyleSheet = ui->ledBookRegisterNumber->styleSheet();
-    QString styleSheetNotOk    = "border: 2px solid #D47D7E"; // Red
+    QString styleSheetNotOk = "border: 2px solid #D47D7E"; // Red
     //...
     setFormViewsLineEditsStylesheet(defaultStyleSheet);
     //...
-
-    if (ui->ledBookRegisterNumber->text().trimmed().isEmpty()) {
-        if( markLineEditIfIsEmpty )
-            ui->ledBookRegisterNumber->setStyleSheet(styleSheetNotOk);
-        ret = true;
-    }
 
     if (ui->ledBookTitle->text().trimmed().isEmpty()) {
         if( markLineEditIfIsEmpty )
@@ -576,6 +574,12 @@ bool MainWindow::isFormViewsLineEditsEmpty(bool markLineEditIfIsEmpty)
         ret = true;
     }
 
+    if (ui->ledBookRegisterNumber->text().trimmed().isEmpty()) {
+        if( markLineEditIfIsEmpty )
+            ui->ledBookRegisterNumber->setStyleSheet(styleSheetNotOk);
+        ret = true;
+    }
+
     return ret;
 }
 
@@ -593,25 +597,40 @@ void MainWindow::on_btnNext_clicked()
 {
     RETURN_IF_LIST_IS_EMPTY;
 
-    int _currRow = ui->tableBooks->currentRow();
+    //------------------------------------------------------------
 
-    if (_currRow < _rowCount-1)
+//    qApp->beep();
+
+//    ui->tableBooks->selectRow(1);
+//    fillFormFromTable();
+
+//    return;
+
+    //------------------------------------------------------------
+
+
+
+    int currRow = ui->tableBooks->currentRow();
+    qDebug() << "currRow = " << currRow;
+
+    if (currRow < _rowCount-1 )
     {
         //ui->tableBooks->setCurrentItem( ui->tableBooks->item(_currRow+1, 0) );
-        ui->tableBooks->selectRow( _currRow + 1 );
+        ui->tableBooks->selectRow( currRow + 1 );
         fillFormFromTable();
     }
+
 }
 
 void MainWindow::on_btnPrev_clicked()
 {
     RETURN_IF_LIST_IS_EMPTY;
 
-    int _currRow = ui->tableBooks->currentRow();
+    int currRow = ui->tableBooks->currentRow();
 
-    if (_currRow > 0)
+    if (currRow > 0)
     {
-        ui->tableBooks->selectRow( _currRow - 1 );
+        ui->tableBooks->selectRow( currRow - 1 );
         fillFormFromTable();
     }
 }
@@ -636,8 +655,8 @@ void MainWindow::fillFormFromTable()
 {
     resetFormView();
 
-    const int _currRow = ui->tableBooks->currentRow();
-    if ( _currRow == -1 )   // agar jadval khali bashad
+    const int currRow = ui->tableBooks->currentRow();
+    if ( currRow == -1 )   // agar jadval khali bashad
     {
         ui->lblRecordStatistics->clear();
         //qDebug() << "Nothing item in table selected!";
@@ -645,9 +664,9 @@ void MainWindow::fillFormFromTable()
     }
 
     QTableWidgetItem *itm;
-    for( int col=0; col<COLUMN_COUNT; col++ )
+    for( int col=0; col < DB_BOOKS_COLUMN_COUNT; col++ )
     {
-        itm = ui->tableBooks->item(_currRow, col);
+        itm = ui->tableBooks->item(currRow, col);
         if ( itm )
         {
             switch (col) {
@@ -678,7 +697,7 @@ void MainWindow::fillFormFromTable()
 
     //...
     //فعلن تست نکردم. شاید نیازی به این نباشد
-    qryTableBooks->seek( _currRow );
+    qryTableBooks->seek( currRow );
     //...
     updateLblRecordStatistics();
 }
@@ -688,20 +707,19 @@ void MainWindow::switchBetweenStackedWidgets(QWidget *targetPage,
 {
     stackedWidget->setCurrentWidget(targetPage);
 
-    const QPoint _posEnd = targetPage->pos();
-    QPoint _posStart = _posEnd;
+    const QPoint posEnd = targetPage->pos();
+    QPoint posStart = posEnd;
 
-    _posStart.setX(-50);
-    //_posStart.setY(0);
+    posStart.setX(-50);
+    //posStart.setY(0);
 
     QPropertyAnimation *animation = new QPropertyAnimation(targetPage, "pos");
 
     animation->setDuration(200);
-    animation->setStartValue(_posStart);
-    animation->setEndValue(_posEnd);
+    animation->setStartValue(posStart);
+    animation->setEndValue(posEnd);
 
     animation->setEasingCurve(QEasingCurve::OutElastic);
-    //animation->setEasingCurve(QEasingCurve::InQuad);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
@@ -926,7 +944,7 @@ void MainWindow::on_btnRemove_clicked()
     int rowCount = ui->tableBooks->rowCount();
     //...
 
-    //int currentRow = qryTableThesis->at();
+    //int currentRow = qryTableBooks->at();
     int currentRow = ui->tableBooks->currentRow();
     if( currentRow < 0 || rowCount == 0)
     {
@@ -1090,5 +1108,16 @@ void MainWindow::on_btnUpdateAndOk_clicked()
         ui->btnRemove->setEnabled( true );
         ui->btnUpdateAndOk->setIcon(QIcon(":/refresh.png"));
     }
+
+}
+
+void MainWindow::on_actCheckVersion_triggered()
+{
+    CheckVersionDialog dialog(this);
+    dialog.exec();
+}
+
+void MainWindow::on_actChangeLoginPass_triggered()
+{
 
 }

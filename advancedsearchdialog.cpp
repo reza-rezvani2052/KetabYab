@@ -309,7 +309,7 @@ void AdvancedSearchDialog::on_btnCreateQuery_clicked()
         qryString2 = qryString2.right( qryString2.length()-1 );
     qryString2.append(" \n");
     //...
-    QString qryString3 = "FROM table_thesis \n";
+    QString qryString3 = "FROM table_books \n";
     //...
     QString qryString4 = QString();
     if( ui->groupBoxCond->isChecked() && ui->tabWidgetConditions->isVisible() ) {

@@ -2,6 +2,7 @@
 #define ABOUTDIALOG_H
 
 #include <QDialog>
+#include <QPropertyAnimation>
 
 namespace Ui {
 class AboutDialog;
@@ -18,8 +19,15 @@ public:
 private slots:
     void on_btnOk_clicked();
 
+    void animateLabelVersionInfo();
+    void animateLabelVersionInfoReverse();
+
 private:
     Ui::AboutDialog *ui;
+
+    //baraye animation
+    QRect rectInWindow;
+    QRect rectOutOfWindow;
 
 };
 
