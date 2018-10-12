@@ -42,10 +42,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     //...
+
     QRegExp rx("[1-9]\\d{0,6}");
     QValidator *validator = new QRegExpValidator(rx, this);
     ui->ledGoToRecordN->setValidator(validator);
+
+    //FIXME: *** اعداد فارسی قبول نمیکند. همچنین کلید تب را هندل نمیکند ***
     ui->ledBookRegisterNumber->setValidator(validator);
 
     ui->ledGoToRecordN->setVisible(false);
@@ -81,6 +85,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actBooksManagement->setCheckable(true);
     ui->actNavigationMode->setChecked(true);
     //ui->actBooksManagement->setChecked(false);
+
     //...
     DataBaseMode = NormalMode;
     //...
@@ -144,7 +149,8 @@ void MainWindow::on_btnSearch_clicked()
 
     qrySearchResult->setQuery (strQry, appInfo.db);
     //...
-    qrySearchResult->setHeaderData (0, Qt::Horizontal, "عنوان کتاب");
+    qrySearchResult->setHeaderData (0, Qt::Horizontal, "رکورد");
+    qrySearchResult->setHeaderData (1, Qt::Horizontal, "عنوان کتاب");
     qrySearchResult->setHeaderData (2, Qt::Horizontal, "پدید آور");
     qrySearchResult->setHeaderData (3, Qt::Horizontal, "مترجم");
     qrySearchResult->setHeaderData (4, Qt::Horizontal, "انتشارات");
@@ -232,15 +238,30 @@ void MainWindow::setAdminWidgetsEnable(bool val)
     ui->actInsert->setEnabled(val);
     ui->actUpdate->setEnabled(val);
 
+    ui->actChangeLoginPass->setEnabled(val);
+
+    ui->actCheckVersion->setEnabled(val);
+
     ui->pageEditMode->setEnabled(val);
 
-    if (!val) {
+    if (!val)
+    {
         QString str = "در حالت کاربر میهمان این آیتم در دسترس نمی‌باشد.";
+
         ui->actBackup->setStatusTip(str);
         ui->actRestore->setStatusTip(str);
         ui->actBooksManagement->setStatusTip(str);
 
+        ui->actChangeLoginPass->setStatusTip(str);
+
+        ui->actRemove->setStatusTip(str);
+        ui->actInsert->setStatusTip(str);
+        ui->actUpdate->setStatusTip(str);
+
+        ui->actCheckVersion->setStatusTip(str);
+
         //TODO: شاید نیاز باشد چیزی اضافه کنم...
+
     }
 
 }
@@ -461,7 +482,7 @@ void MainWindow::on_actGoToRecordN_triggered()
 void MainWindow::on_ledGoToRecordN_returnPressed()
 {
     bool isNum = false;
-    int r = ui->ledGoToRecordN->text().toInt(&isNum);
+    int recordToGo = ui->ledGoToRecordN->text().toInt(&isNum);
 
     if (!isNum)
         return;
@@ -478,9 +499,9 @@ void MainWindow::on_ledGoToRecordN_returnPressed()
         return;
     }
 
-    if ( rowCount >= r )
+    if ( rowCount >= recordToGo )
     {
-        ui->tableBooks->selectRow( r-1 );
+        ui->tableBooks->selectRow( recordToGo-1 );
         fillFormFromTable();
         ui->ledGoToRecordN->setVisible(false);
     } else {
@@ -599,6 +620,7 @@ void MainWindow::on_btnNext_clicked()
 
     //------------------------------------------------------------
 
+    //TODO: بعدا پاک کنم
 //    qApp->beep();
 
 //    ui->tableBooks->selectRow(1);
@@ -659,7 +681,9 @@ void MainWindow::fillFormFromTable()
     if ( currRow == -1 )   // agar jadval khali bashad
     {
         ui->lblRecordStatistics->clear();
-        //qDebug() << "Nothing item in table selected!";
+
+        //TODO: بعدا پاک کنم
+        qDebug() << "Nothing item in table selected!";
         return;
     }
 
@@ -718,8 +742,8 @@ void MainWindow::switchBetweenStackedWidgets(QWidget *targetPage,
     animation->setDuration(200);
     animation->setStartValue(posStart);
     animation->setEndValue(posEnd);
-
     animation->setEasingCurve(QEasingCurve::OutElastic);
+
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
@@ -762,7 +786,8 @@ void MainWindow::setupTableSearchResult()
     //qrySearchResult->setQuery ("SELECT * FROM table_books", appInfo.db);
 
     qrySearchResult->setHeaderData (0, Qt::Horizontal, "رکورد");
-    qrySearchResult->setHeaderData (1, Qt::Horizontal, "عنوان کتاب");
+    //FIXME:*** غلط املایی عمدی. بعدا اصلاح کنم ****
+    qrySearchResult->setHeaderData (1, Qt::Horizontal, "عنواننن کتاب");
     qrySearchResult->setHeaderData (2, Qt::Horizontal, "پدید آور");
     qrySearchResult->setHeaderData (3, Qt::Horizontal, "مترجم");
     qrySearchResult->setHeaderData (4, Qt::Horizontal, "انتشارات");
@@ -816,7 +841,6 @@ void MainWindow::setReadonlyFormViewsLineEdits(bool val)
     ui->ledGoToRecordN->setEnabled(val);
     ui->ledGoToRecordN->clear();
     ui->ledGoToRecordN->setVisible(false);
-
 }
 
 void MainWindow::on_actInsert_triggered()
@@ -836,6 +860,7 @@ void MainWindow::on_btnInsertAndOk_clicked()
         setFormViewsLineEditsStylesheet("border: 2px solid lightblue");
 
         ui->ledBookRegisterNumber->setFocus();
+        //ui->ledBookTitle->setFocus();
 
         ui->btnInsertAndOk->setIcon(QIcon(":/ok.png"));
         ui->btnCancelInsertOrUpdate->setEnabled( true );
@@ -954,6 +979,7 @@ void MainWindow::on_btnRemove_clicked()
         return;
     }
 
+    //TODO: دکمه ها را فارسی کنم
     QMessageBox::StandardButton ret = QMessageBox::warning(
                 this, "تایید حذف",
                 "آیا مایل به حذف کتاب جاری هستید؟",
@@ -975,7 +1001,7 @@ void MainWindow::on_btnRemove_clicked()
                           QPoint(), true , 2500, this)->show();
     } else {
         /*
-         *  نیازی به نمایش پیام موفقیت حذف نیست
+        نیازی به نمایش پیام موفقیت حذف نیست
         PopupDialog *popupDialog = createPopupDialog(
                     QString() ,
                     QString("حذف انجام شد") , QPoint(),true , 1100, this );
@@ -1082,7 +1108,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
 
         if( qry.exec(qryString) )
         {
-            createPopupDialog(QString(), QString("به روز رسانی انجام شد"),
+            createPopupDialog(QString(), QString(" ویرایش انجام شد "),
                               QPoint(), true, 1500, this)->show();
             //...
             setupTableBooks();

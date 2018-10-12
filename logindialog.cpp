@@ -78,10 +78,9 @@ void LoginDialog::on_cmbUsername_currentIndexChanged(const QString &userName)
     }
 }
 
-void LoginDialog::on_btnCancel_clicked()
+void LoginDialog::on_btnClose_clicked()
 {
     reject();
-    //close();
 }
 
 void LoginDialog::on_btnLogIn_clicked()

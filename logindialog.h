@@ -31,7 +31,7 @@ protected:
 
 private slots:
     void on_btnLogIn_clicked();
-    void on_btnCancel_clicked();
+    void on_btnClose_clicked();
 
     void animateLoginLogo();
 
