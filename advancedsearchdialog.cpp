@@ -146,7 +146,7 @@ void AdvancedSearchDialog::on_btnFieldChoise_clicked()
     }
 }
 
-//FIXME: *****
+//FIXME: *
 void AdvancedSearchDialog::updateCmbOrderBy()
 {
     ui->cmbOrderBy->clear();
@@ -160,7 +160,7 @@ QString AdvancedSearchDialog::getAdvancedQueryString()
     return ui->plainTextEdit->toPlainText();
 }
 
-//FIXME: *****
+//FIXME: *
 QStringList AdvancedSearchDialog::getColumnNames()
 {
     // عناوین ستونهایی که در نتیجه جستجو پیشرفته باید نمایش داده شود
@@ -272,7 +272,7 @@ void AdvancedSearchDialog::on_btnCreateQuery_clicked()
 
 
 
-    //FIXME: **************************************************************************
+    //FIXME: *
 
     qryString2 = true /*ui->actRegisterNumber->isChecked()*/ ?
                 qryString2.arg("book_title") :
@@ -322,7 +322,7 @@ void AdvancedSearchDialog::on_btnCreateQuery_clicked()
 
     QString qryString5 = QString();
 
-    //FIXME: *****
+    //FIXME: *
     /*QHashIterator<QListWidgetItem *, QString> itr(m_hashItems);
     while (itr.hasNext())
     {

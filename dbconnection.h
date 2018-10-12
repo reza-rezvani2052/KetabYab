@@ -88,7 +88,7 @@ QString getUserPassword(const QString &userName);
 QString getUserNickname(const QString &userName);
 
 //NOTE:   این فعلن عملیاتی نیست-صرفا جهت آموزش هست
-QStringList getBookRecord(const QString &register_number);
+QStringList getBookRecord(const QString &registerNumber);
 
 
 #endif  //  #ifndef DBCONNECTION_H

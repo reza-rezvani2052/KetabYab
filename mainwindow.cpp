@@ -100,7 +100,7 @@ void MainWindow::on_btnSearch_clicked()
 {
     if (ui->tableBooks->rowCount() == 0) {
         qApp->beep();
-        createPopupDialog( QString("لیسست پایان نامه خالی می‌باشد") ,
+        createPopupDialog( QString("لیسست کتاب خالی می‌باشد") ,
                            QString() ,QPoint(), true, 2000, this )->show();
         return;
     }
@@ -453,7 +453,7 @@ void MainWindow::on_actGoToRecordN_triggered()
         ui->ledGoToRecordN->setFocus();
     } else {
         qApp->beep();
-        createPopupDialog(QString("  لیست پایان‌نامه ها خالیست!  ") ,
+        createPopupDialog(QString("  لیست کتاب خالیست!  ") ,
                           QString(), QPoint(), true, 2000, this)->show();
     }
 }
@@ -847,7 +847,7 @@ void MainWindow::on_btnInsertAndOk_clicked()
         if( isFormViewsLineEditsEmpty() )
         {
             qApp->beep();
-            createPopupDialog(QString("مشخصات پایان‌نامه به درستی وارد نشده است.") +
+            createPopupDialog(QString("مشخصات کتاب به درستی وارد نشده است.") +
                               QString("\n") +
                               QString("لطفا موارد مشخص شده را تکمیل نمایید."),
                               QString(), QPoint(), true, 3000, this)->show();
@@ -879,12 +879,12 @@ void MainWindow::on_btnInsertAndOk_clicked()
         if( qryInsert.exec(qryInsertString) )
         {
             createPopupDialog(QString(),
-                              QString(" پایان‌نامه با موفقیت به لیست اضافه گردید. "),
+                              QString(" کتاب با موفقیت به لیست اضافه گردید. "),
                               QPoint(), true, 1500, this)->show();
         } else {
             qApp->beep();
             createPopupDialog(QString("خطا"),
-                              QString("در هنگام افزودن پایان‌نامه خطایی به شرح زیر رخ داده است:") +
+                              QString("در هنگام افزودن کتاب خطایی به شرح زیر رخ داده است:") +
                               QString("\n") +
                               qryInsert.lastError().text(),
                               QPoint(), true, 3000, this)->show();
@@ -949,14 +949,14 @@ void MainWindow::on_btnRemove_clicked()
     if( currentRow < 0 || rowCount == 0)
     {
         qApp->beep();
-        createPopupDialog(QString("پایان‌نامه ای برای حذف کردن وجود ندارد!"),
+        createPopupDialog(QString("کتابی ای برای حذف کردن وجود ندارد!"),
                           QString(), QPoint(), true, 2000, this)->show();
         return;
     }
 
     QMessageBox::StandardButton ret = QMessageBox::warning(
                 this, "تایید حذف",
-                "آیا مایل به حذف رکورد جاری هستید؟",
+                "آیا مایل به حذف کتاب جاری هستید؟",
                 QMessageBox::Yes | QMessageBox::No);
     if (ret == QMessageBox::No)
         return ;
@@ -969,7 +969,7 @@ void MainWindow::on_btnRemove_clicked()
     {
         qApp->beep();
         createPopupDialog(QString("خطا") ,
-                          QString("در هنگام حذف پایان‌نامه خطایی به شرح زیر رخ داده است:") +
+                          QString("در هنگام حذف کتاب خطایی به شرح زیر رخ داده است:") +
                           QString("\n") +
                           qryDelete.lastError().text() ,
                           QPoint(), true , 2500, this)->show();
@@ -1057,7 +1057,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
         if( isFormViewsLineEditsEmpty() )
         {
             qApp->beep();
-            createPopupDialog(QString("مشخصات پایان‌نامه به درستی وارد نشده است.") +
+            createPopupDialog(QString("مشخصات کتاب به درستی وارد نشده است.") +
                               QString("\n") +
                               QString("لطفا موارد مشخص شده را تکمیل نمایید."),
                               QString(), QPoint(), true, 3000, this)->show();

@@ -19,7 +19,7 @@ DatabaseErrors createConnection(QSqlDatabase &db, const QString &dbPath)
         return DatabaseErrors::ConnectionError;
 
     //...
-
+    // جهت تست کردن سالم بودن فایل پایگاه داده
     QSqlQuery qryTest("SELECT username FROM table_users;" , appInfo.db);
     if( !qryTest.next() )
         return DatabaseErrors::FileIsCorrupted;
@@ -30,27 +30,18 @@ DatabaseErrors createConnection(QSqlDatabase &db, const QString &dbPath)
 
 bool createNewDatabase()
 {
-    QLocale engLocale(QLocale::English, QLocale::UnitedStates);
-    QString _dateTime = engLocale.toString(QDateTime::currentDateTime(), "yyyy_MM_dd-hh_mm_ss");
-    //...
+    QLocale enLocale(QLocale::English, QLocale::UnitedStates);
+    QString _dateTime = enLocale.toString(QDateTime::currentDateTime(), "yyyy_MM_dd-hh_mm_ss");
+
     QString filePath =
             QFileDialog::getSaveFileName( 0,
                                           "تعیین محل تشکیل فایل پایگاه داده " ,
                                           qApp->applicationDirPath() +
                                           "/db/" + _dateTime ,
-                                          "فایل پایگاه داده اسکیولایت (*.db);;هر فایلی (*.*)");
+                                          "فایل پایگاه داده (*.db);;هر فایلی (*.*)");
     // کاربر کنسل کرده است
     if( filePath.isEmpty() )
         return false;
-    //...
-    if ( filePath.trimmed() == appInfo.databasePath.trimmed() ) {
-        QMessageBox::warning(0, "خطا",
-                             "فایل انتخابی شما با فایل بارگزاری شده در برنامه "
-                             "یکسان می‌باشد."
-                             "\n"
-                             "لطفا نام دیگری برگزینید.");
-        return false;
-    }
     //...
 
     if( QFile::exists(filePath) )
@@ -86,10 +77,10 @@ bool createNewDatabase()
                "key_field INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                "book_title TEXT NOT NULL," +
                "book_writer TEXT NOT NULL," +
-               "book_translator TEXT NOT NULL," +
+               "book_translator TEXT," +
                "book_pub TEXT NOT NULL," +
-               "book_topic TEXT NOT NULL," +
-               "book_register_number INTEGER NOT NULL," +
+               "book_topic TEXT," +
+               "book_register_number INTEGER NOT NULL" +
                ");");
 
     //...
@@ -106,6 +97,9 @@ bool createNewDatabase()
     query.exec("INSERT INTO table_users VALUES ('admin', 123456, 1, 'مدیر سیستم');" );
     //...
     query.exec("INSERT INTO sqlite_sequence VALUES ('table_books', 1000);" );
+
+
+    db.close();
 
     return true;
 }
@@ -126,9 +120,8 @@ int getNumberOfRecord( const QSqlDatabase &db, const QString &tableName,
 bool isRegisterNumberExist(const QString &registerId)
 {
     QSqlQuery qry(
-                QString("SELECT register_number FROM table_books WHERE register_number='%1' ").arg(
-                    registerId) ,
-                appInfo.db );
+                QString("SELECT book_register_number FROM table_books WHERE book_register_number='%1' ").
+                arg(registerId), appInfo.db );
 
     return qry.next();
 }
@@ -153,12 +146,12 @@ QStringList allUserNames()
 }
 
 // این فعلن عملیاتی نیست-صرفا جهت آموزش هست
-QStringList getBookRecord(const QString &register_number)
+QStringList getBookRecord(const QString &registerNumber)
 {
     QStringList allFields = QStringList();
-    //TODO: *******************************
+
     QSqlQuery qry(
-                QString("SELECT * FROM table_books WHERE book_register_number='%1' ;").arg(register_number)
+                QString("SELECT * FROM table_books WHERE book_register_number='%1' ;").arg(registerNumber)
                 , appInfo.db );
     if (qry.next())
     {

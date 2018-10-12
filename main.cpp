@@ -45,8 +45,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     qApp->setLayoutDirection(Qt::RightToLeft);
 
-    qApp->setApplicationName("KetabYab");
     qApp->setOrganizationName("HosFa");
+    qApp->setApplicationName("KetabYab");    
     qApp->setOrganizationDomain("http://www.hosfa.ir");
 
     //NOTE: با توجه باینکه در دیالوگ ؛درباره برنامه؛ بررسی بروزرسانی انجام میشود
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
     QMessageBox *msgBox = new QMessageBox();
     msgBox->setButtonText(QMessageBox::Ok, "تایید");
-    msgBox->setIcon(QMessageBox::Critical);
+    msgBox->setIcon(QMessageBox::Warning);
 
 
     switch (createConnection(appInfo.db, appInfo.databasePath)) {

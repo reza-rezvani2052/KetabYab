@@ -61,6 +61,10 @@ void DatabaseErrorManagementDialog::on_btnOpenExistsDb_clicked()
         return ;
     //...
 
+    //FIXME: *********
+    // اگر برنامه در شروع کار پایگاه داده پیش فرض را پیدا نکند و کاربر بر روی
+    // ایجاد پایگاه داده کلیک نمایید و نام فایل پایگاه داده جدید خود را همنام
+    // با مسیر پیش فرض قرار دهد خط زیر اجرا میشود. در این مورد نباید خط زیر اجرا شود
     if ( appInfo.databasePath.trimmed() == backupPath.trimmed())
     {
         QMessageBox::warning(this, "خطا",
