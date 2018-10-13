@@ -95,7 +95,7 @@ void CheckVersionDialog::replyFinished(QNetworkReply *reply)
             strResult += "<html><head/><body>";
             strResult += "<div>" + strOnlineVer + "</div> <br/>";
             strResult += "<a href=\"";
-            strResult += "http://www.chaluspl.ir/lib-apps/lib-apps.html";
+            strResult += "http://www.chaluspl.ir/lib-apps/index.html";
             strResult += "\">";
             strResult += "<span style=\" text-decoration: none; color:#0000ff;\">";
             strResult += "دریافت نسخه جدید";
