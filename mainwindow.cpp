@@ -117,6 +117,13 @@ void MainWindow::on_btnSearch_clicked()
         qApp->beep();
         QPoint xy = ui->ledSearchTopic->mapToGlobal(QPoint(0,0));
 
+        //...
+        //اگر کاربر پنجره اصلی برنام را به گوشه برده باشد و این پیام نمایش داده شود
+        //این پنجره از کادر خارج میشد؛ با کد زیر آین مشکل را اصلاح کردم
+        int screenWidth = Utility::getScreenWidth();
+
+        //...
+
         PopupDialog *popupDialog = createPopupDialog(
                     QString("خطای جستجو!") ,
                     QString("کادر جستجو خالی می‌باشد!") +
@@ -126,7 +133,12 @@ void MainWindow::on_btnSearch_clicked()
                     this
                     );
         popupDialog->show();
-        popupDialog->move( popupDialog->x(), xy.y() - popupDialog->height() );
+
+        int availableWidth = screenWidth - ( xy.x() + popupDialog->width() );
+        if ( availableWidth <= 0 )
+             xy.setX( xy.x() - qAbs(availableWidth) - 3 );
+
+        popupDialog->move( xy.x() , xy.y() - popupDialog->height() );
 
         ui->ledSearchTopic->setFocus();
         return;

@@ -14,6 +14,10 @@ public:
 
     void delay(int msec);
 
+    static QSize getScreenُSize();
+    static int getScreenWidth();
+    static int getScreenHeight();
+
 private:
     QTimer m_timer;
     QEventLoop m_eventLoop;

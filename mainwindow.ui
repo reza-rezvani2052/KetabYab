@@ -122,7 +122,7 @@ QToolBar::handle {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabTableView">
            <attribute name="title">
@@ -310,7 +310,8 @@ QGroupBox::title {
                  </property>
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
-&lt;p align=&quot;center&quot; style=&quot;white-space: nowrap&quot; &gt;شماره رکورد را در اینجا وارد کنید و سپس کلید &lt;span style=&quot; font-weight:600;&quot;&gt;اینتر&lt;/span&gt; را فشار دهید
+&lt;p style=&quot;white-space: nowrap; padding:5dp&quot; &gt;شماره رکورد را در اینجا وارد کنید و سپس کلید
+&lt;span style=&quot; font-weight:600; font-style:bold;&quot;&gt;اینتر&lt;/span&gt; را فشار دهید
 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="styleSheet">
@@ -954,7 +955,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <x>0</x>
      <y>0</y>
      <width>655</width>
-     <height>31</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="mnuFile">
@@ -1236,10 +1237,10 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>tableBooks</tabstop>
-  <tabstop>tabWidgetBooks</tabstop>
-  <tabstop>ledBookTitle</tabstop>
-  <tabstop>ledBookWriter</tabstop>
+  <tabstop>ledSearchTopic</tabstop>
+  <tabstop>cmbSearchTopic</tabstop>
+  <tabstop>btnSearch</tabstop>
+  <tabstop>tableSearchResult</tabstop>
   <tabstop>ledBookTranslator</tabstop>
   <tabstop>ledBookPub</tabstop>
   <tabstop>ledBookTopic</tabstop>
@@ -1252,10 +1253,11 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   <tabstop>btnCancelInsertOrUpdate</tabstop>
   <tabstop>btnRemove</tabstop>
   <tabstop>btnUpdateAndOk</tabstop>
-  <tabstop>ledSearchTopic</tabstop>
-  <tabstop>cmbSearchTopic</tabstop>
-  <tabstop>btnSearch</tabstop>
-  <tabstop>tableSearchResult</tabstop>
+  <tabstop>tableBooks</tabstop>
+  <tabstop>tabWidgetBooks</tabstop>
+  <tabstop>ledBookTitle</tabstop>
+  <tabstop>ledBookWriter</tabstop>
+  <tabstop>ledBookRegisterNumber</tabstop>
  </tabstops>
  <resources>
   <include location="rc/rc.qrc"/>
