@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QEventLoop>
 
+#include "popupdialog.h"
+
 class Utility : public QObject
 {
     Q_OBJECT
@@ -17,6 +19,13 @@ public:
     static QSize getScreenُSize();
     static int getScreenWidth();
     static int getScreenHeight();
+
+    static PopupDialog *createPopupDialog(QString title = QString(),
+                                          QString body = QString(),
+                                          QPoint xy = QPoint(),
+                                          bool animate = true,
+                                          int autoCloseDelay = 0,
+                                          QWidget *parent = 0);
 
 private:
     QTimer m_timer;

@@ -38,3 +38,15 @@ int Utility::getScreenHeight()
     QSize size = qApp->screens()[0]->size();
     return size.height();
 }
+
+PopupDialog *Utility::createPopupDialog(QString title, QString body, QPoint xy, bool animate, int autoCloseDelay, QWidget *parent)
+{
+    PopupDialog *popupDialog = new PopupDialog(
+                title, body , xy , autoCloseDelay, parent );
+
+    if (animate)
+        popupDialog->animateWindow();
+
+    //popupDialog->show();
+    return popupDialog;
+}

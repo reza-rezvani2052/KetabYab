@@ -14,7 +14,7 @@
 #include <QDesktopServices>
 #include <QPropertyAnimation>
 
-#include "utility.h"
+#include "Utility.h"
 #include "popupdialog.h"
 #include "aboutdialog.h"
 #include "dbconnection.h"
@@ -106,7 +106,7 @@ void MainWindow::on_btnSearch_clicked()
 {
     if (ui->tableBooks->rowCount() == 0) {
         qApp->beep();
-        createPopupDialog( QString("لیسست کتاب خالی می‌باشد") ,
+        Utility::createPopupDialog( QString("لیسست کتاب خالی می‌باشد") ,
                            QString() ,QPoint(), true, 2000, this )->show();
         return;
     }
@@ -136,7 +136,7 @@ void MainWindow::on_btnSearch_clicked()
 
         int availableWidth = screenWidth - ( xy.x() + popupDialog->width() );
         if ( availableWidth <= 0 )
-             xy.setX( xy.x() - qAbs(availableWidth) - 3 );
+            xy.setX( xy.x() - qAbs(availableWidth) - 3 );
 
         popupDialog->move( xy.x() , xy.y() - popupDialog->height() );
 
@@ -172,7 +172,7 @@ void MainWindow::on_btnSearch_clicked()
     //...
     if (qrySearchResult->rowCount() == 0) {
         qApp->beep();
-        createPopupDialog(QString("موردی یافت نشد") ,
+        Utility::createPopupDialog(QString("موردی یافت نشد") ,
                           QString(), QPoint(), true, 1400, this)->show();
     } else {
         ui->tableSearchResult->resizeColumnsToContents();
@@ -194,7 +194,7 @@ void MainWindow::on_actAdvancedSearch_triggered()
         if (ui->tableBooks->rowCount() == 0)
         {
             qApp->beep();
-            createPopupDialog( QString("لیسست کتاب‌ها خالی می‌باشد") ,
+            Utility::createPopupDialog( QString("لیسست کتاب‌ها خالی می‌باشد") ,
                                QString() ,QPoint(), true, 2000, this )->show();
             return;
         }
@@ -223,7 +223,7 @@ void MainWindow::on_actAdvancedSearch_triggered()
 
         if (qrySearchResult->rowCount() == 0) {
             qApp->beep();
-            createPopupDialog(QString("موردی یافت نشد") ,
+            Utility::createPopupDialog(QString("موردی یافت نشد") ,
                               QString(), QPoint(), true, 1400, this)->show();
         }
 
@@ -394,18 +394,21 @@ void MainWindow::on_actBackup_triggered()
     if( !appInfo.databasePath.isEmpty() )
     {
         if( file.copy(backupPath) ) {
-            createPopupDialog(QString(), QString("فایل پشتیبان با موفقیت ایجاد شد.") ,
-                              QPoint(), true, 1500, this)->show();
+            //TODO: ***************************************************
+            Utility::createPopupDialog(QString(),
+                                      QString("فایل پشتیبان با موفقیت ایجاد شد.") ,
+                                      QPoint(), true, 1500, this)->show();
         } else {
             qApp->beep();
-            createPopupDialog("خطا",
-                              QString("هنگام ایجاد فایل پشتیبان خطایی به شرح زیر رخ داده است:") +
-                              QString("\n") +
-                              file.errorString() , QPoint(), true, 4000, this)->show();
+            Utility::createPopupDialog("خطا",
+                                      QString("هنگام ایجاد فایل پشتیبان خطایی به شرح زیر رخ داده است:") +
+                                      QString("\n") +
+                                      file.errorString() , QPoint(), true, 4000, this)->show();
         }
     } else {
         qApp->beep();
-        createPopupDialog(QString("خطا"), QString("appInfo.databasePath.isEmpty()") + "\n" +
+        Utility::createPopupDialog(QString("خطا"),
+                                  QString("appInfo.databasePath.isEmpty()") + "\n" +
                           "مسیر پایگاه داده اشتباه است",
                           QPoint(), true, 2000, this)->show();
     }
@@ -434,7 +437,7 @@ void MainWindow::on_actRestore_triggered()
     if ( appInfo.databasePath.trimmed() == backupPath.trimmed())
     {
         qApp->beep();
-        createPopupDialog(
+        Utility::createPopupDialog(
                     QString("نیازی به بازیابی نسخه پشتیبان نیست!"),
                     QString("پایگاه داده‌ای که در برنامه اجرا شده است با نسخه بازیابی شما یکسان می‌باشد.") ,
                     QPoint(), true, 6000, this)->show();
@@ -487,7 +490,7 @@ void MainWindow::on_actGoToRecordN_triggered()
         ui->ledGoToRecordN->setFocus();
     } else {
         qApp->beep();
-        createPopupDialog(QString("  لیست کتاب خالیست!  ") ,
+        Utility::createPopupDialog(QString("  لیست کتاب خالیست!  ") ,
                           QString(), QPoint(), true, 2000, this)->show();
     }
 }
@@ -506,7 +509,7 @@ void MainWindow::on_ledGoToRecordN_returnPressed()
     if( !rowCount )
     {
         qApp->beep();
-        createPopupDialog(QString("  چیزی برای نمایش دادن وجود ندارد!  ") ,
+        Utility::createPopupDialog(QString("  چیزی برای نمایش دادن وجود ندارد!  ") ,
                           QString(), QPoint(), true, 2000, this)->show();
         ui->ledGoToRecordN->setVisible(false);
         return;
@@ -519,7 +522,7 @@ void MainWindow::on_ledGoToRecordN_returnPressed()
         ui->ledGoToRecordN->setVisible(false);
     } else {
         qApp->beep();
-        createPopupDialog(QString("  عدد وارد شده خارج از محدوده است.  ") ,
+        Utility::createPopupDialog(QString("  عدد وارد شده خارج از محدوده است.  ") ,
                           QString(), QPoint(), true, 2500, this)->show();
         //...
         ui->ledGoToRecordN->setVisible(true);
@@ -885,7 +888,7 @@ void MainWindow::on_btnInsertAndOk_clicked()
         if( isFormViewsLineEditsEmpty() )
         {
             qApp->beep();
-            createPopupDialog(QString("مشخصات کتاب به درستی وارد نشده است.") +
+            Utility::createPopupDialog(QString("مشخصات کتاب به درستی وارد نشده است.") +
                               QString("\n") +
                               QString("لطفا موارد مشخص شده را تکمیل نمایید."),
                               QString(), QPoint(), true, 3000, this)->show();
@@ -894,7 +897,7 @@ void MainWindow::on_btnInsertAndOk_clicked()
 
         if ( isRegisterNumberExist(ui->ledBookRegisterNumber->text().trimmed()) ) {
             qApp->beep();
-            createPopupDialog(QString("شماره ثبت تکراری می‌باشد.") +
+            Utility::createPopupDialog(QString("شماره ثبت تکراری می‌باشد.") +
                               QString("\n") +
                               QString("در صورت نیاز می‌توانید از گزینه های ویرایش/حذف استفاده نمایید."),
                               QString(), QPoint(), true, 4000, this)->show();
@@ -916,12 +919,12 @@ void MainWindow::on_btnInsertAndOk_clicked()
                     );
         if( qryInsert.exec(qryInsertString) )
         {
-            createPopupDialog(QString(),
+            Utility::createPopupDialog(QString(),
                               QString(" کتاب با موفقیت به لیست اضافه گردید. "),
                               QPoint(), true, 1500, this)->show();
         } else {
             qApp->beep();
-            createPopupDialog(QString("خطا"),
+            Utility::createPopupDialog(QString("خطا"),
                               QString("در هنگام افزودن کتاب خطایی به شرح زیر رخ داده است:") +
                               QString("\n") +
                               qryInsert.lastError().text(),
@@ -987,7 +990,7 @@ void MainWindow::on_btnRemove_clicked()
     if( currentRow < 0 || rowCount == 0)
     {
         qApp->beep();
-        createPopupDialog(QString("کتابی ای برای حذف کردن وجود ندارد!"),
+        Utility::createPopupDialog(QString("کتابی ای برای حذف کردن وجود ندارد!"),
                           QString(), QPoint(), true, 2000, this)->show();
         return;
     }
@@ -1007,7 +1010,7 @@ void MainWindow::on_btnRemove_clicked()
     if( !qryDelete.exec(qryString) )
     {
         qApp->beep();
-        createPopupDialog(QString("خطا") ,
+        Utility::createPopupDialog(QString("خطا") ,
                           QString("در هنگام حذف کتاب خطایی به شرح زیر رخ داده است:") +
                           QString("\n") +
                           qryDelete.lastError().text() ,
@@ -1037,7 +1040,7 @@ void MainWindow::on_btnRemove_clicked()
             //Utility util;
             //util.delay(popupDialog->getDuration() + 75);
             qApp->beep();
-            createPopupDialog( QString() , QString("لیست خالی شد!") ,
+            Utility::createPopupDialog( QString() , QString("لیست خالی شد!") ,
                                QPoint(),true , 1500, this )->show();
             return;
         }
@@ -1067,7 +1070,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
     if( currRow < 0 )
     {
         qApp->beep();
-        createPopupDialog(QString("رکوردی برای به روز رسانی وجود ندارد"),
+        Utility::createPopupDialog(QString("کتابی برای ویرایش وجود ندارد"),
                           QString(), QPoint(), true, 2500, this)->show();
         return;
     }
@@ -1096,7 +1099,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
         if( isFormViewsLineEditsEmpty() )
         {
             qApp->beep();
-            createPopupDialog(QString("مشخصات کتاب به درستی وارد نشده است.") +
+            Utility::createPopupDialog(QString("مشخصات کتاب به درستی وارد نشده است.") +
                               QString("\n") +
                               QString("لطفا موارد مشخص شده را تکمیل نمایید."),
                               QString(), QPoint(), true, 3000, this)->show();
@@ -1121,7 +1124,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
 
         if( qry.exec(qryString) )
         {
-            createPopupDialog(QString(), QString(" ویرایش انجام شد "),
+            Utility::createPopupDialog(QString(), QString(" ویرایش انجام شد "),
                               QPoint(), true, 1500, this)->show();
             //...
             setupTableBooks();
@@ -1129,7 +1132,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
             fillFormFromTable();
         } else {
             qApp->beep();
-            createPopupDialog(QString("خطا!"),
+            Utility::createPopupDialog(QString("خطا!"),
                               QString("در هنگام به روز رسانی خطایی به شرح زیر رخ داده است:") +
                               QString("\n") +
                               qry.lastError().text(),
