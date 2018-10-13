@@ -20,6 +20,7 @@
 #include "dbconnection.h"
 #include "checkversiondialog.h"
 #include "advancedsearchdialog.h"
+#include "changepassworddialog.h"
 
 //---------------------------------------------------------------------
 
@@ -621,12 +622,12 @@ void MainWindow::on_btnNext_clicked()
     //------------------------------------------------------------
 
     //TODO: بعدا پاک کنم
-//    qApp->beep();
+    //    qApp->beep();
 
-//    ui->tableBooks->selectRow(1);
-//    fillFormFromTable();
+    //    ui->tableBooks->selectRow(1);
+    //    fillFormFromTable();
 
-//    return;
+    //    return;
 
     //------------------------------------------------------------
 
@@ -760,19 +761,19 @@ void MainWindow::setupTableBooks()
         ui->tableBooks->setRowCount(row+1);
 
         ui->tableBooks->setItem(row, KeyField,
-                                 new QTableWidgetItem(qryTableBooks->value(KeyField).toString()));
+                                new QTableWidgetItem(qryTableBooks->value(KeyField).toString()));
         ui->tableBooks->setItem(row, BookTitle,
-                                 new QTableWidgetItem(qryTableBooks->value(BookTitle).toString()));
+                                new QTableWidgetItem(qryTableBooks->value(BookTitle).toString()));
         ui->tableBooks->setItem(row, BookWriter,
-                                 new QTableWidgetItem(qryTableBooks->value(BookWriter).toString()));
+                                new QTableWidgetItem(qryTableBooks->value(BookWriter).toString()));
         ui->tableBooks->setItem(row, BookTranslator,
-                                 new QTableWidgetItem(qryTableBooks->value(BookTranslator).toString()));
+                                new QTableWidgetItem(qryTableBooks->value(BookTranslator).toString()));
         ui->tableBooks->setItem(row, BookPub,
-                                 new QTableWidgetItem(qryTableBooks->value(BookPub).toString()));
+                                new QTableWidgetItem(qryTableBooks->value(BookPub).toString()));
         ui->tableBooks->setItem(row, BookTopic,
-                                 new QTableWidgetItem(qryTableBooks->value(BookTopic).toString()));
+                                new QTableWidgetItem(qryTableBooks->value(BookTopic).toString()));
         ui->tableBooks->setItem(row, BookRegisterNumber,
-                                 new QTableWidgetItem(qryTableBooks->value(BookRegisterNumber).toString()));
+                                new QTableWidgetItem(qryTableBooks->value(BookRegisterNumber).toString()));
         row ++;
     }
     //...
@@ -1145,5 +1146,6 @@ void MainWindow::on_actCheckVersion_triggered()
 
 void MainWindow::on_actChangeLoginPass_triggered()
 {
-
+    ChangePasswordDialog dialog(this);
+    dialog.exec();
 }

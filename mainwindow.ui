@@ -309,7 +309,9 @@ QGroupBox::title {
                   </size>
                  </property>
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;شماره رکورد را در اینجا وارد کنید و سپس کلید &lt;span style=&quot; font-weight:600;&quot;&gt;اینتر&lt;/span&gt; را فشار دهید&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p align=&quot;center&quot; style=&quot;white-space: nowrap&quot; &gt;شماره رکورد را در اینجا وارد کنید و سپس کلید &lt;span style=&quot; font-weight:600;&quot;&gt;اینتر&lt;/span&gt; را فشار دهید
+&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="styleSheet">
                   <string notr="true">QLineEdit {

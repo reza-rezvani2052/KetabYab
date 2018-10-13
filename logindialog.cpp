@@ -32,8 +32,10 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui->cmbUsername->setLineEdit(led);
     led->setAlignment(Qt::AlignLeft);
     //...
-    QTimer::singleShot(2500, this,
-                       SLOT(animateLoginLogo()) );
+    readSettings();
+
+    if (numOfRunApp > 1)
+        ui->stackedWidgetMain->setCurrentWidget(ui->pageLogin);
     //...
 }
 
@@ -42,24 +44,59 @@ LoginDialog::~LoginDialog()
     delete ui;
 }
 
+void LoginDialog::readSettings()
+{
+    QSettings settings;
+    settings.beginGroup("LoginDialog");
+    //...
+    numOfRunApp = settings.value("NumOfRunApp", 1).toInt();
+    //...
+    settings.endGroup();
+}
+
+void LoginDialog::writeSettings()
+{
+    QSettings settings;
+    settings.beginGroup("LoginDialog");
+
+    // تعداد اجرای برنامه
+    settings.setValue("NumOfRunApp", numOfRunApp); //  numOfRunApp++
+
+    settings.endGroup();
+}
+
+void LoginDialog::closeEvent(QCloseEvent *)
+{
+    writeSettings();
+}
+
 void LoginDialog::animateLoginLogo()
 {
-    ui->stackedWidget->setCurrentWidget(ui->pageUserLogo);
-    
-    const QPoint _posEnd = ui->pageUserLogo->pos();
-    QPoint _posStart = _posEnd;
-    
-    _posStart.setX(-100);
-    _posStart.setY(0);
-    
-    QPropertyAnimation *animation = new QPropertyAnimation(ui->pageUserLogo, "pos");
-    
+    animateStackedWidgetPages(ui->stackedWidgetLogo , ui->pageUserLogo);
+}
+
+void LoginDialog::animatePageLogin()
+{
+    animateStackedWidgetPages(ui->stackedWidgetMain ,ui->pageLogin);
+}
+
+void LoginDialog::animateStackedWidgetPages(QStackedWidget *stackedWidget, QWidget *page)
+{
+    stackedWidget->setCurrentWidget(page);
+
+    const QPoint posEnd = page->pos();
+    QPoint posStart = posEnd;
+
+    posStart.setX(-100);
+    posStart.setY(0);
+
+    QPropertyAnimation *animation = new QPropertyAnimation(page, "pos");
+
     animation->setDuration(1000);
-    animation->setStartValue(_posStart);
-    animation->setEndValue(_posEnd);
-    
+    animation->setStartValue(posStart);
+    animation->setEndValue(posEnd);
+
     animation->setEasingCurve(QEasingCurve::OutElastic);
-    //animation->setEasingCurve(QEasingCurve::InQuad);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
@@ -86,6 +123,8 @@ void LoginDialog::on_btnClose_clicked()
 void LoginDialog::on_btnLogIn_clicked()
 {
     if( isValidUser() ){
+        numOfRunApp++;
+        writeSettings(); // TODO: ****** shahaydniaz nabashad
         accept();
     }else {
         qApp->beep();
@@ -154,6 +193,63 @@ bool LoginDialog::isValidUser()
     return false;
 }
 
+void LoginDialog::on_btnCancelChangePassAndClose_clicked()
+{
+    on_btnClose_clicked();
+}
+
+void LoginDialog::on_btnOkSetPassAndLogIn_clicked()
+{
+    QString newPassword = ui->ledNewPassword->text();
+    QString newPasswordAgain = ui->ledNewPasswordAgain->text();
+
+    if (newPassword.isEmpty() || newPasswordAgain.isEmpty()) {
+        qApp->beep();
+        createPopupDialog( QString(" کلمه عبور نمی‌تواند خالی باشد. ") ,
+                           QString() ,QPoint(), true, 2000, this )->show();
+        return;
+    }
+
+    if ( newPassword.compare(newPasswordAgain) != 0 ) {
+        qApp->beep();
+        createPopupDialog( QString(" کلمه عبور و تکرا آن متفاوت است. ") ,
+                           QString() ,QPoint(), true, 2000, this )->show();
+        return;
+    }
+
+    //ایمیل را اختیاری کنم
+    QString email = ui->ledEmailAddress->text().trimmed();
+
+    //...
+
+    if ( setUsersPass(newPassword) ) {
+        animatePageLogin();
+        //...
+        numOfRunApp++;
+        writeSettings();
+    } else {
+        qApp->beep();
+        createPopupDialog( QString(" خطایی رخ داده است! ") ,
+                           QString() ,QPoint(), true, 2000, this )->show();
+    }
+
+}
+
+void LoginDialog::on_stackedWidgetMain_currentChanged(int arg1)
+{
+    switch (arg1) {
+    case 0:  // pageLogin
+        QTimer::singleShot(2000, this, SLOT(animateLoginLogo()) );
+        break;
+    case 1:  // pageChangePass
+        ;
+    default:
+        break;
+    }
+}
+
+//------------------------------------------------------------------------------
+
 void LoginDialog::keyPressEvent(QKeyEvent *e)
 {
     //agar karbar dokmeye Escape ra mizad moshkel ijad mishod, in ra neveshtam
@@ -192,3 +288,4 @@ void LoginDialog::mouseReleaseEvent(QMouseEvent *e)
     //...
     QDialog::mouseReleaseEvent(e);
 }
+

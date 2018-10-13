@@ -81,14 +81,17 @@ int  getNumberOfRecord(const QSqlDatabase &db = appInfo.db ,
 
 bool isUserExist(const QString &userName);
 bool isRegisterNumberExist(const QString &registerId);
+bool setUsersPass(QString &pass);
 
 QStringList allUserNames();
 
 QString getUserPassword(const QString &userName);
 QString getUserNickname(const QString &userName);
 
+QStringList getTableUsersRecord(const QString &userName);
+
 //NOTE:   این فعلن عملیاتی نیست-صرفا جهت آموزش هست
-QStringList getBookRecord(const QString &registerNumber);
+QStringList getTableBooksRecord(const QString &registerNumber);
 
 
 #endif  //  #ifndef DBCONNECTION_H

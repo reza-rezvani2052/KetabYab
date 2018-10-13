@@ -145,8 +145,26 @@ QStringList allUserNames()
     return userNamesList;
 }
 
+QStringList getTableUsersRecord(const QString &userName)
+{
+    QStringList allFields = QStringList();
+
+    QSqlQuery qry(
+                QString("SELECT * FROM table_users WHERE username='%1' ;").arg(userName)
+                , appInfo.db );
+    if (qry.next())
+    {
+        allFields << qry.value(UserName).toString();
+        allFields << qry.value(Password).toString();
+        allFields << qry.value(IsAdmin).toString();
+        allFields << qry.value(Nickname).toString();
+    }
+
+    return allFields;
+}
+
 // این فعلن عملیاتی نیست-صرفا جهت آموزش هست
-QStringList getBookRecord(const QString &registerNumber)
+QStringList getTableBooksRecord(const QString &registerNumber)
 {
     QStringList allFields = QStringList();
 
@@ -187,4 +205,29 @@ QString getUserNickname(const QString &userName)
         nickname = qry.value(0).toString();
 
     return nickname;
+}
+
+bool setUsersPass(QString &pass)
+{
+    QStringList allFields = getTableUsersRecord("admin");
+    if (allFields.isEmpty())
+        return false;
+
+    QString userName = allFields.at(UserName);
+    QString password = pass; // allFields.at(Password);
+    QString isAdmin  = allFields.at(IsAdmin);
+    QString nickName = allFields.at(Nickname);
+    //qDebug() << userName << password << isAdmin << nickName;
+
+    QString qryString;
+    QSqlQuery qry(";", appInfo.db);
+
+    qryString = "UPDATE table_users SET "
+                "username = '%1' ,password = '%2' ,is_admin = '%3' "
+                ",nickname = '%4' WHERE username='%5' ;";
+    qryString = qryString.arg( userName, password, isAdmin, nickName, "admin");
+
+    //...
+
+    return qry.exec(qryString) ;
 }
