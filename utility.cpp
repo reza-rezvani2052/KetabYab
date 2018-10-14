@@ -39,7 +39,8 @@ int Utility::getScreenHeight()
     return size.height();
 }
 
-PopupDialog *Utility::createPopupDialog(QString title, QString body, QPoint xy, bool animate, int autoCloseDelay, QWidget *parent)
+PopupDialog *Utility::createPopupDialog(QString title, QString body, QPoint xy,
+                                        bool animate, int autoCloseDelay, QWidget *parent)
 {
     PopupDialog *popupDialog = new PopupDialog(
                 title, body , xy , autoCloseDelay, parent );

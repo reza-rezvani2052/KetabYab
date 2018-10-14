@@ -209,7 +209,7 @@ QString getUserNickname(const QString &userName)
 
 bool setUsersPass(QString &pass)
 {
-    QStringList allFields = getTableUsersRecord("admin");
+    QStringList allFields = getTableUsersRecord(userInfo.userName);
     if (allFields.isEmpty())
         return false;
 
@@ -225,7 +225,7 @@ bool setUsersPass(QString &pass)
     qryString = "UPDATE table_users SET "
                 "username = '%1' ,password = '%2' ,is_admin = '%3' "
                 ",nickname = '%4' WHERE username='%5' ;";
-    qryString = qryString.arg( userName, password, isAdmin, nickName, "admin");
+    qryString = qryString.arg( userName, password, isAdmin, nickName, userInfo.userName);
 
     //...
 

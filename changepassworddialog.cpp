@@ -1,6 +1,9 @@
 #include "changepassworddialog.h"
 #include "ui_changepassworddialog.h"
 
+#include "utility.h"
+#include "dbconnection.h"
+
 ChangePasswordDialog::ChangePasswordDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ChangePasswordDialog)
@@ -21,7 +24,67 @@ void ChangePasswordDialog::on_btnCancel_clicked()
 }
 
 void ChangePasswordDialog::on_btnChangePassword_clicked()
-{
-    //TODO: ***********************
+{    
+    QString strLedCurrentPass = ui->ledCurrentPass->text();
+    if (strLedCurrentPass.trimmed().isEmpty()) {
+        qApp->beep();
+        Utility::createPopupDialog( QString(" کلمه عبور جاری نمی‌تواند خالی باشد. ") ,
+                                    QString() ,QPoint(), true, 2000, this )->show();
+        return;
+    }
+
+    int ret = strLedCurrentPass.compare( getUserPassword(userInfo.userName) );
+    if (ret) {
+        qApp->beep();
+        Utility::createPopupDialog( QString(" کلمه عبور فعلی نادرست است. ") ,
+                                    QString() ,QPoint(), true, 2000, this )->show();
+        return;
+    }
+
+    //...
+
+    QString newPassword = ui->ledNewPassword->text();
+    QString newPasswordAgain = ui->ledNewPasswordAgain->text();
+
+    if (newPassword.isEmpty() || newPasswordAgain.isEmpty()) {
+        qApp->beep();
+        Utility::createPopupDialog( QString(" کلمه عبور نمی‌تواند خالی باشد. ") ,
+                                    QString() ,QPoint(), true, 2000, this )->show();
+        return;
+    }
+
+    if ( newPassword.compare(newPasswordAgain) != 0 ) {
+        qApp->beep();
+        Utility::createPopupDialog( QString(" کلمه عبور و تکرا آن متفاوت است. ") ,
+                                    QString() ,QPoint(), true, 2000, this )->show();
+        return;
+    }
+
+    //...
+
+    // اگر رمز جدید با رمز قبلی یکی بود
+    if (strLedCurrentPass == newPassword) {
+        qApp->beep();
+        Utility::createPopupDialog( QString(" رمز عبور جدید با قبلی یکسان است! ") ,
+                                    QString() ,QPoint(), true, 2000, this )->show();
+        return;
+    }
+
+    //...
+
+    //TODO: ****************************
+    //ایمیل را اختیاری کنم
+    QString email = ui->ledEmailAddress->text().trimmed();
+
+
+    //...
+
+    if ( !setUsersPass(newPassword) ) {
+        qApp->beep();
+        Utility::createPopupDialog( QString(" خطایی رخ داده است! ") ,
+                                    QString() ,QPoint(), true, 2000, this )->show();
+    }
+
+    accept();
 
 }
