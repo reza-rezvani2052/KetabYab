@@ -39,6 +39,7 @@ int Utility::getScreenHeight()
     return size.height();
 }
 
+//TODO: ********* bool doBeep ra be in ezafe konam ta hardafe dar farakhani ...
 PopupDialog *Utility::createPopupDialog(QString title, QString body, QPoint xy,
                                         bool animate, int autoCloseDelay, QWidget *parent)
 {

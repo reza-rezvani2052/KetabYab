@@ -80,7 +80,7 @@ private:
     QSqlQueryModel *qrySearchResult;
 
     // فیلد کلید رکورد انتخاب شده در نمای جدول را نگهداری میکند
-    // چون ممکن است حین عملیات بروزرسانی کاربر در بین رکوردها حرکت کند و موقعیت رکورد
+    // چون ممکن است حین عملیات ویرایش کاربر در بین رکوردها حرکت کند و موقعیت رکورد
     // جاری از دست برود
     QString m_currKeyField;
 
@@ -108,7 +108,6 @@ private:
                                      QStackedWidget *stackedWidget);
 
     void setupTableBooks();
-    void setupTableSearchResult();
 
     void updateLblRecordStatistics();
 

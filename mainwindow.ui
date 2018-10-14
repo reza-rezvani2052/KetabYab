@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>655</width>
-    <height>489</height>
+    <width>471</width>
+    <height>384</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -122,7 +122,7 @@ QToolBar::handle {
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabTableView">
            <attribute name="title">
@@ -954,7 +954,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>655</width>
+     <width>471</width>
      <height>26</height>
     </rect>
    </property>
@@ -1187,6 +1187,10 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    </property>
   </action>
   <action name="actReenter">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/restart-app.png</normaloff>:/restart-app.png</iconset>
+   </property>
    <property name="text">
     <string>ورود دوباره به برنامه</string>
    </property>
@@ -1237,10 +1241,9 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>ledSearchTopic</tabstop>
-  <tabstop>cmbSearchTopic</tabstop>
-  <tabstop>btnSearch</tabstop>
-  <tabstop>tableSearchResult</tabstop>
+  <tabstop>ledBookRegisterNumber</tabstop>
+  <tabstop>ledBookTitle</tabstop>
+  <tabstop>ledBookWriter</tabstop>
   <tabstop>ledBookTranslator</tabstop>
   <tabstop>ledBookPub</tabstop>
   <tabstop>ledBookTopic</tabstop>
@@ -1249,15 +1252,16 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   <tabstop>btnNext</tabstop>
   <tabstop>btnLast</tabstop>
   <tabstop>ledGoToRecordN</tabstop>
-  <tabstop>btnInsertAndOk</tabstop>
+  <tabstop>tableBooks</tabstop>
+  <tabstop>ledSearchTopic</tabstop>
+  <tabstop>cmbSearchTopic</tabstop>
+  <tabstop>btnSearch</tabstop>
+  <tabstop>tableSearchResult</tabstop>
+  <tabstop>tabWidgetBooks</tabstop>
+  <tabstop>btnUpdateAndOk</tabstop>
   <tabstop>btnCancelInsertOrUpdate</tabstop>
   <tabstop>btnRemove</tabstop>
-  <tabstop>btnUpdateAndOk</tabstop>
-  <tabstop>tableBooks</tabstop>
-  <tabstop>tabWidgetBooks</tabstop>
-  <tabstop>ledBookTitle</tabstop>
-  <tabstop>ledBookWriter</tabstop>
-  <tabstop>ledBookRegisterNumber</tabstop>
+  <tabstop>btnInsertAndOk</tabstop>
  </tabstops>
  <resources>
   <include location="rc/rc.qrc"/>

@@ -25,6 +25,7 @@
         <file>nahad-logo.png</file>
         <file>employee.jpg</file>
         <file>fonts/BYekan.ttf</file>
-        <file>progress.gif</file>
+        <file>loading.gif</file>
+        <file>restart-app.png</file>
     </qresource>
 </RCC>

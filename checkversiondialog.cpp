@@ -21,7 +21,7 @@ CheckVersionDialog::CheckVersionDialog(QWidget *parent) :
 
     QTimer::singleShot(1000, this, SLOT(checkNewVersionAvilable()));
     //...    
-    QMovie *movie = new QMovie(":/progress.gif", QByteArray(), this);
+    QMovie *movie = new QMovie(":/loading.gif", QByteArray(), this);
     ui->lblRetVal->setMovie(movie);
     movie->start();
     //...
