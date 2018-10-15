@@ -33,7 +33,7 @@ LoginDialog::LoginDialog(QWidget *parent) :
     led->setAlignment(Qt::AlignLeft);
     //...
     readSettings();
-
+    //...
     if (numOfRunApp > 1)
         ui->stackedWidgetMain->setCurrentWidget(ui->pageLogin);
     //...
@@ -58,10 +58,9 @@ void LoginDialog::writeSettings()
 {
     QSettings settings;
     settings.beginGroup("LoginDialog");
-
-    // تعداد اجرای برنامه
-    settings.setValue("NumOfRunApp", numOfRunApp); //  numOfRunApp++
-
+    //...
+    settings.setValue("NumOfRunApp", numOfRunApp);
+    //...
     settings.endGroup();
 }
 
@@ -127,10 +126,26 @@ void LoginDialog::on_btnLogIn_clicked()
         writeSettings(); // TODO: ****** shahaydniaz nabashad
         accept();
     }else {
+        QString str = QString("نام کاربری یا کلمه عبور شما نامعتبر است");
+
+        // تعداد تلاش های ناموفقی که کاربر برای ورود به برنامه انجام میدهد را برای نمایش
+        // راهنمای پسورد استفاده میکنیم
+        static int numRetry = 0;
+
+        QString passHint = getUserPassHint(ui->cmbUsername->currentText());
+        bool canShowPassHint = (++numRetry > 3) && (!passHint.isEmpty());
+        if ( canShowPassHint ) {
+            str += "\n";
+            str += "می‌توانید از یادآور زیر جهت بازیابی کلمه عبور خود استفاده کنید:";
+            str += "\n";
+            str += passHint ;
+        }
+
+        //...
+
         qApp->beep();
-        createPopupDialog(QString("کاربر نامعتبر"),
-                          QString("نام کاربری یا کلمه عبور شما نامعتبر است"),
-                          QPoint(), true, 2500, this)->show();
+        createPopupDialog(QString("کاربر نامعتبر"), str, QPoint(), true,
+                          canShowPassHint ? 5000 : 2500, this)->show();
         ui->ledPassword->clear();
         ui->ledPassword->setFocus();
     }
@@ -140,10 +155,8 @@ PopupDialog *LoginDialog::createPopupDialog(QString title, QString body,
                                             QPoint xy, bool animate,
                                             int autoCloseDelay, QWidget *parent)
 {
-    PopupDialog *popupDialog = new PopupDialog(
-                title, body , xy ,
-                autoCloseDelay, parent
-                );
+    PopupDialog *popupDialog = new PopupDialog( title, body , xy ,
+                                                autoCloseDelay, parent);
 
     if (animate)
         popupDialog->animateWindow();
@@ -157,18 +170,20 @@ bool LoginDialog::isValidUser()
     QString userName = ui->cmbUsername->currentText();
 
     QString qryString =
-            QString("SELECT username, is_admin, nickname FROM table_users WHERE username='%1' "
-                    "AND password='%2' ").arg(
-                userName, ui->ledPassword->text() );
+            QString("SELECT * FROM table_users WHERE username='%1' AND password='%2' ").arg( userName, ui->ledPassword->text() );
     
     QSqlQuery qry(";", appInfo.db); // Oooops!
     if( qry.exec(qryString) )
     {
         if (qry.next()) {
-            userInfo.userName = qry.value(0).toString();
-            userInfo.isAdmin  = qry.value(1).toBool();
-            userInfo.nickname = qry.value(2).toString();
+            userInfo.userName = qry.value(UserName).toString();
+            //userInfo.passwwww  = qry.value(Password).toBool();
 
+            userInfo.passHint = qry.value(PassHint).toString();
+
+            userInfo.isAdmin = qry.value(IsAdmin).toBool();
+
+            userInfo.nickname = qry.value(Nickname).toString();
             //if (userInfo.nickname.trimmed().isEmpty())
             //    userInfo.nickname = userInfo.userName;
 
@@ -176,12 +191,15 @@ bool LoginDialog::isValidUser()
         } else if(userName == "guest") {
             userInfo.userName = "guest";
             userInfo.isAdmin  = false;
+            userInfo.passHint = "فاقد کلمه عبور";
             userInfo.nickname = "کاربر میهمان";
             return true;
         } else {
             return false;
         }
     } else {
+        qDebug() <<"ERR on isValidUser()";
+
         qApp->beep();
         createPopupDialog(QString("اخطار"),
                           trUtf8("شرح خطا ") + ":"
@@ -217,12 +235,10 @@ void LoginDialog::on_btnOkSetPassAndLogIn_clicked()
         return;
     }
 
-    //ایمیل را اختیاری کنم
-    QString email = ui->ledEmailAddress->text().trimmed();
-
     //...
+    QString passHint = ui->ledPassHint->text().trimmed();
 
-    if ( setUsersPass(newPassword) ) {
+    if ( setUsersPass(newPassword, passHint ) ) {
         animatePageLogin();
         //...
         numOfRunApp++;
@@ -232,7 +248,6 @@ void LoginDialog::on_btnOkSetPassAndLogIn_clicked()
         createPopupDialog( QString(" خطایی رخ داده است! ") ,
                            QString() ,QPoint(), true, 2000, this )->show();
     }
-
 }
 
 void LoginDialog::on_stackedWidgetMain_currentChanged(int arg1)

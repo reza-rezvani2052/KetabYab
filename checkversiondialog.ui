@@ -139,9 +139,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
            <property name="text">
             <string/>
            </property>
-           <property name="pixmap">
-            <pixmap>:/progress.png</pixmap>
-           </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>

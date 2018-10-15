@@ -212,7 +212,7 @@ void MainWindow::on_actAdvancedSearch_triggered()
         on_actSearch_triggered();
         //...
 
-        //TODO: ***
+        //TODO:
         /*
         اگر کوئری ساخته شده در جستجوی پیشرفته کلماتی مانند
         delete یا update

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>471</width>
-    <height>384</height>
+    <height>431</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -955,7 +955,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <x>0</x>
      <y>0</y>
      <width>471</width>
-     <height>26</height>
+     <height>31</height>
     </rect>
    </property>
    <widget class="QMenu" name="mnuFile">
@@ -1216,7 +1216,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
    </property>
    <property name="text">
-    <string>بروزرسانی کتاب</string>
+    <string>ویرایش کتاب</string>
    </property>
   </action>
   <action name="actInsert">

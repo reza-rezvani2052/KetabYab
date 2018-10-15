@@ -5,10 +5,12 @@
 
 //=================================================================================
 
-struct UserInfo{
-    bool isAdmin;
+struct UserInfo {
     QString userName;
-    QString nickname;
+    QString password;   // TODO: ****  takmil gardad
+    QString passHint;
+    bool isAdmin;
+    QString nickname;  
 };
 
 struct AppInfo {
@@ -58,12 +60,14 @@ enum DB_Books_Fields{
 table_users:
 username
 password
+passhint
 is_admin
 nickname
 */
 enum DB_Users_Fields {
     UserName ,
     Password ,
+    PassHint ,
     IsAdmin  ,  // 0=false   ,   otherwise=true
     Nickname
 };
@@ -74,23 +78,22 @@ DatabaseErrors createConnection( QSqlDatabase &db,const QString &dbPath);
 
 bool createNewDatabase();
 
-int  getNumberOfRecord(const QSqlDatabase &db = appInfo.db ,
-                       const QString &tableName = QString("table_books"),
+int  getNumberOfRecord(const QString &tableName = QString("table_books"),
                        const QString &fieldName = QString("key_field")
                       );
 
 bool isUserExist(const QString &userName);
 bool isRegisterNumberExist(const QString &registerId);
-bool setUsersPass(QString &pass);
+bool setUsersPass(QString &pass, QString passHint = QString() );
 
 QStringList allUserNames();
 
 QString getUserPassword(const QString &userName);
+QString getUserPassHint(const QString &userName);
 QString getUserNickname(const QString &userName);
 
 QStringList getTableUsersRecord(const QString &userName);
 
-//NOTE:   این فعلن عملیاتی نیست-صرفا جهت آموزش هست
 QStringList getTableBooksRecord(const QString &registerNumber);
 
 

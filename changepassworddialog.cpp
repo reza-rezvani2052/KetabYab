@@ -70,16 +70,10 @@ void ChangePasswordDialog::on_btnChangePassword_clicked()
         return;
     }
 
-    //...
+    //... 
+    QString passHint = ui->ledPassHint->text().trimmed();
 
-    //TODO: ****************************
-    //ایمیل را اختیاری کنم
-    QString email = ui->ledEmailAddress->text().trimmed();
-
-
-    //...
-
-    if ( !setUsersPass(newPassword) ) {
+    if ( !setUsersPass(newPassword, passHint) ) {
         qApp->beep();
         Utility::createPopupDialog( QString(" خطایی رخ داده است! ") ,
                                     QString() ,QPoint(), true, 2000, this )->show();
