@@ -33,7 +33,8 @@ void ChangePasswordDialog::on_btnChangePassword_clicked()
         return;
     }
 
-    int ret = strLedCurrentPass.compare( getUserPassword(userInfo.userName) );
+    int ret = strLedCurrentPass.compare(
+                getUserPassword(userInfo.userName) /* userInfo.password */ );
     if (ret) {
         qApp->beep();
         Utility::createPopupDialog( QString(" کلمه عبور فعلی نادرست است. ") ,
@@ -70,7 +71,7 @@ void ChangePasswordDialog::on_btnChangePassword_clicked()
         return;
     }
 
-    //... 
+    //...
     QString passHint = ui->ledPassHint->text().trimmed();
 
     if ( !setUsersPass(newPassword, passHint) ) {
@@ -80,5 +81,4 @@ void ChangePasswordDialog::on_btnChangePassword_clicked()
     }
 
     accept();
-
 }

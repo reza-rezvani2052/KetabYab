@@ -121,11 +121,11 @@ void LoginDialog::on_btnClose_clicked()
 
 void LoginDialog::on_btnLogIn_clicked()
 {
-    if( isValidUser() ){
+    if( isValidUser() ) {
         numOfRunApp++;
         writeSettings(); // TODO: ****** shahaydniaz nabashad
         accept();
-    }else {
+    } else {
         QString str = QString("نام کاربری یا کلمه عبور شما نامعتبر است");
 
         // تعداد تلاش های ناموفقی که کاربر برای ورود به برنامه انجام میدهد را برای نمایش
@@ -161,7 +161,6 @@ PopupDialog *LoginDialog::createPopupDialog(QString title, QString body,
     if (animate)
         popupDialog->animateWindow();
 
-    //popupDialog->show();
     return popupDialog;
 }
 
@@ -177,7 +176,8 @@ bool LoginDialog::isValidUser()
     {
         if (qry.next()) {
             userInfo.userName = qry.value(UserName).toString();
-            //userInfo.passwwww  = qry.value(Password).toBool();
+
+            userInfo.password  = qry.value(Password).toString();
 
             userInfo.passHint = qry.value(PassHint).toString();
 
@@ -198,8 +198,6 @@ bool LoginDialog::isValidUser()
             return false;
         }
     } else {
-        qDebug() <<"ERR on isValidUser()";
-
         qApp->beep();
         createPopupDialog(QString("اخطار"),
                           trUtf8("شرح خطا ") + ":"
@@ -236,9 +234,14 @@ void LoginDialog::on_btnOkSetPassAndLogIn_clicked()
     }
 
     //...
-    QString passHint = ui->ledPassHint->text().trimmed();
+    // در اولین اجرای برنامه مقدار
+    // userInfo.userName
+    // خالی میباشد. بنابراین با مقدار زیر آنرا مقدار دهی میکنیم
+    userInfo.userName = "admin";
 
-    if ( setUsersPass(newPassword, passHint ) ) {
+    QString passHint  = ui->ledPassHint->text().trimmed();
+
+    if (setUsersPass(newPassword, passHint)) {
         animatePageLogin();
         //...
         numOfRunApp++;
@@ -246,7 +249,7 @@ void LoginDialog::on_btnOkSetPassAndLogIn_clicked()
     } else {
         qApp->beep();
         createPopupDialog( QString(" خطایی رخ داده است! ") ,
-                           QString() ,QPoint(), true, 2000, this )->show();
+                           QString() ,QPoint() , true, 2000, this )->show();
     }
 }
 

@@ -45,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //...
-
     QRegExp rx("[1-9]\\d{0,6}");
     QValidator *validator = new QRegExpValidator(rx, this);
     ui->ledGoToRecordN->setValidator(validator);
@@ -278,7 +277,7 @@ void MainWindow::setAdminWidgetsEnable(bool val)
         ui->actChangeLoginPass->setStatusTip(str);
 
         ui->actInsert->setStatusTip(str);
-        ui->actRemove->setStatusTip(str);        
+        ui->actRemove->setStatusTip(str);
         ui->actUpdate->setStatusTip(str);
 
         ui->actBooksManagement->setStatusTip(str);
@@ -381,7 +380,6 @@ PopupDialog *MainWindow::createPopupDialog(QString title, QString body,
     if (animate)
         popupDialog->animateWindow();
 
-    //popupDialog->show();
     return popupDialog;
 }
 
@@ -521,7 +519,7 @@ void MainWindow::on_ledGoToRecordN_returnPressed()
     if( !rowCount )
     {
         qApp->beep();
-        Utility::createPopupDialog(QString("  چیزی برای نمایش دادن وجود ندارد!  ") ,
+        Utility::createPopupDialog(QString("  لیست کتاب‌ها خالی می‌باشد!  ") ,
                                    QString(), QPoint(), true, 2000, this)->show();
         ui->ledGoToRecordN->setVisible(false);
         return;
@@ -581,56 +579,33 @@ void MainWindow::clearFormViewsLineEdits()
     ui->ledBookWriter->clear();
     ui->ledBookTranslator->clear();
     ui->ledBookPub->clear();
-    ui->ledBookTopic->clear();    
+    ui->ledBookTopic->clear();
 }
 
 bool MainWindow::isFormViewsLineEditsEmpty(bool markLineEditIfIsEmpty)
 {
-    bool ret = false;
+    bool isLineEditsEmpty = false;
+
     static QString defaultStyleSheet = ui->ledBookRegisterNumber->styleSheet();
     QString styleSheetNotOk = "border: 2px solid #D47D7E"; // Red
+
     //...
     setFormViewsLineEditsStylesheet(defaultStyleSheet);
     //...
 
+    QList<QLineEdit *> lineEdits ;
+    lineEdits << ui->ledBookRegisterNumber << ui->ledBookTitle <<
+                 ui->ledBookWriter << ui->ledBookTranslator <<
+                 ui->ledBookPub << ui->ledBookTopic ;
 
-    if (ui->ledBookRegisterNumber->text().trimmed().isEmpty()) {
-        if( markLineEditIfIsEmpty )
-            ui->ledBookRegisterNumber->setStyleSheet(styleSheetNotOk);
-        ret = true;
-    }
+    foreach (QLineEdit *lineEdit, lineEdits)
+        if (lineEdit->text().trimmed().isEmpty()) {
+            if( markLineEditIfIsEmpty )
+                lineEdit->setStyleSheet(styleSheetNotOk);
+            isLineEditsEmpty = true;
+        }
 
-    if (ui->ledBookTitle->text().trimmed().isEmpty()) {
-        if( markLineEditIfIsEmpty )
-            ui->ledBookTitle->setStyleSheet(styleSheetNotOk);
-        ret = true;
-    }
-
-    if (ui->ledBookWriter->text().trimmed().isEmpty()) {
-        if( markLineEditIfIsEmpty )
-            ui->ledBookWriter->setStyleSheet(styleSheetNotOk);
-        ret = true;
-    }
-
-    if (ui->ledBookTranslator->text().trimmed().isEmpty()) {
-        if( markLineEditIfIsEmpty )
-            ui->ledBookTranslator->setStyleSheet(styleSheetNotOk);
-        ret = true;
-    }
-
-    if (ui->ledBookPub->text().trimmed().isEmpty()) {
-        if( markLineEditIfIsEmpty )
-            ui->ledBookPub->setStyleSheet(styleSheetNotOk);
-        ret = true;
-    }
-
-    if (ui->ledBookTopic->text().trimmed().isEmpty()) {
-        if( markLineEditIfIsEmpty )
-            ui->ledBookTopic->setStyleSheet(styleSheetNotOk);
-        ret = true;
-    }
-
-    return ret;
+    return isLineEditsEmpty;
 }
 
 void MainWindow::setFormViewsLineEditsStylesheet(const QString &s)
@@ -703,7 +678,7 @@ void MainWindow::on_btnFirst_clicked()
     ui->tableBooks->selectRow( 0 );
     /////ui->tableBooks->currentRow();
 
-//    ui->tableBooks->selectRow( 2 ); // برای تست کردن
+    //    ui->tableBooks->selectRow( 2 ); // برای تست کردن
 
     fillFormFromTable();
 }

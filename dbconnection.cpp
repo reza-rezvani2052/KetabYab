@@ -116,11 +116,11 @@ bool createNewDatabase()
     //----------------------------------------------------------------------------------------------------------
     //NOTE: این بخش صرفا جهت تست میباشد. در انتشار نهایی حذف گردد
     // با توجه به فارسی نویسی، در محیط کیوت کریتور کمی جابجا نشان داده میشود، در اجرا مشکلی پیش نمی‌آید
-//    query.exec("INSERT INTO table_books VALUES(1001, 'عنوان کتاب اول', 'نویسنده کتاب اول', 'مترجم کتاب اول', 'ناشر کتاب اول', 'موضوع کتاب اول', 101)");
-//    query.exec("INSERT INTO table_books VALUES(1002, 'عنوان کتاب دوم', 'نویسنده کتاب دوم', 'مترجم کتاب دوم', 'ناشر کتاب دوم', 'موضوع کتاب دوم', 102)");
-//    query.exec("INSERT INTO table_books VALUES(1003, 'عنوان کتاب سوم', 'نویسنده کتاب سوم', 'مترجم کتاب سوم', 'ناشر کتاب سوم', 'موضوع کتاب سوم', 103)");
-//    query.exec("INSERT INTO table_books VALUES(1004, 'عنوان کتاب چهارم', 'نویسنده کتاب چهارم', 'مترجم کتاب چهارم', 'ناشر کتاب چهارم', 'موضوع کتاب چهارم', 104)");
-//    query.exec("INSERT INTO table_books VALUES(1005, 'عنوان کتاب پنجم', 'نویسنده کتاب پنجم', 'مترجم کتاب پنجم', 'ناشر کتاب پنجم', 'موضوع کتاب پنجم', 105)");
+    //    query.exec("INSERT INTO table_books VALUES(1001, 'عنوان کتاب اول', 'نویسنده کتاب اول', 'مترجم کتاب اول', 'ناشر کتاب اول', 'موضوع کتاب اول', 101)");
+    //    query.exec("INSERT INTO table_books VALUES(1002, 'عنوان کتاب دوم', 'نویسنده کتاب دوم', 'مترجم کتاب دوم', 'ناشر کتاب دوم', 'موضوع کتاب دوم', 102)");
+    //    query.exec("INSERT INTO table_books VALUES(1003, 'عنوان کتاب سوم', 'نویسنده کتاب سوم', 'مترجم کتاب سوم', 'ناشر کتاب سوم', 'موضوع کتاب سوم', 103)");
+    //    query.exec("INSERT INTO table_books VALUES(1004, 'عنوان کتاب چهارم', 'نویسنده کتاب چهارم', 'مترجم کتاب چهارم', 'ناشر کتاب چهارم', 'موضوع کتاب چهارم', 104)");
+    //    query.exec("INSERT INTO table_books VALUES(1005, 'عنوان کتاب پنجم', 'نویسنده کتاب پنجم', 'مترجم کتاب پنجم', 'ناشر کتاب پنجم', 'موضوع کتاب پنجم', 105)");
 
     //----------------------------------------------------------------------------------------------------------
 
@@ -169,18 +169,17 @@ QStringList allUserNames()
 }
 
 QStringList getTableUsersRecord(const QString &userName)
-{
+{    
     QStringList allFields = QStringList();
 
-    QSqlQuery qry(
-                QString("SELECT * FROM table_users WHERE username='%1' ;").arg(userName)
-                , appInfo.db );
+    QSqlQuery qry( QString("SELECT * FROM table_users WHERE username='%1';").arg(userName)
+                   , appInfo.db );
     if (qry.next())
     {
         allFields << qry.value(UserName).toString();
         allFields << qry.value(Password).toString();
         allFields << qry.value(PassHint).toString();
-        allFields << qry.value(IsAdmin).toString();
+        allFields << qry.value(IsAdmin ).toString();
         allFields << qry.value(Nickname).toString();
     }
 
@@ -243,10 +242,9 @@ QString getUserNickname(const QString &userName)
 
 bool setUsersPass(QString &pass, QString passHint)
 {
-    QStringList allFields = getTableUsersRecord(userInfo.userName);
+    QStringList allFields = getTableUsersRecord( userInfo.userName );
     if (allFields.isEmpty())
         return false;
-
 
     QString userName = allFields.at(UserName);
     QString password = pass; // allFields.at(Password);
@@ -263,10 +261,8 @@ bool setUsersPass(QString &pass, QString passHint)
                 ",is_admin = '%4' ,nickname = '%5' WHERE username='%6' ;";
     qryString = qryString.arg( userName, password, passHint,isAdmin,
                                nickName, userInfo.userName);
-
     //...
     userInfo.passHint = passHint;
     //...
-
     return qry.exec(qryString) ;
 }
