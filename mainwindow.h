@@ -62,7 +62,7 @@ private slots:
     void on_actBooksManagement_triggered();
 
     void on_actBackup_triggered();
-    void on_actRestore_triggered();
+    void on_actRestoreBackup_triggered();
 
     void on_actReenter_triggered();
     void on_actChangeLoginPass_triggered();

@@ -540,7 +540,7 @@ border-radius: 5px;
                      </property>
                      <property name="icon">
                       <iconset resource="rc/rc.qrc">
-                       <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
+                       <normaloff>:/book-edit.png</normaloff>:/book-edit.png</iconset>
                      </property>
                      <property name="shortcut">
                       <string notr="true">Ctrl+R</string>
@@ -577,7 +577,7 @@ border-radius: 5px;
                      </property>
                      <property name="icon">
                       <iconset resource="rc/rc.qrc">
-                       <normaloff>:/remove.png</normaloff>:/remove.png</iconset>
+                       <normaloff>:/book-remove.png</normaloff>:/book-remove.png</iconset>
                      </property>
                      <property name="shortcut">
                       <string notr="true">Ctrl+D</string>
@@ -651,7 +651,7 @@ border-radius: 5px;
                      </property>
                      <property name="icon">
                       <iconset resource="rc/rc.qrc">
-                       <normaloff>:/insert.png</normaloff>:/insert.png</iconset>
+                       <normaloff>:/book-add.png</normaloff>:/book-add.png</iconset>
                      </property>
                      <property name="shortcut">
                       <string notr="true">Ctrl+I</string>
@@ -966,7 +966,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <addaction name="actChangeLoginPass"/>
     <addaction name="separator"/>
     <addaction name="actBackup"/>
-    <addaction name="actRestore"/>
+    <addaction name="actRestoreBackup"/>
     <addaction name="separator"/>
     <addaction name="actQuit"/>
    </widget>
@@ -1139,7 +1139,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <string>Ctrl+Shift+S</string>
    </property>
   </action>
-  <action name="actRestore">
+  <action name="actRestoreBackup">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -1201,7 +1201,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   <action name="actRemove">
    <property name="icon">
     <iconset resource="rc/rc.qrc">
-     <normaloff>:/remove.png</normaloff>:/remove.png</iconset>
+     <normaloff>:/book-remove.png</normaloff>:/book-remove.png</iconset>
    </property>
    <property name="text">
     <string>حذف کتاب</string>
@@ -1213,7 +1213,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   <action name="actUpdate">
    <property name="icon">
     <iconset resource="rc/rc.qrc">
-     <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
+     <normaloff>:/book-edit.png</normaloff>:/book-edit.png</iconset>
    </property>
    <property name="text">
     <string>ویرایش کتاب</string>
@@ -1222,7 +1222,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   <action name="actInsert">
    <property name="icon">
     <iconset resource="rc/rc.qrc">
-     <normaloff>:/insert.png</normaloff>:/insert.png</iconset>
+     <normaloff>:/book-add.png</normaloff>:/book-add.png</iconset>
    </property>
    <property name="text">
     <string>افزودن کتاب</string>

@@ -126,13 +126,9 @@ void MainWindow::on_btnSearch_clicked()
         //...
 
         PopupDialog *popupDialog = createPopupDialog(
-                    QString("خطای جستجو!") ,
-                    QString("کادر جستجو خالی می‌باشد!") +
-                    QString("\n") +
+                    QString("خطای جستجو!") , QString("کادر جستجو خالی می‌باشد!") + QString("\n") +
                     QString("ابتدا عبارت مورد نظر را در کادر جستجو نوشته و سپس بر روی دکمه جستجو کلیک نمایید."),
-                    xy, true, 5500,
-                    this
-                    );
+                    xy, true, 5500, this );
         popupDialog->show();
 
         int availableWidth = screenWidth - ( xy.x() + popupDialog->width() );
@@ -251,7 +247,7 @@ void MainWindow::on_actShowAllBooks_triggered()
 void MainWindow::setAdminWidgetsEnable(bool val)
 {
     ui->actBackup->setEnabled(val);
-    ui->actRestore->setEnabled(val);
+    ui->actRestoreBackup->setEnabled(val);
     ui->actChangeLoginPass->setEnabled(val);
 
     //Hide mnuTableBooksContextMenu from menu bar
@@ -273,7 +269,7 @@ void MainWindow::setAdminWidgetsEnable(bool val)
         QString str = "در حالت کاربر میهمان این آیتم در دسترس نمی‌باشد.";
 
         ui->actBackup->setStatusTip(str);
-        ui->actRestore->setStatusTip(str);
+        ui->actRestoreBackup->setStatusTip(str);
         ui->actChangeLoginPass->setStatusTip(str);
 
         ui->actInsert->setStatusTip(str);
@@ -356,8 +352,6 @@ void MainWindow::writeSettings()
     }
 }
 
-//TODO: shayad badan agar niaz shod khate zir ra
-//be Utility.cpp ya dbconnection enteghal daham
 void MainWindow::saveDatabasePath()
 {
     QSettings settings;
@@ -386,13 +380,13 @@ PopupDialog *MainWindow::createPopupDialog(QString title, QString body,
 void MainWindow::on_actBackup_triggered()
 {
     QLocale engLocale(QLocale::English, QLocale::UnitedStates);
-    QString _dateTime = engLocale.toString(QDateTime::currentDateTime(), "yyyy_MM_dd-hh_mm_ss");
+    QString dateTime = engLocale.toString(QDateTime::currentDateTime(), "yyyy_MM_dd-hh_mm_ss");
     //...
 
     QString toSavePath = qApp->applicationDirPath() + "/db/";
     QString backupPath = QFileDialog::getSaveFileName(
                 this, trUtf8("تعیین محل تشکیل فایل پشتیبان ") ,
-                toSavePath + "bk-" + userInfo.userName + "-" + _dateTime ,
+                toSavePath + "bk-" + userInfo.userName + "-" + dateTime ,
                 trUtf8("فایل پایگاه داده (*.db);;هر فایلی (*.*)")
                 );
     if( backupPath.isEmpty() ) //user cancel kardeh ast
@@ -404,7 +398,6 @@ void MainWindow::on_actBackup_triggered()
     if( !appInfo.databasePath.isEmpty() )
     {
         if( file.copy(backupPath) ) {
-            //TODO: ***************************************************
             Utility::createPopupDialog(QString(),
                                        QString("فایل پشتیبان با موفقیت ایجاد شد.") ,
                                        QPoint(), true, 1500, this)->show();
@@ -412,28 +405,30 @@ void MainWindow::on_actBackup_triggered()
             qApp->beep();
             Utility::createPopupDialog("خطا",
                                        QString("هنگام ایجاد فایل پشتیبان خطایی به شرح زیر رخ داده است:") +
-                                       QString("\n") +
-                                       file.errorString() , QPoint(), true, 4000, this)->show();
+                                       QString("\n") + file.errorString() ,
+                                       QPoint(), true, 4000, this)->show();
         }
     } else {
         qApp->beep();
         Utility::createPopupDialog(QString("خطا"),
-                                   QString("appInfo.databasePath.isEmpty()") + "\n" +
                                    "مسیر پایگاه داده اشتباه است",
                                    QPoint(), true, 2000, this)->show();
     }
 }
 
-void MainWindow::on_actRestore_triggered()
+void MainWindow::on_actRestoreBackup_triggered()
 {
-    QMessageBox::StandardButton ret =
-            QMessageBox::information(
-                this, " ",
-                trUtf8("برای بازیابی فایل پشتیبان، نرم افزار نیاز به راه اندازی مجدد دارد") + "\n" +
-                trUtf8("آیا مایل به انجام این کار هستید؟"),
-                QMessageBox::Yes | QMessageBox::No );
-    if( ret == QMessageBox::No )
+    QMessageBox msgBox(this);
+    msgBox.addButton("بله", QMessageBox::YesRole);
+    msgBox.addButton("خیر", QMessageBox::NoRole);
+    msgBox.setWindowTitle("تایید اجرای مجدد");
+    msgBox.setText( trUtf8("برای بازیابی فایل پشتیبان، نرم افزار نیاز به راه اندازی مجدد دارد") + "\n" +
+                    trUtf8("آیا مایل به انجام این کار هستید؟"));
+    msgBox.setIcon(QMessageBox::Information);
+
+    if (msgBox.exec() == QMessageBox::RejectRole)
         return ;
+
     //...
     QString backupPath = QFileDialog::getOpenFileName(
                 this, trUtf8("انتخاب فایل پشتیبان") ,
@@ -915,7 +910,7 @@ void MainWindow::on_btnInsertAndOk_clicked()
         setupTableBooks();
         on_btnLast_clicked();
         //...
-        ui->btnInsertAndOk->setIcon(QIcon(":/insert.png"));
+        ui->btnInsertAndOk->setIcon(QIcon(":/book-add.png"));
         ui->btnCancelInsertOrUpdate->setEnabled( false );
         ui->btnRemove->setEnabled( true );
         ui->btnUpdateAndOk->setEnabled( true );
@@ -928,7 +923,7 @@ void MainWindow::on_btnCancelInsertOrUpdate_clicked()
 {
     if (ui->btnInsertAndOk->isEnabled())
     {
-        ui->btnInsertAndOk->setIcon(QIcon(":/insert.png"));
+        ui->btnInsertAndOk->setIcon(QIcon(":/book-add.png"));
         ui->btnCancelInsertOrUpdate->setEnabled( false );
         ui->btnRemove->setEnabled( true );
         ui->btnUpdateAndOk->setEnabled( true );
@@ -940,7 +935,7 @@ void MainWindow::on_btnCancelInsertOrUpdate_clicked()
         ui->btnInsertAndOk->setEnabled(true);
         ui->btnCancelInsertOrUpdate->setEnabled( false );
         ui->btnRemove->setEnabled( true );
-        ui->btnUpdateAndOk->setIcon(QIcon(":/refresh.png"));
+        ui->btnUpdateAndOk->setIcon(QIcon(":/book-edit.png"));
     }
     //...
 
@@ -971,13 +966,19 @@ void MainWindow::on_btnRemove_clicked()
         return;
     }
 
-    //TODO: دکمه ها را فارسی کنم
-    QMessageBox::StandardButton ret = QMessageBox::warning(
-                this, "تایید حذف",
-                "آیا مایل به حذف کتاب جاری هستید؟",
-                QMessageBox::Yes | QMessageBox::No);
-    if (ret == QMessageBox::No)
+    //...
+
+    QMessageBox msgBox(this);
+    msgBox.addButton("بله", QMessageBox::YesRole);
+    msgBox.addButton("خیر", QMessageBox::NoRole);
+    msgBox.setWindowTitle("تایید حذف");
+    msgBox.setText("آیا مایل به حذف کتاب جاری هستید؟");
+    msgBox.setIcon(QMessageBox::Warning);
+
+    if (msgBox.exec() == QMessageBox::RejectRole)
         return ;
+
+    //...
 
     QString qryString = QString("DELETE FROM table_books WHERE key_field=%1 ;")
             .arg(ui->tableBooks->item(currentRow, 0)->text());
@@ -992,29 +993,18 @@ void MainWindow::on_btnRemove_clicked()
                                    qryDelete.lastError().text() ,
                                    QPoint(), true , 2500, this)->show();
     } else {
-        /*
-        نیازی به نمایش پیام موفقیت حذف نیست
-        PopupDialog *popupDialog = createPopupDialog(
-                    QString() ,
-                    QString("حذف انجام شد") , QPoint(),true , 1100, this );
-        popupDialog->show();
-        */
-
-        rowCount--;  // yek record hazf shodeh ast,pas an ra lahaz mikonim
+        rowCount--;
         setupTableBooks();
 
         //...
         int rowToSelect = 0;
         //...
 
-        if (rowCount == 0)
-        {
+        if (rowCount == 0) {
             rowToSelect = 0;
             ui->tableBooks->selectRow( rowToSelect );
             fillFormFromTable();
 
-            //Utility util;
-            //util.delay(popupDialog->getDuration() + 75);
             qApp->beep();
             Utility::createPopupDialog( QString() , QString("لیست خالی شد!") ,
                                         QPoint(),true , 1500, this )->show();
@@ -1124,7 +1114,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
         ui->btnInsertAndOk->setEnabled(true);
         ui->btnCancelInsertOrUpdate->setEnabled( false );
         ui->btnRemove->setEnabled( true );
-        ui->btnUpdateAndOk->setIcon(QIcon(":/refresh.png"));
+        ui->btnUpdateAndOk->setIcon(QIcon(":/book-edit.png"));
     }
 
 }

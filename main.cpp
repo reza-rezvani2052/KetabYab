@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     int id = QFontDatabase::addApplicationFont(":/fonts/BYekan.ttf");
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
     QFont BYekan(family);
-    BYekan.setPointSize( qApp->font().pointSize()+1 );
+    BYekan.setPointSize( qApp->font().pointSize() + 1 );
     qApp->setFont(BYekan);
 
     //...

@@ -17,6 +17,8 @@ void Utility::delay(int msec)
     m_eventLoop.exec();
 }
 
+//---------------------------------------------------------------------------------------
+
 QSize Utility::getScreenُSize()
 {
     //    QRect rec = QApplication::desktop()->screenGeometry();
@@ -38,6 +40,8 @@ int Utility::getScreenHeight()
     QSize size = qApp->screens()[0]->size();
     return size.height();
 }
+
+//---------------------------------------------------------------------------------------
 
 //TODO: ********* bool doBeep ra be in ezafe konam ta hardafe dar farakhani ...
 PopupDialog *Utility::createPopupDialog(QString title, QString body, QPoint xy,

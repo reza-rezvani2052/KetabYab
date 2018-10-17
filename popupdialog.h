@@ -42,6 +42,9 @@ public:
 public slots:
     void animateWindowOnClose();
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private:
     Ui::PopupDialog *ui;
     int m_duration;

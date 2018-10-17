@@ -12,10 +12,10 @@
         <file>app-icon.png</file>
         <file>database_restore.png</file>
         <file>database_save.png</file>
-        <file>insert.png</file>
+        <file>book-add.png</file>
         <file>ok.png</file>
-        <file>refresh.png</file>
-        <file>remove.png</file>
+        <file>book-edit.png</file>
+        <file>book-remove.png</file>
         <file>advanced-search.png</file>
         <file>books-management.png</file>
         <file>help.png</file>
