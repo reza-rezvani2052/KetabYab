@@ -73,56 +73,52 @@ bool createNewDatabase()
 
     //...
 
-    //FIXME: ********************** تست نکردم هنوز  **********************
-
     QSqlQuery query("DROP TABLE IF EXISTS \"sqlite_sequence\";", db);
     query.exec("CREATE TABLE \"sqlite_sequence\" (\"name\",\"seq\");");
 
-
     query.exec("DROP TABLE IF EXISTS table_books;");
-    query.exec("CREATE TABLE table_books (" + QString() +
-               "key_field INTEGER NOT NULL," +
-               "book_title TEXT NOT NULL," +
-               "book_writer TEXT NOT NULL," +
-               "book_translator TEXT," +
-               "book_pub TEXT NOT NULL," +
-               "book_topic TEXT," +
-               "book_register_number INTEGER NOT NULL" +
-               "PRIMARY KEY (\"key_field\", \"book_register_number\")" +
+    query.exec("CREATE TABLE \"table_books\" (\n" + QString() +
+               "  \"book_register_number\" integer NOT NULL,\n" +
+               "  \"book_title\" text NOT NULL,\n" +
+               "  \"book_writer\" text NOT NULL,\n" +
+               "  \"book_translator\" text,\n" +
+               "  \"book_pub\" text NOT NULL,\n" +
+               "  \"book_topic\" text,\n" +
+               "  PRIMARY KEY (\"book_register_number\")\n" +
                ");");
-
     //...
 
     query.exec("DROP TABLE IF EXISTS table_users;");
-    query.exec("CREATE TABLE table_users (" + QString() +
-               "username TEXT NOT NULL," +
-               "password TEXT," +
-               "passhint TEXT," +
-               "is_admin INTEGER NOT NULL," +
-               "nickname TEXT," +
-               "PRIMARY KEY (username)" +
-               ");");
-    //...
-
-    //TODO: agar lazem shod bejaye PassHint ebarate monaseb benevisam
-    ///query.exec("INSERT INTO table_users VALUES ('guest', null, null, 0, 'کاربر میهمان');");
-    ///query.exec("INSERT INTO table_users VALUES ('admin', 123456, null ,1, 'مدیر سیستم');" );
-
-    //INSERT INTO "table_users" VALUES ('guest', NULL, 'فاقد کلمه عبور', 0, 'میهمان');
-    //INSERT INTO "table_users" VALUES ('admin', 1, NULL, 1, 'مدیر سیستم');
+    query.exec( "CREATE TABLE \"table_users\" (\n"  + QString() +
+                "  \"username\" TEXT NOT NULL,\n" +
+                "  \"password\" TEXT,\n" +
+                "  \"passhint\" TEXT,\n" +
+                "  \"is_admin\" TEXT,\n" +
+                "  \"nickname\" TEXT,\n" +
+                "  PRIMARY KEY (\"username\")\n" +
+                ");"
+                );
 
     //...
 
-    query.exec("INSERT INTO sqlite_sequence VALUES ('table_books', 1000);" );
+    // پسورد را خالی بگذارم تا در اجرای بعدی گزینه انتخاب پسورد ظاهر شود
+    query.exec("INSERT INTO \"table_users\" VALUES ('guest', '', 'فاقد کلمه عبور', 0, 'میهمان');" );
+    query.exec("INSERT INTO \"table_users\" VALUES ('admin', '', '', 1, 'مدیر سیستم');");
+
+    //...
 
     //----------------------------------------------------------------------------------------------------------
-    //NOTE: این بخش صرفا جهت تست میباشد. در انتشار نهایی حذف گردد
-    // با توجه به فارسی نویسی، در محیط کیوت کریتور کمی جابجا نشان داده میشود، در اجرا مشکلی پیش نمی‌آید
-    //    query.exec("INSERT INTO table_books VALUES(1001, 'عنوان کتاب اول', 'نویسنده کتاب اول', 'مترجم کتاب اول', 'ناشر کتاب اول', 'موضوع کتاب اول', 101)");
-    //    query.exec("INSERT INTO table_books VALUES(1002, 'عنوان کتاب دوم', 'نویسنده کتاب دوم', 'مترجم کتاب دوم', 'ناشر کتاب دوم', 'موضوع کتاب دوم', 102)");
-    //    query.exec("INSERT INTO table_books VALUES(1003, 'عنوان کتاب سوم', 'نویسنده کتاب سوم', 'مترجم کتاب سوم', 'ناشر کتاب سوم', 'موضوع کتاب سوم', 103)");
-    //    query.exec("INSERT INTO table_books VALUES(1004, 'عنوان کتاب چهارم', 'نویسنده کتاب چهارم', 'مترجم کتاب چهارم', 'ناشر کتاب چهارم', 'موضوع کتاب چهارم', 104)");
-    //    query.exec("INSERT INTO table_books VALUES(1005, 'عنوان کتاب پنجم', 'نویسنده کتاب پنجم', 'مترجم کتاب پنجم', 'ناشر کتاب پنجم', 'موضوع کتاب پنجم', 105)");
+
+    // این بخش صرفا جهت تست میباشد. در انتشار نهایی حذف گردد
+    // خط زیر چون انگلیسی نوشته شده مشکل ندارد
+    ///query.exec("INSERT INTO \"table_books\" VALUES (101, 'title', 'writer', 'translater', 'pub', 'topic');" );
+
+//    با توجه به فارسی نویسی، در محیط کیوت کریتور کمی جابجا نشان داده میشود و در اجرا مشکل  پیش می‌آید
+//    query.exec("INSERT INTO \"table_books\" VALUES('عنوان کتاب اول', 'نویسنده کتاب اول', 'مترجم کتاب اول', 'ناشر کتاب اول', 'موضوع کتاب اول', 101)");
+//    query.exec("INSERT INTO table_books VALUES('عنوان کتاب دوم', 'نویسنده کتاب دوم', 'مترجم کتاب دوم', 'ناشر کتاب دوم', 'موضوع کتاب دوم', 102)");
+//    query.exec("INSERT INTO table_books VALUES('عنوان کتاب سوم', 'نویسنده کتاب سوم', 'مترجم کتاب سوم', 'ناشر کتاب سوم', 'موضوع کتاب سوم', 103)");
+//    query.exec("INSERT INTO table_books VALUES('عنوان کتاب چهارم', 'نویسنده کتاب چهارم', 'مترجم کتاب چهارم', 'ناشر کتاب چهارم', 'موضوع کتاب چهارم', 104)");
+//    query.exec("INSERT INTO table_books VALUES('عنوان کتاب پنجم', 'نویسنده کتاب پنجم', 'مترجم کتاب پنجم', 'ناشر کتاب پنجم', 'موضوع کتاب پنجم', 105)");
 
     //----------------------------------------------------------------------------------------------------------
 
@@ -204,6 +200,19 @@ QStringList getTableBooksRecord(const QString &registerNumber)
     }
 
     return allFields;
+}
+
+bool isPasswordSet(const QString &userName)
+{
+    bool hasPassword = false;
+
+    QSqlQuery qry(QString("SELECT password FROM table_users WHERE username='%1' ").arg(userName),
+                  appInfo.db);
+    if (qry.next())
+        if (!qry.value(0).toString().trimmed().isEmpty())
+            hasPassword = true;
+
+    return hasPassword;
 }
 
 QString getUserPassword(const QString &userName)

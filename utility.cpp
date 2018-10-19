@@ -6,6 +6,8 @@
 #include <QDesktopWidget>
 
 #include "dbconnection.h"   // AppInfo Struct definition
+
+
 extern AppInfo  appInfo;
 
 
@@ -44,30 +46,6 @@ int Utility::getScreenHeight()
 {
     QSize size = qApp->screens()[0]->size();
     return size.height();
-}
-
-//---------------------------------------------------------------------------------------
-
-int Utility::getNumOfRunApp()
-{
-    QSettings settings;
-    settings.beginGroup("LoginDialog");
-    //...
-    int numOfRunApp = settings.value("NumOfRunApp", 1).toInt();
-    //...
-    settings.endGroup();
-    //...
-    return numOfRunApp;
-}
-
-void Utility::setNumOfRunApp(int times)
-{
-    QSettings settings;
-    settings.beginGroup("LoginDialog");
-    //...
-    settings.setValue("NumOfRunApp", qAbs(times));    
-    //...
-    settings.endGroup();
 }
 
 //---------------------------------------------------------------------------------------

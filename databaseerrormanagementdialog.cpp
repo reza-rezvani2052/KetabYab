@@ -49,15 +49,11 @@ void DatabaseErrorManagementDialog::on_btnClose_clicked()
 
 void DatabaseErrorManagementDialog::on_btnCreateNewDb_clicked()
 {
-     if ( createNewDatabase() ) {
-
-         // چون پایگاه داده تازه ساخته شده است حتما در اجرای بعدی برنامه صفحه
-         // انتخاب رمز را باز کنم تا برای این پایگاه دادخ جدید رمز انتخاب شود
-         Utility::setNumOfRunApp( /*1*/ );
-
+     if ( createNewDatabase() )
+     {
          Utility::saveDatabasePath();
-         //...
-         animatePageLoading();
+
+         QTimer::singleShot(500, this, SLOT(animatePageLoading()) );
      }
 }
 
@@ -74,7 +70,8 @@ void DatabaseErrorManagementDialog::on_btnOpenExistsDb_clicked()
     appInfo.databasePath = backupPath;
     Utility::saveDatabasePath();
     //...
-    animatePageLoading();
+
+    QTimer::singleShot(500, this, SLOT(animatePageLoading()) );
 }
 
 void DatabaseErrorManagementDialog::animatePageLoading()
@@ -92,6 +89,7 @@ void DatabaseErrorManagementDialog::animatePageErrDescription()
 {
     animateStackedWidgetPages(ui->stackedWidget,ui->pageErrDescription);
 }
+
 void DatabaseErrorManagementDialog::animateStackedWidgetPages(QStackedWidget *stackedWidget,
                                                               QWidget *page)
 {

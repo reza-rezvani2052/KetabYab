@@ -40,8 +40,8 @@ QStringList AdvancedSearchSelectedColumnsDialog::getSelectedColumns()
     {
         if ( ui->listWidget->item(row)->checkState() == Qt::Checked )
         {
-            //FIXME: ??????????????????????
-            switch (row+1) {
+            //FIXME: ???
+            switch (row /*+1*/ ) {
             case BookRegisterNumber:
                 list.append("شماره ثبت");
                 break;

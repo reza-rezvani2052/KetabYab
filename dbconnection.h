@@ -84,8 +84,10 @@ bool isRegisterNumberExist(const QString &registerId);
 
 QStringList allUserNames();
 
+bool    isPasswordSet(const QString &userName);
 QString getUserPassword(const QString &userName);
 bool    setUsersPass(QString &pass, QString passHint = QString() );
+
 QString getUserPassHint(const QString &userName);
 QString getUserNickname(const QString &userName);
 

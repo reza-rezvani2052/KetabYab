@@ -20,53 +20,38 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
-    //...
+
     m_startDraging = false;
     setWindowFlags(Qt::FramelessWindowHint);
+
     //...
+
     ui->cmbUsername->addItems( allUserNames() );
+
+    // در کد زیر
+    // userInfo.userName
+    // مقدار دهی میشود
     on_cmbUsername_currentIndexChanged( ui->cmbUsername->currentText() );
+
 
     QLineEdit *led = new QLineEdit(ui->cmbUsername) ;
     led->setReadOnly(true);
     ui->cmbUsername->setLineEdit(led);
     led->setAlignment(Qt::AlignLeft);
+
     //...
-    readSettings();
-    //...
-    if (numOfRunApp > 1)
+
+    if (isPasswordSet("admin")) {
         ui->stackedWidgetMain->setCurrentWidget(ui->pageLogin);
+    }  // در غیراینصورت صفحه تنظیم کلمه عبور نمایش داده میشود
+
     //...
+
 }
 
 LoginDialog::~LoginDialog()
 {    
     delete ui;
-}
-
-void LoginDialog::readSettings()
-{
-    QSettings settings;
-    settings.beginGroup("LoginDialog");
-    //...
-    numOfRunApp = settings.value("NumOfRunApp", 1).toInt();
-    //...
-    settings.endGroup();
-}
-
-void LoginDialog::writeSettings()
-{
-    QSettings settings;
-    settings.beginGroup("LoginDialog");
-    //...
-    settings.setValue("NumOfRunApp", numOfRunApp);
-    //...
-    settings.endGroup();
-}
-
-void LoginDialog::closeEvent(QCloseEvent *)
-{
-    writeSettings();
 }
 
 void LoginDialog::animateLoginLogo()
@@ -112,6 +97,9 @@ void LoginDialog::on_cmbUsername_currentIndexChanged(const QString &userName)
         ui->ledPassword->setReadOnly(false);
         ui->ledPassword->setStyleSheet(defaultStylesheet);
     }
+
+    //...
+    userInfo.userName = userName;
 }
 
 void LoginDialog::on_btnClose_clicked()
@@ -122,8 +110,6 @@ void LoginDialog::on_btnClose_clicked()
 void LoginDialog::on_btnLogIn_clicked()
 {
     if( isValidUser() ) {
-        numOfRunApp++;
-        writeSettings(); // TODO: ****** shahaydniaz nabashad
         accept();
     } else {
         QString str = QString("نام کاربری یا کلمه عبور شما نامعتبر است");
@@ -166,7 +152,8 @@ PopupDialog *LoginDialog::createPopupDialog(QString title, QString body,
 
 bool LoginDialog::isValidUser()
 {
-    QString userName = ui->cmbUsername->currentText();
+    //QString userName = ui->cmbUsername->currentText();
+    QString userName = userInfo.userName;
 
     QString qryString =
             QString("SELECT * FROM table_users WHERE username='%1' AND password='%2' ").arg( userName, ui->ledPassword->text() );
@@ -189,6 +176,7 @@ bool LoginDialog::isValidUser()
 
             return true;
         } else if(userName == "guest") {
+            //NOTE: مقادیر زیر را از پایگاه داده هم میتوانستم بخوانم
             userInfo.userName = "guest";
             userInfo.isAdmin  = false;
             userInfo.passHint = "فاقد کلمه عبور";
@@ -199,8 +187,7 @@ bool LoginDialog::isValidUser()
         }
     } else {
         qApp->beep();
-        createPopupDialog(QString("اخطار"),
-                          trUtf8("شرح خطا ") + ":"
+        createPopupDialog(QString("اخطار"), trUtf8("شرح خطا ") + ":"
                           + "\n" + qry.lastError().text(),
                           QPoint(), true, 5500, this)->show();
         return false;
@@ -234,9 +221,7 @@ void LoginDialog::on_btnOkSetPassAndLogIn_clicked()
     }
 
     //...
-    // در اولین اجرای برنامه مقدار
-    // userInfo.userName
-    // خالی میباشد. بنابراین با مقدار زیر آنرا مقدار دهی میکنیم
+
     userInfo.userName = "admin";
 
     QString passHint  = ui->ledPassHint->text().trimmed();
@@ -248,9 +233,6 @@ void LoginDialog::on_btnOkSetPassAndLogIn_clicked()
         ui->cmbUsername->setCurrentIndex( ui->cmbUsername->findText(userInfo.userName) );
 
         animatePageLogin();
-        //...
-        numOfRunApp++;
-        writeSettings();
     } else {
         qApp->beep();
         createPopupDialog( QString(" خطایی رخ داده است! ") ,
@@ -262,7 +244,7 @@ void LoginDialog::on_stackedWidgetMain_currentChanged(int arg1)
 {
     switch (arg1) {
     case 0:  // pageLogin
-        QTimer::singleShot(2000, this, SLOT(animateLoginLogo()) );
+        QTimer::singleShot(4000, this, SLOT(animateLoginLogo()) );
         break;
     case 1:  // pageChangePass
         ;
@@ -311,4 +293,3 @@ void LoginDialog::mouseReleaseEvent(QMouseEvent *e)
     //...
     QDialog::mouseReleaseEvent(e);
 }
-

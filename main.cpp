@@ -56,11 +56,13 @@ int main(int argc, char *argv[])
 
     //...
 
-    int id = QFontDatabase::addApplicationFont(":/fonts/BYekan.ttf");
+    //TODO: بعدا فونت های بیشتری به برنامه اضافه کنم
+    // و در تنظیمات برنامه اجازه تغییر فونت را به کاربر بدهم
+    int id = QFontDatabase::addApplicationFont(":/fonts/Yekan.ttf");
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
-    QFont BYekan(family);
-    BYekan.setPointSize( qApp->font().pointSize() + 1 );
-    qApp->setFont(BYekan);
+    QFont appFont(family);
+    appFont.setPointSize( qApp->font().pointSize() + 1 );
+    qApp->setFont(appFont);
 
     //...
     readSettings();

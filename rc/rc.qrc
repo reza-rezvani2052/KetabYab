@@ -24,10 +24,16 @@
         <file>user-login.png</file>
         <file>nahad-logo.png</file>
         <file>employee.jpg</file>
-        <file>fonts/BYekan.ttf</file>
         <file>loading.gif</file>
         <file>restart-app.png</file>
         <file>loading_restart.gif</file>
         <file>database_load.png</file>
+        <file>fonts/BKARIMBD.TTF</file>
+        <file>fonts/Yekan.ttf</file>
+        <file>fonts/vazir/Vazir.ttf</file>
+        <file>fonts/vazir/Vazir-Bold.ttf</file>
+        <file>fonts/vazir/Vazir-Light.ttf</file>
+        <file>fonts/vazir/Vazir-Medium.ttf</file>
+        <file>fonts/vazir/Vazir-Thin.ttf</file>
     </qresource>
 </RCC>

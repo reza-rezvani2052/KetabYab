@@ -26,8 +26,6 @@ public:
     ~LoginDialog();
 
 protected:
-    void closeEvent(QCloseEvent *);
-
     void keyPressEvent(QKeyEvent *e);
 
     void mouseMoveEvent(QMouseEvent *e);
@@ -53,9 +51,6 @@ private:
     Ui::LoginDialog *ui;
     QCompleter *compUserName;
 
-    // دفعات اجرای برنامه
-    int numOfRunApp;
-
     bool m_startDraging;
     QPoint m_dragPosition;
 
@@ -68,8 +63,6 @@ private:
                                    int autoCloseDelay = 0,
                                    QWidget *parent = 0);   
 
-    void readSettings();
-    void writeSettings();
 
 };
 

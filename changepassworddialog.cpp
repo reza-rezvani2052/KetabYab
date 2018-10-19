@@ -29,6 +29,7 @@ void ChangePasswordDialog::on_btnChangePassword_clicked()
         qApp->beep();
         Utility::createPopupDialog( QString(" کلمه عبور جاری نمی‌تواند خالی باشد. ") ,
                                     QString() ,QPoint(), true, 2000, this )->show();
+        ui->ledCurrentPass->setFocus();
         return;
     }
 
@@ -38,6 +39,7 @@ void ChangePasswordDialog::on_btnChangePassword_clicked()
         qApp->beep();
         Utility::createPopupDialog( QString(" کلمه عبور فعلی نادرست است. ") ,
                                     QString() ,QPoint(), true, 2000, this )->show();
+        ui->ledCurrentPass->setFocus();
         return;
     }
 
@@ -48,8 +50,12 @@ void ChangePasswordDialog::on_btnChangePassword_clicked()
 
     if (newPassword.isEmpty() || newPasswordAgain.isEmpty()) {
         qApp->beep();
-        Utility::createPopupDialog( QString(" کلمه عبور نمی‌تواند خالی باشد. ") ,
+        Utility::createPopupDialog( QString(" کلمه عبور جدید یا تکرار آن نمی‌تواند خالی باشد. ") ,
                                     QString() ,QPoint(), true, 2000, this )->show();
+        if (newPasswordAgain.trimmed().isEmpty())
+            ui->ledNewPasswordAgain->setFocus();
+        if (newPassword.trimmed().isEmpty())
+            ui->ledNewPassword->setFocus();
         return;
     }
 
@@ -57,6 +63,7 @@ void ChangePasswordDialog::on_btnChangePassword_clicked()
         qApp->beep();
         Utility::createPopupDialog( QString(" کلمه عبور و تکرا آن متفاوت است. ") ,
                                     QString() ,QPoint(), true, 2000, this )->show();
+        ui->ledNewPassword->setFocus();
         return;
     }
 
