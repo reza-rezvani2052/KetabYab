@@ -242,6 +242,11 @@ void LoginDialog::on_btnOkSetPassAndLogIn_clicked()
     QString passHint  = ui->ledPassHint->text().trimmed();
 
     if (setUsersPass(newPassword, passHint)) {
+
+        // چون کاربر پیش فرض میهمان است و بعد از ست کردن کلمه عبور حتما کاربر مدیر قصد ورود
+        // به سامانه را دارد، در اجرای اول، کاربر مدیر را پیش فرض قرار میدهیم
+        ui->cmbUsername->setCurrentIndex( ui->cmbUsername->findText(userInfo.userName) );
+
         animatePageLogin();
         //...
         numOfRunApp++;

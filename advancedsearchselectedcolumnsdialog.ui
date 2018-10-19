@@ -77,6 +77,14 @@ border: 1px solid lightblue ;
        <widget class="QListWidget" name="listWidget">
         <item>
          <property name="text">
+          <string>شماره ثبت</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>عنوان کتاب</string>
          </property>
          <property name="checkState">
@@ -113,14 +121,6 @@ border: 1px solid lightblue ;
          </property>
          <property name="checkState">
           <enum>Unchecked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>شماره ثبت</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
          </property>
         </item>
        </widget>

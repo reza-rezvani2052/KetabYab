@@ -1,9 +1,11 @@
 #include "databaseerrormanagementdialog.h"
 #include "ui_databaseerrormanagementdialog.h"
 
+#include <QMovie>
 #include <QMessageBox>
 #include <QFileDialog>
 
+#include "utility.h"
 #include "dbconnection.h"
 
 DatabaseErrorManagementDialog::DatabaseErrorManagementDialog(QWidget *parent) :
@@ -11,7 +13,13 @@ DatabaseErrorManagementDialog::DatabaseErrorManagementDialog(QWidget *parent) :
     ui(new Ui::DatabaseErrorManagementDialog)
 {
     ui->setupUi(this);
-    m_isDatabasePathChanged = false;
+    setWindowFlags(Qt::SplashScreen);
+    //...
+    QMovie *movie = new QMovie(":/loading_restart.gif", QByteArray(), this);
+    ui->lblLoading->setMovie(movie);
+    movie->start();
+    //...
+
 }
 
 DatabaseErrorManagementDialog::~DatabaseErrorManagementDialog()
@@ -19,14 +27,9 @@ DatabaseErrorManagementDialog::~DatabaseErrorManagementDialog()
     delete ui;
 }
 
-void DatabaseErrorManagementDialog::on_btnOk_clicked()
+void DatabaseErrorManagementDialog::setLabelErrorDescriptionText(const QString &str)
 {
-    if (m_isDatabasePathChanged) {
-        saveDatabasePath();
-        accept();
-    } else {
-        on_btnCancel_clicked();
-    }
+    ui->lblErrDescription->setText(str);
 }
 
 void DatabaseErrorManagementDialog::on_btnCancel_clicked()
@@ -34,20 +37,28 @@ void DatabaseErrorManagementDialog::on_btnCancel_clicked()
     reject();
 }
 
-void DatabaseErrorManagementDialog::saveDatabasePath()
+void DatabaseErrorManagementDialog::on_btnOk_clicked()
 {
-    QSettings settings;
-    settings.beginGroup("Main");
-    //...
-    settings.setValue("DatabasePath", appInfo.databasePath);
-    //...
-    settings.endGroup();
+    animatePageErrManagement();
+}
+
+void DatabaseErrorManagementDialog::on_btnClose_clicked()
+{
+    on_btnCancel_clicked();
 }
 
 void DatabaseErrorManagementDialog::on_btnCreateNewDb_clicked()
 {
-    if( createNewDatabase() )
-        m_isDatabasePathChanged = true;
+     if ( createNewDatabase() ) {
+
+         // چون پایگاه داده تازه ساخته شده است حتما در اجرای بعدی برنامه صفحه
+         // انتخاب رمز را باز کنم تا برای این پایگاه دادخ جدید رمز انتخاب شود
+         Utility::setNumOfRunApp( /*1*/ );
+
+         Utility::saveDatabasePath();
+         //...
+         animatePageLoading();
+     }
 }
 
 void DatabaseErrorManagementDialog::on_btnOpenExistsDb_clicked()
@@ -55,27 +66,49 @@ void DatabaseErrorManagementDialog::on_btnOpenExistsDb_clicked()
     QString backupPath = QFileDialog::getOpenFileName(
                 this, "انتخاب فایل پایگاه داده" ,
                 qApp->applicationDirPath()  + QString("/db/"),
-                "فایل پایگاه داده اسکیولایت (*.db);;هر فایلی (*.*)"
-                );
-    if( backupPath.isEmpty() ) // کاربر کنسل کرده است
+                "فایل پایگاه داده (*.db)" );
+    if( backupPath.isEmpty() )   // کاربر کنسل کرده است
         return ;
-    //...
-
-    //FIXME: *********
-    // اگر برنامه در شروع کار پایگاه داده پیش فرض را پیدا نکند و کاربر بر روی
-    // ایجاد پایگاه داده کلیک نمایید و نام فایل پایگاه داده جدید خود را همنام
-    // با مسیر پیش فرض قرار دهد خط زیر اجرا میشود. در این مورد نباید خط زیر اجرا شود
-    if ( appInfo.databasePath.trimmed() == backupPath.trimmed())
-    {
-        QMessageBox::warning(this, "خطا",
-                             "پایگاه داده‌ای که در برنامه اجرا شده است با نسخه انتخابی شما یکسان می‌باشد.");
-        return ;
-    }
 
     //...
-
     appInfo.databasePath = backupPath;
-    m_isDatabasePathChanged = true;
+    Utility::saveDatabasePath();
+    //...
+    animatePageLoading();
+}
 
-    saveDatabasePath();
+void DatabaseErrorManagementDialog::animatePageLoading()
+{
+    animateStackedWidgetPages(ui->stackedWidget , ui->pageLoading);
+    QTimer::singleShot(3500, this, SLOT(accept()) );
+}
+
+void DatabaseErrorManagementDialog::animatePageErrManagement()
+{
+    animateStackedWidgetPages(ui->stackedWidget,ui->pageErrManagement);
+}
+
+void DatabaseErrorManagementDialog::animatePageErrDescription()
+{
+    animateStackedWidgetPages(ui->stackedWidget,ui->pageErrDescription);
+}
+void DatabaseErrorManagementDialog::animateStackedWidgetPages(QStackedWidget *stackedWidget,
+                                                              QWidget *page)
+{
+    stackedWidget->setCurrentWidget(page);
+
+    const QPoint posEnd = page->pos();
+    QPoint posStart = posEnd;
+
+    posStart.setX(-25);
+    posStart.setY(0);
+
+    QPropertyAnimation *animation = new QPropertyAnimation(page, "pos");
+
+    animation->setDuration(1000);
+    animation->setStartValue(posStart);
+    animation->setEndValue(posEnd);
+
+    animation->setEasingCurve(QEasingCurve::OutElastic);
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 }

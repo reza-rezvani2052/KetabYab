@@ -1,8 +1,13 @@
 #include "utility.h"
 
 #include <QScreen>
+#include <QSettings>
 #include <QApplication>
 #include <QDesktopWidget>
+
+#include "dbconnection.h"   // AppInfo Struct definition
+extern AppInfo  appInfo;
+
 
 Utility::Utility(QObject *parent) : QObject(parent)
 {
@@ -39,6 +44,42 @@ int Utility::getScreenHeight()
 {
     QSize size = qApp->screens()[0]->size();
     return size.height();
+}
+
+//---------------------------------------------------------------------------------------
+
+int Utility::getNumOfRunApp()
+{
+    QSettings settings;
+    settings.beginGroup("LoginDialog");
+    //...
+    int numOfRunApp = settings.value("NumOfRunApp", 1).toInt();
+    //...
+    settings.endGroup();
+    //...
+    return numOfRunApp;
+}
+
+void Utility::setNumOfRunApp(int times)
+{
+    QSettings settings;
+    settings.beginGroup("LoginDialog");
+    //...
+    settings.setValue("NumOfRunApp", qAbs(times));    
+    //...
+    settings.endGroup();
+}
+
+//---------------------------------------------------------------------------------------
+
+void Utility::saveDatabasePath()
+{
+    QSettings settings;
+    settings.beginGroup("Main");
+    //...
+    settings.setValue("DatabasePath", appInfo.databasePath);
+    //...
+    settings.endGroup();
 }
 
 //---------------------------------------------------------------------------------------

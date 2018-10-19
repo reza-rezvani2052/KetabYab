@@ -41,6 +41,10 @@ AdvancedSearchDialog::AdvancedSearchDialog(QWidget *parent) :
 /*
     QListWidgetItem *item = 0;
 
+    item = new QListWidgetItem("شماره ثبت");
+    item->setCheckState(Qt::Unchecked);
+    m_hashItems.insert(item, "book_register_number");
+
     item = new QListWidgetItem("عنوان کتاب");
     item->setCheckState(Qt::Unchecked);
     m_hashItems.insert(item, "book_title");
@@ -60,10 +64,6 @@ AdvancedSearchDialog::AdvancedSearchDialog(QWidget *parent) :
     item = new QListWidgetItem("موضوع");
     item->setCheckState(Qt::Unchecked);
     m_hashItems.insert(item, "book_topic");
-
-    item = new QListWidgetItem("شماره ثبت");
-    item->setCheckState(Qt::Unchecked);
-    m_hashItems.insert(item, "book_register_number");
 */
 
     //...
@@ -87,12 +87,12 @@ AdvancedSearchDialog::~AdvancedSearchDialog()
 void AdvancedSearchDialog::initializeTabWidgetConditions()
 {
     QStringList listRightOperand;
+    listRightOperand.append( "شماره ثبت" );
     listRightOperand.append( "عنوان کتاب" );
     listRightOperand.append( "پدید آور" );
     listRightOperand.append( "مترجم" );
     listRightOperand.append( "انتشارات" );
     listRightOperand.append( "موضوع" );
-    listRightOperand.append( "شماره ثبت" );
 
     ui->cmbRightOperand1->addItems( listRightOperand );
     ui->cmbRightOperand2->addItems( listRightOperand );
@@ -273,7 +273,6 @@ void AdvancedSearchDialog::on_btnCreateQuery_clicked()
 
 
     //FIXME:
-
     qryString2 = true /*ui->actRegisterNumber->isChecked()*/ ?
                 qryString2.arg("book_title") :
                 qryString2.arg("");

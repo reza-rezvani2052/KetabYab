@@ -27,5 +27,7 @@
         <file>fonts/BYekan.ttf</file>
         <file>loading.gif</file>
         <file>restart-app.png</file>
+        <file>loading_restart.gif</file>
+        <file>database_load.png</file>
     </qresource>
 </RCC>

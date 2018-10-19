@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>471</width>
-    <height>431</height>
+    <width>764</width>
+    <height>592</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -166,7 +166,7 @@ QToolBar::handle {
               </property>
               <column>
                <property name="text">
-                <string>رکورد</string>
+                <string>شماره ثبت</string>
                </property>
               </column>
               <column>
@@ -192,11 +192,6 @@ QToolBar::handle {
               <column>
                <property name="text">
                 <string>موضوع</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>شماره ثبت</string>
                </property>
               </column>
              </widget>
@@ -856,8 +851,13 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 </string>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>1</number>
                </property>
+               <item>
+                <property name="text">
+                 <string>شماره ثبت</string>
+                </property>
+               </item>
                <item>
                 <property name="text">
                  <string>عنوان کتاب</string>
@@ -881,11 +881,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
                <item>
                 <property name="text">
                  <string>موضوع</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>شماره ثبت</string>
                 </property>
                </item>
               </widget>
@@ -954,7 +949,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>471</width>
+     <width>764</width>
      <height>31</height>
     </rect>
    </property>

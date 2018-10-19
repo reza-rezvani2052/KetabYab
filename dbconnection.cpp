@@ -9,7 +9,6 @@ DatabaseErrors createConnection(QSqlDatabase &db, const QString &dbPath)
 {
     if( !QFile::exists(dbPath) )
         return DatabaseErrors::FileNotFound;
-
     //...
 
     db = QSqlDatabase::addDatabase("QSQLITE");
@@ -20,6 +19,7 @@ DatabaseErrors createConnection(QSqlDatabase &db, const QString &dbPath)
 
     //...
     // جهت تست کردن سالم بودن فایل پایگاه داده
+    // البته در اینجا فقط یک جدول را تست کردم
     QSqlQuery qryTest("SELECT username FROM table_users;" , appInfo.db);
     if( !qryTest.next() )
         return DatabaseErrors::FileIsCorrupted;
@@ -42,6 +42,7 @@ bool createNewDatabase()
         return false;
     //...
 
+    //TODO: بعدا این را تست کنم
     if( QFile::exists(filePath) )
     {
         QFile file(filePath);
@@ -55,7 +56,6 @@ bool createNewDatabase()
         }
     }
 
-    appInfo.databasePath = filePath;
     //...
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
@@ -69,9 +69,11 @@ bool createNewDatabase()
         return false;
     }
 
+    appInfo.databasePath = filePath;
+
     //...
 
-    //FIXME: ***** تست نکردم هنوز  *******
+    //FIXME: ********************** تست نکردم هنوز  **********************
 
     QSqlQuery query("DROP TABLE IF EXISTS \"sqlite_sequence\";", db);
     query.exec("CREATE TABLE \"sqlite_sequence\" (\"name\",\"seq\");");
@@ -103,8 +105,8 @@ bool createNewDatabase()
     //...
 
     //TODO: agar lazem shod bejaye PassHint ebarate monaseb benevisam
-    query.exec("INSERT INTO table_users VALUES ('guest', null, null, 0, 'کاربر میهمان');");
-    query.exec("INSERT INTO table_users VALUES ('admin', 123456, null ,1, 'مدیر سیستم');" );
+    ///query.exec("INSERT INTO table_users VALUES ('guest', null, null, 0, 'کاربر میهمان');");
+    ///query.exec("INSERT INTO table_users VALUES ('admin', 123456, null ,1, 'مدیر سیستم');" );
 
     //INSERT INTO "table_users" VALUES ('guest', NULL, 'فاقد کلمه عبور', 0, 'میهمان');
     //INSERT INTO "table_users" VALUES ('admin', 1, NULL, 1, 'مدیر سیستم');
@@ -131,9 +133,8 @@ bool createNewDatabase()
 
 int getNumberOfRecord( const QString &tableName, const QString &fieldName)
 {
-    QSqlQuery qry(
-                QString("SELECT count(%1) FROM %2 ").arg(fieldName).arg(tableName) ,
-                appInfo.db);
+    QSqlQuery qry(QString("SELECT count(%1) FROM %2 ").arg(fieldName).arg(tableName) ,
+                  appInfo.db);
     qry.next();
 
     return qry.value(0).toInt();
@@ -141,10 +142,8 @@ int getNumberOfRecord( const QString &tableName, const QString &fieldName)
 
 bool isRegisterNumberExist(const QString &registerId)
 {
-    QSqlQuery qry(
-                QString("SELECT book_register_number FROM table_books WHERE book_register_number='%1' ").
-                arg(registerId), appInfo.db );
-
+    QSqlQuery qry(QString("SELECT book_register_number FROM table_books WHERE book_register_number='%1' ").
+                  arg(registerId), appInfo.db );
     return qry.next();
 }
 
@@ -159,8 +158,8 @@ QStringList allUserNames()
 {
     QStringList userNamesList = QStringList();
 
-    //TODO: ???? QSqlQuery qry("SELECT username FROM table_users  ORDER BY username;", appInfo.db );
-    QSqlQuery qry("SELECT username FROM table_users;", appInfo.db );
+    //برای اینکه اول کاربر میهمان در لیست قرار گیرد از اوردر بای استفاده کردم
+    QSqlQuery qry("SELECT username FROM table_users ORDER BY username DESC ;", appInfo.db );
 
     while( qry.next() )
         userNamesList.append( qry.value(0).toString() );
@@ -186,7 +185,7 @@ QStringList getTableUsersRecord(const QString &userName)
     return allFields;
 }
 
-// این فعلن عملیاتی نیست-صرفا جهت آموزش هست
+// این فعلن عملیاتی نیست
 QStringList getTableBooksRecord(const QString &registerNumber)
 {
     QStringList allFields = QStringList();
@@ -195,13 +194,13 @@ QStringList getTableBooksRecord(const QString &registerNumber)
                    , appInfo.db );
     if (qry.next())
     {
-        allFields << qry.value(KeyField).toString();
+        allFields << qry.value(BookRegisterNumber).toString();
         allFields << qry.value(BookTitle).toString();
         allFields << qry.value(BookWriter).toString();
         allFields << qry.value(BookTranslator).toString();
         allFields << qry.value(BookPub).toString();
         allFields << qry.value(BookTopic).toString();
-        allFields << qry.value(BookRegisterNumber).toString();
+
     }
 
     return allFields;
@@ -242,16 +241,20 @@ QString getUserNickname(const QString &userName)
 
 bool setUsersPass(QString &pass, QString passHint)
 {
-    QStringList allFields = getTableUsersRecord( userInfo.userName );
+    QStringList allFields = getTableUsersRecord(
+                // چون فقط پسورد یوزر ادمین قابل تغییر است میتوان در اینجا مستقیم ادمین را نوشت
+                // "admin"
+                userInfo.userName
+                );
+
     if (allFields.isEmpty())
         return false;
 
     QString userName = allFields.at(UserName);
-    QString password = pass; // allFields.at(Password);
-    //QString _passHint = passHint;
+    QString password = pass;
+    //passHint = OOOOO;
     QString isAdmin  = allFields.at(IsAdmin);
     QString nickName = allFields.at(Nickname);
-    //qDebug() << userName << password << passHint << isAdmin << nickName;
 
     QString qryString;
     QSqlQuery qry(";", appInfo.db);
@@ -262,7 +265,13 @@ bool setUsersPass(QString &pass, QString passHint)
     qryString = qryString.arg( userName, password, passHint,isAdmin,
                                nickName, userInfo.userName);
     //...
-    userInfo.passHint = passHint;
-    //...
-    return qry.exec(qryString) ;
+    if (qry.exec(qryString)) {
+        // تغییرات در برنامه بصورت آنی لحاظ شود
+        userInfo.password = pass;
+        userInfo.passHint = passHint;
+
+        return true;
+    } else {
+        return false;
+    }
 }

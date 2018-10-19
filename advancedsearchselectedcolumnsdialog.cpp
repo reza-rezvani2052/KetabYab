@@ -40,7 +40,11 @@ QStringList AdvancedSearchSelectedColumnsDialog::getSelectedColumns()
     {
         if ( ui->listWidget->item(row)->checkState() == Qt::Checked )
         {
+            //FIXME: ??????????????????????
             switch (row+1) {
+            case BookRegisterNumber:
+                list.append("شماره ثبت");
+                break;
             case BookTitle:
                 list.append("عنوان کتاب");
                 break;
@@ -55,9 +59,6 @@ QStringList AdvancedSearchSelectedColumnsDialog::getSelectedColumns()
                 break;
             case BookTopic:
                 list.append("موضوع");
-                break;
-            case BookRegisterNumber:
-                list.append("شماره ثبت");
                 break;
             }
         }

@@ -10,7 +10,6 @@ ChangePasswordDialog::ChangePasswordDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
-    //...
 }
 
 ChangePasswordDialog::~ChangePasswordDialog()

@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     qApp->setLayoutDirection(Qt::RightToLeft);
 
     qApp->setOrganizationName("HosFa");
-    qApp->setApplicationName("KetabYab");    
+    qApp->setApplicationName("KetabYab");
     qApp->setOrganizationDomain("http://www.hosfa.ir");
 
     //NOTE: با توجه باینکه در دیالوگ ؛درباره برنامه؛ بررسی بروزرسانی انجام میشود
@@ -66,60 +66,41 @@ int main(int argc, char *argv[])
     readSettings();
     //...
 
-    QString strMsg;
-
-    DatabaseErrorManagementDialog *errDialog = new DatabaseErrorManagementDialog(0);
-
-    QMessageBox *msgBox = new QMessageBox();
-    msgBox->setButtonText(QMessageBox::Ok, "تایید");
-    msgBox->setIcon(QMessageBox::Warning);
-
-
-    switch (createConnection(appInfo.db, appInfo.databasePath)) {
+    QString strMsg = QString();
+    DatabaseErrors errCode = createConnection(appInfo.db, appInfo.databasePath);
+    switch (errCode)
+    {
     case DatabaseErrors::FileNotFound:
-        strMsg  = "برنامه موفق به یافتن پایگاه داده نشده است.";
-        strMsg += "\n\n" + appInfo.databasePath + "\n";
-        msgBox->setText(strMsg);
-        msgBox->setWindowTitle("عدم دسترسی به پایگاه داده");
-        msgBox->setInformativeText(" "); // این باعث میشود که متن پیام اگر طولانی بود نشکند
-        msgBox->exec();
-
-        if ( errDialog->exec() == QDialog::Accepted ) {
-            restartApp();
-        } else {
-            return -1;
-        }
-
+        strMsg  = "برنامه موفق به یافتن مسیر فایل پایگاه داده نشده است:";
+        strMsg += "\n\n" + appInfo.databasePath ;
         break;
     case DatabaseErrors::ConnectionError:
         strMsg  = "هنگام باز کردن پایگاه داده یک خطا به شرح زیر رخ داد" ;
         strMsg += "\n" + appInfo.db.lastError().text() ;
-        msgBox->setText(strMsg);
-        msgBox->setWindowTitle("خطا در باز کردن پایگاه داده");
-        msgBox->setInformativeText(" ");
-        msgBox->exec();
-
-        if ( errDialog->exec() == QDialog::Accepted ) {
-            restartApp();
-        } else {
-            return -1;
-        }
         break;
     case DatabaseErrors::FileIsCorrupted :
-        msgBox->setText("فرمت فایل پایگاه داده نادرست است.");
-        msgBox->setWindowTitle("خطا");
-        msgBox->exec();
-
-        if ( errDialog->exec() == QDialog::Accepted ) {
-            restartApp();
-        } else {
-            return -1;
-        }
+        strMsg  = "فرمت فایل پایگاه داده نادرست است." ;
+        break;
+    case DatabaseErrors::NoError :
+        ; // OK!
         break;
     }
 
-    delete errDialog;
-    delete msgBox;
+    //if (!strMsg.isEmpty()) { // اگر خطایی رخ داده است
+    if (errCode != DatabaseErrors::NoError) {
+        DatabaseErrorManagementDialog *errDialog = new DatabaseErrorManagementDialog(0);
+        errDialog->setLabelErrorDescriptionText(strMsg);
+
+        if ( errDialog->exec() == QDialog::Accepted ) {
+            //TODO: khate zir baressi shavad
+            ///delete errDialog;
+            restartApp();
+        } else {
+            //TODO: khate zir baressi shavad
+            ///delete errDialog;
+            return -1;   // !یعنی کاربر برنامه را بسته و بیخیال شده
+        }
+    }
 
     //...
 

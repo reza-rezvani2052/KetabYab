@@ -20,12 +20,18 @@ public:
     static int getScreenWidth();
     static int getScreenHeight();
 
+    // تعداد دفعاتی که برنامه اجرا شده است
+    static int  getNumOfRunApp();
+    static void setNumOfRunApp(int times = 1);
+
     static PopupDialog *createPopupDialog(QString title = QString(),
                                           QString body = QString(),
                                           QPoint xy = QPoint(),
                                           bool animate = true,
                                           int autoCloseDelay = 0,
                                           QWidget *parent = 0);
+
+    static void saveDatabasePath();
 
 private:
     QTimer m_timer;

@@ -89,7 +89,6 @@ private:
 
     void readSettings();
     void writeSettings();
-    void saveDatabasePath();
 
     PopupDialog *createPopupDialog(QString title = QString(),
                                    QString body = QString(),

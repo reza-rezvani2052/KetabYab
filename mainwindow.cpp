@@ -145,27 +145,27 @@ void MainWindow::on_btnSearch_clicked()
 
     QString strQry = "SELECT * FROM table_books WHERE";
 
-    switch ( ui->cmbSearchTopic->currentIndex()+1 )
+    switch ( ui->cmbSearchTopic->currentIndex())
     {
+    case BookRegisterNumber:strQry += " book_register_number LIKE ";   break;
     case BookTitle:         strQry += " book_title LIKE " ;            break;
     case BookWriter:        strQry += " book_writer LIKE " ;           break;
     case BookTranslator:    strQry += " book_translator LIKE " ;       break;
     case BookPub:           strQry += " book_pub LIKE " ;              break;
-    case BookTopic:         strQry += " book_topic LIKE " ;            break;
-    case BookRegisterNumber:strQry += " book_register_number LIKE ";   break;
+    case BookTopic:         strQry += " book_topic LIKE " ;            break;    
     }
 
     strQry += QString("'\%%1\%'").arg( ui->ledSearchTopic->text().trimmed() );
 
     qrySearchResult->setQuery (strQry, appInfo.db);
     //...
-    qrySearchResult->setHeaderData (0, Qt::Horizontal, "رکورد");
+    qrySearchResult->setHeaderData (0, Qt::Horizontal, "شماره ثبت");
     qrySearchResult->setHeaderData (1, Qt::Horizontal, "عنوان کتاب");
     qrySearchResult->setHeaderData (2, Qt::Horizontal, "پدید آور");
     qrySearchResult->setHeaderData (3, Qt::Horizontal, "مترجم");
     qrySearchResult->setHeaderData (4, Qt::Horizontal, "انتشارات");
     qrySearchResult->setHeaderData (5, Qt::Horizontal, "موضوع");
-    qrySearchResult->setHeaderData (6, Qt::Horizontal, "شماره ثبت");
+
     //...
     if (qrySearchResult->rowCount() == 0) {
         qApp->beep();
@@ -348,18 +348,8 @@ void MainWindow::writeSettings()
         //...
         settings.endGroup();
         //...
-        //saveDatabasePath();
+        // Utility::saveDatabasePath();
     }
-}
-
-void MainWindow::saveDatabasePath()
-{
-    QSettings settings;
-    settings.beginGroup("Main");
-    //...
-    settings.setValue("DatabasePath", appInfo.databasePath);
-    //...
-    settings.endGroup();
 }
 
 PopupDialog *MainWindow::createPopupDialog(QString title, QString body,
@@ -452,7 +442,9 @@ void MainWindow::on_actRestoreBackup_triggered()
     //...
 
     appInfo.databasePath = backupPath;
-    saveDatabasePath();
+
+    Utility::saveDatabasePath();
+
     on_actReenter_triggered();
 }
 
@@ -699,8 +691,8 @@ void MainWindow::fillFormFromTable()
         if ( itm )
         {
             switch (col) {
-            case KeyField:
-                ;
+            case BookRegisterNumber:
+                ui->ledBookRegisterNumber->setText(itm->text());
                 break;
             case BookTitle:
                 ui->ledBookTitle->setText(itm->text());
@@ -716,9 +708,6 @@ void MainWindow::fillFormFromTable()
                 break;
             case BookTopic:
                 ui->ledBookTopic->setText(itm->text());
-                break;
-            case BookRegisterNumber:
-                ui->ledBookRegisterNumber->setText(itm->text());
                 break;
             }
         }
@@ -766,8 +755,8 @@ void MainWindow::setupTableBooks()
         //TODO: ******** shayad beshavad khate zir ra ba: qryTableBooks->size() avaz kard, badan test konam
         ui->tableBooks->setRowCount(row+1);
 
-        ui->tableBooks->setItem(row, KeyField,
-                                new QTableWidgetItem(qryTableBooks->value(KeyField).toString()));
+        ui->tableBooks->setItem(row, BookRegisterNumber,
+                                new QTableWidgetItem(qryTableBooks->value(BookRegisterNumber).toString()));
         ui->tableBooks->setItem(row, BookTitle,
                                 new QTableWidgetItem(qryTableBooks->value(BookTitle).toString()));
         ui->tableBooks->setItem(row, BookWriter,
@@ -778,8 +767,6 @@ void MainWindow::setupTableBooks()
                                 new QTableWidgetItem(qryTableBooks->value(BookPub).toString()));
         ui->tableBooks->setItem(row, BookTopic,
                                 new QTableWidgetItem(qryTableBooks->value(BookTopic).toString()));
-        ui->tableBooks->setItem(row, BookRegisterNumber,
-                                new QTableWidgetItem(qryTableBooks->value(BookRegisterNumber).toString()));
         row ++;
     }
     //...
@@ -879,7 +866,7 @@ void MainWindow::on_btnInsertAndOk_clicked()
 
         QSqlQuery qryInsert( ";", appInfo.db);
         QString   qryInsertString = "INSERT INTO table_books "
-                                    "VALUES(null, '%1', '%2', '%3', '%4', '%5', '%6');";
+                                    "VALUES('%1', '%2', '%3', '%4', '%5', '%6');";
         qryInsertString = qryInsertString.arg(
                     ui->ledBookTitle->text(),
                     ui->ledBookWriter->text(),
@@ -980,8 +967,8 @@ void MainWindow::on_btnRemove_clicked()
 
     //...
 
-    QString qryString = QString("DELETE FROM table_books WHERE key_field=%1 ;")
-            .arg(ui->tableBooks->item(currentRow, 0)->text());
+    QString qryString = QString("DELETE FROM table_books WHERE book_register_number=%1 ;")
+            .arg(ui->tableBooks->item(currentRow, BookRegisterNumber)->text());
 
     QSqlQuery qryDelete(";", appInfo.db);
     if( !qryDelete.exec(qryString) )
@@ -1058,7 +1045,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
         ui->btnRemove->setEnabled( false );
         ui->btnUpdateAndOk->setIcon(QIcon(":/ok.png"));
 
-        m_currKeyField = ui->tableBooks->item(currRow,  KeyField)->text().trimmed();
+        m_currKeyField = ui->tableBooks->item(currRow,  BookRegisterNumber)->text().trimmed();
     }
     else   // کاربر آپدیت را تایید کرد
     {
@@ -1079,7 +1066,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
 
         qryString = "UPDATE table_books SET "
                     "book_title = '%1' , book_writer = '%2' , book_translator = '%3' ,"
-                    "book_pub = '%4' , book_topic = '%5' WHERE key_field=%6 ;";
+                    "book_pub = '%4' , book_topic = '%5' WHERE book_register_number=%6 ;";
         qryString = qryString.arg( ui->ledBookTitle->text(),
                                    ui->ledBookWriter->text(),
                                    ui->ledBookTranslator->text(),
