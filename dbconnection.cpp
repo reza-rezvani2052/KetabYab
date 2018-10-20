@@ -309,18 +309,16 @@ bool setMostSearchedPhrase(const QString &phrase)
 
     //موارد تکراری در پایگاه داده ذخیره نشوند
     if (isSearchPhraseExist(phrase))
-        return true ;  // نیازی به درج در ئایگاه داده نیست
+        return true ;  // نیازی به درج در پایگاه داده نیست
 
-    QString strQuery =
-            QString("INSERT INTO \"table_most_search\" VALUES ('%1');").arg(phrase);
-    QSqlQuery qry(strQuery, appInfo.db);
+    QSqlQuery qry(QString("INSERT INTO table_most_search VALUES ('%1');").arg(phrase),
+                  appInfo.db);
     return qry.next();
 }
 
 bool isSearchPhraseExist(const QString &phrase)
 {
     QSqlQuery qry( QString("SELECT phrase FROM table_most_search WHERE phrase='%1' ").
-                   arg(phrase.trimmed()),
-                   appInfo.db );
+                   arg(phrase.trimmed()), appInfo.db );
     return qry.next();
 }
