@@ -88,6 +88,12 @@ bool createNewDatabase()
                ");");
     //...
 
+    query.exec("DROP TABLE IF EXISTS \"table_most_search\";");
+    query.exec("CREATE TABLE \"table_most_search\" (\n" + QString() +
+               "\"phrase\" TEXT" +
+               ");");
+    //...
+
     query.exec("DROP TABLE IF EXISTS table_users;");
     query.exec( "CREATE TABLE \"table_users\" (\n"  + QString() +
                 "  \"username\" TEXT NOT NULL,\n" +
@@ -111,14 +117,14 @@ bool createNewDatabase()
 
     // این بخش صرفا جهت تست میباشد. در انتشار نهایی حذف گردد
     // خط زیر چون انگلیسی نوشته شده مشکل ندارد
-    ///query.exec("INSERT INTO \"table_books\" VALUES (101, 'title', 'writer', 'translater', 'pub', 'topic');" );
+    // query.exec("INSERT INTO \"table_books\" VALUES (101, 'title', 'writer', 'translater', 'pub', 'topic');" );
 
-//    با توجه به فارسی نویسی، در محیط کیوت کریتور کمی جابجا نشان داده میشود و در اجرا مشکل  پیش می‌آید
-//    query.exec("INSERT INTO \"table_books\" VALUES('عنوان کتاب اول', 'نویسنده کتاب اول', 'مترجم کتاب اول', 'ناشر کتاب اول', 'موضوع کتاب اول', 101)");
-//    query.exec("INSERT INTO table_books VALUES('عنوان کتاب دوم', 'نویسنده کتاب دوم', 'مترجم کتاب دوم', 'ناشر کتاب دوم', 'موضوع کتاب دوم', 102)");
-//    query.exec("INSERT INTO table_books VALUES('عنوان کتاب سوم', 'نویسنده کتاب سوم', 'مترجم کتاب سوم', 'ناشر کتاب سوم', 'موضوع کتاب سوم', 103)");
-//    query.exec("INSERT INTO table_books VALUES('عنوان کتاب چهارم', 'نویسنده کتاب چهارم', 'مترجم کتاب چهارم', 'ناشر کتاب چهارم', 'موضوع کتاب چهارم', 104)");
-//    query.exec("INSERT INTO table_books VALUES('عنوان کتاب پنجم', 'نویسنده کتاب پنجم', 'مترجم کتاب پنجم', 'ناشر کتاب پنجم', 'موضوع کتاب پنجم', 105)");
+    //    با توجه به فارسی نویسی، در محیط کیوت کریتور کمی جابجا نشان داده میشود و در اجرا مشکل  پیش می‌آید
+    //    query.exec("INSERT INTO \"table_books\" VALUES('عنوان کتاب اول', 'نویسنده کتاب اول', 'مترجم کتاب اول', 'ناشر کتاب اول', 'موضوع کتاب اول', 101)");
+    //    query.exec("INSERT INTO table_books VALUES('عنوان کتاب دوم', 'نویسنده کتاب دوم', 'مترجم کتاب دوم', 'ناشر کتاب دوم', 'موضوع کتاب دوم', 102)");
+    //    query.exec("INSERT INTO table_books VALUES('عنوان کتاب سوم', 'نویسنده کتاب سوم', 'مترجم کتاب سوم', 'ناشر کتاب سوم', 'موضوع کتاب سوم', 103)");
+    //    query.exec("INSERT INTO table_books VALUES('عنوان کتاب چهارم', 'نویسنده کتاب چهارم', 'مترجم کتاب چهارم', 'ناشر کتاب چهارم', 'موضوع کتاب چهارم', 104)");
+    //    query.exec("INSERT INTO table_books VALUES('عنوان کتاب پنجم', 'نویسنده کتاب پنجم', 'مترجم کتاب پنجم', 'ناشر کتاب پنجم', 'موضوع کتاب پنجم', 105)");
 
     //----------------------------------------------------------------------------------------------------------
 
@@ -283,4 +289,38 @@ bool setUsersPass(QString &pass, QString passHint)
     } else {
         return false;
     }
+}
+
+QStringList getMostSearchedPhrases()
+{
+    QStringList allPhrases = QStringList();
+
+    QSqlQuery qry( QString("SELECT * FROM table_most_search;"), appInfo.db );
+    while( qry.next() )
+        allPhrases.append( qry.value(0).toString() );
+
+    return allPhrases;
+}
+
+bool setMostSearchedPhrase(const QString &phrase)
+{    
+    if( phrase.trimmed().isEmpty() )
+        return false;
+
+    //موارد تکراری در پایگاه داده ذخیره نشوند
+    if (isSearchPhraseExist(phrase))
+        return true ;  // نیازی به درج در ئایگاه داده نیست
+
+    QString strQuery =
+            QString("INSERT INTO \"table_most_search\" VALUES ('%1');").arg(phrase);
+    QSqlQuery qry(strQuery, appInfo.db);
+    return qry.next();
+}
+
+bool isSearchPhraseExist(const QString &phrase)
+{
+    QSqlQuery qry( QString("SELECT phrase FROM table_most_search WHERE phrase='%1' ").
+                   arg(phrase.trimmed()),
+                   appInfo.db );
+    return qry.next();
 }

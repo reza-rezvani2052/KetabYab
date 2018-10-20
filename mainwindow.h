@@ -3,6 +3,7 @@
 
 #include <QtSql>
 #include <QEvent>
+#include <QCompleter>
 #include <QMainWindow>
 #include <QCloseEvent>
 #include <QStackedWidget>
@@ -75,6 +76,8 @@ private:
     enum { NormalMode, InsertionMode, UpdateMode } DataBaseMode;
 
     Ui::MainWindow *ui;
+
+    QCompleter *completerSearchHistory;
 
     QSqlQuery *qryTableBooks;
     QSqlQueryModel *qrySearchResult;

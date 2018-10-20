@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    completerSearchHistory = 0;
     //...
     QRegExp rx("[1-9]\\d{0,6}");
     QValidator *validator = new QRegExpValidator(rx, this);
@@ -169,9 +169,11 @@ void MainWindow::on_btnSearch_clicked()
     //...
     if (qrySearchResult->rowCount() == 0) {
         qApp->beep();
-        Utility::createPopupDialog(QString("موردی یافت نشد") ,
-                                   QString(), QPoint(), true, 1400, this)->show();
+        Utility::createPopupDialog(QString("موردی یافت نشد") , QString(),
+                                   QPoint(), true, 1400, this)->show();
     } else {
+        setMostSearchedPhrase(searchString);
+
         ui->tableSearchResult->resizeColumnsToContents();
     }
 }
@@ -180,6 +182,18 @@ void MainWindow::on_actSearch_triggered()
 {
     if (ui->stackedWidget->currentWidget() != ui->pageSearch )
         switchBetweenStackedWidgets(ui->pageSearch, ui->stackedWidget);
+
+    //TODO: با روش زیر مطالب جستجو شده اخیر در برنامه در اجرای بعدی برنامه
+    // نمایش داده میشود. به نظر این روش بد نیست
+    if (completerSearchHistory == 0) {
+        QStringList mostSearchedPhrases =  getMostSearchedPhrases();
+
+        completerSearchHistory = new QCompleter(mostSearchedPhrases, this);
+        completerSearchHistory->setCaseSensitivity(Qt::CaseInsensitive);
+        completerSearchHistory->setMaxVisibleItems(5);
+
+        ui->ledSearchTopic->setCompleter(completerSearchHistory);
+    }
 }
 
 void MainWindow::on_actAdvancedSearch_triggered()

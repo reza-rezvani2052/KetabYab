@@ -95,4 +95,8 @@ QStringList getTableUsersRecord(const QString &userName);
 QStringList getTableBooksRecord(const QString &registerNumber);
 
 
+bool isSearchPhraseExist(const QString &phrase);
+QStringList getMostSearchedPhrases();
+bool setMostSearchedPhrase(const QString &phrase);
+
 #endif  //  #ifndef DBCONNECTION_H

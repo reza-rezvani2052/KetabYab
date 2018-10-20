@@ -53,7 +53,7 @@ void DatabaseErrorManagementDialog::on_btnCreateNewDb_clicked()
      {
          Utility::saveDatabasePath();
 
-         QTimer::singleShot(500, this, SLOT(animatePageLoading()) );
+         QTimer::singleShot(250, this, SLOT(animatePageLoading()) );
      }
 }
 
