@@ -29,7 +29,7 @@ extern UserInfo userInfo;
 
 //---------------------------------------------------------------------
 
-#define RETURN_IF_LIST_IS_EMPTY int _rowCount = ui->tableBooks->rowCount(); \
+#define RETURN_IF_TABLE_BOOKS_IS_EMPTY int _rowCount = ui->tableBooks->rowCount(); \
     if (!_rowCount) \
     return;
 
@@ -528,7 +528,7 @@ void MainWindow::on_ledGoToRecordN_returnPressed()
 
     if ( rowCount >= recordToGo )
     {
-        ui->tableBooks->selectRow( recordToGo-1 );
+        ui->tableBooks->setCurrentCell(recordToGo-1 , 0);
         fillFormFromTable();
         ui->ledGoToRecordN->setVisible(false);
     } else {
@@ -543,6 +543,8 @@ void MainWindow::on_ledGoToRecordN_returnPressed()
 
 void MainWindow::on_tabWidgetBooks_currentChanged(int index)
 {
+    //TODO:  شاید نیاز به بررسی بیشتر داشته باشن
+    // تحت شرایط مختلف این کدها را تست کنم
     switch (index) {
     case TableView:
         if (ui->btnCancelInsertOrUpdate->isEnabled())
@@ -562,7 +564,7 @@ void MainWindow::on_tabWidgetBooks_currentChanged(int index)
 void MainWindow::updateLblRecordStatistics()
 {
     int currentRecord = ui->tableBooks->currentRow();
-    QString str1 = QString::number( currentRecord <0 ? 0 : currentRecord+1 ) ;
+    QString str1 = QString::number( currentRecord < 0 ? 0 : currentRecord+1 ) ;
     QString str2 = QString::number( ui->tableBooks->rowCount() );
 
     ui->lblRecordStatistics->setText( str1 + trUtf8(" از ") + str2 );
@@ -621,66 +623,42 @@ void MainWindow::setFormViewsLineEditsStylesheet(const QString &s)
 
 void MainWindow::on_btnNext_clicked()
 {
-    RETURN_IF_LIST_IS_EMPTY;
+    RETURN_IF_TABLE_BOOKS_IS_EMPTY;
 
-    //------------------------------------------------------------
-
-    //TODO: بعدا پاک کنم
-    //    qApp->beep();
-
-    //    ui->tableBooks->selectRow(1);
-    //    fillFormFromTable();
-
-    //    return;
-
-    //------------------------------------------------------------
-
-
-
-    int currRow = ui->tableBooks->currentRow();
-    qDebug() << "currRow = " << currRow;
-
+    const int currRow = ui->tableBooks->currentRow();
     if (currRow < _rowCount-1 )
     {
-        //ui->tableBooks->setCurrentItem( ui->tableBooks->item(_currRow+1, 0) );
-        ui->tableBooks->selectRow( currRow + 1 );
+        ui->tableBooks->setCurrentCell( currRow + 1, 0 );
         fillFormFromTable();
     }
-
 }
 
 void MainWindow::on_btnPrev_clicked()
 {
-    RETURN_IF_LIST_IS_EMPTY;
+    RETURN_IF_TABLE_BOOKS_IS_EMPTY;
 
-    int currRow = ui->tableBooks->currentRow();
-
+    const int currRow = ui->tableBooks->currentRow();
     if (currRow > 0)
     {
-        ui->tableBooks->selectRow( currRow - 1 );
+        ui->tableBooks->setCurrentCell( currRow - 1, 0 );
         fillFormFromTable();
     }
 }
 
 void MainWindow::on_btnLast_clicked()
 {
-    RETURN_IF_LIST_IS_EMPTY;
+    RETURN_IF_TABLE_BOOKS_IS_EMPTY;
 
-    ui->tableBooks->selectRow( _rowCount-1 );
+    ui->tableBooks->setCurrentCell( _rowCount-1, 0 );
     fillFormFromTable();
 }
 
 void MainWindow::on_btnFirst_clicked()
 {
-    RETURN_IF_LIST_IS_EMPTY;
+    RETURN_IF_TABLE_BOOKS_IS_EMPTY;
 
-    qDebug() << "on_btnFirst_clicked";
-
-    ui->tableBooks->selectRow( 0 );
-    /////ui->tableBooks->currentRow();
-
-    //    ui->tableBooks->selectRow( 2 ); // برای تست کردن
-
+    //TODO: برای لیست خالی این کد را بررسی کنم
+    ui->tableBooks->setCurrentCell(0, 0);
     fillFormFromTable();
 }
 
@@ -691,10 +669,8 @@ void MainWindow::fillFormFromTable()
     const int currRow = ui->tableBooks->currentRow();
     if ( currRow == -1 )   // اگر جدول خالی باشد و یا انتخاب نشده باشد
     {
-        ui->lblRecordStatistics->clear();
-
-        //TODO: بعدا پاک کنم
-        qDebug() << "Nothing item in table selected or table is empty";
+        //NOTE: بعدا یک پیام مناسبتر قرار دهم
+        ui->lblRecordStatistics->setText(" کتابی ثبت نشده است! ");
         return;
     }
 
@@ -728,8 +704,8 @@ void MainWindow::fillFormFromTable()
     }
 
     //...
-    //فعلن تست نکردم. شاید نیازی به این نباشد
-    qryTableBooks->seek( currRow );
+    //NOTE: فعلن تست نکردم. شاید نیازی به این نباشد
+    //qryTableBooks->seek( currRow );
     //...
     updateLblRecordStatistics();
 }
@@ -769,8 +745,6 @@ void MainWindow::setupTableBooks()
 
     while( qryTableBooks->next() )
     {
-        //ui->tableBooks->setRowCount(row+1);
-
         ui->tableBooks->setItem(row, BookRegisterNumber,
                                 new QTableWidgetItem(qryTableBooks->value(BookRegisterNumber).toString()));
         ui->tableBooks->setItem(row, BookTitle,
@@ -786,6 +760,7 @@ void MainWindow::setupTableBooks()
         row++;
     }
     //...
+    //ui->tableBooks->setCurrentCell(0,0);
     ui->tableBooks->resizeColumnsToContents();
 }
 
@@ -850,7 +825,6 @@ void MainWindow::on_btnInsertAndOk_clicked()
         setFormViewsLineEditsStylesheet("border: 2px solid lightblue");
 
         ui->ledBookRegisterNumber->setFocus();
-        //ui->ledBookTitle->setFocus();
 
         ui->btnInsertAndOk->setIcon(QIcon(":/ok.png"));
         ui->btnCancelInsertOrUpdate->setEnabled( true );
@@ -880,18 +854,18 @@ void MainWindow::on_btnInsertAndOk_clicked()
             return;
         }
 
-        QSqlQuery qryInsert( ";", appInfo.db);
-        QString   qryInsertString = "INSERT INTO table_books "
+        QSqlQuery qryInsert(QString(), appInfo.db);
+        QString   strQueryInsert = "INSERT INTO table_books "
                                     "VALUES('%1', '%2', '%3', '%4', '%5', '%6');";
-        qryInsertString = qryInsertString.arg(
+        strQueryInsert = strQueryInsert.arg(
+                    ui->ledBookRegisterNumber->text(),
                     ui->ledBookTitle->text(),
                     ui->ledBookWriter->text(),
                     ui->ledBookTranslator->text(),
                     ui->ledBookPub->text(),
-                    ui->ledBookTopic->text(),
-                    ui->ledBookRegisterNumber->text()
+                    ui->ledBookTopic->text()
                     );
-        if( qryInsert.exec(qryInsertString) )
+        if( qryInsert.exec(strQueryInsert) )
         {
             Utility::createPopupDialog(QString(),
                                        QString(" کتاب با موفقیت به لیست اضافه گردید. "),
@@ -986,7 +960,7 @@ void MainWindow::on_btnRemove_clicked()
     QString qryString = QString("DELETE FROM table_books WHERE book_register_number=%1 ;")
             .arg(ui->tableBooks->item(currentRow, BookRegisterNumber)->text());
 
-    QSqlQuery qryDelete(";", appInfo.db);
+    QSqlQuery qryDelete(QString() , appInfo.db);
     if( !qryDelete.exec(qryString) )
     {
         qApp->beep();
@@ -1003,9 +977,9 @@ void MainWindow::on_btnRemove_clicked()
         int rowToSelect = 0;
         //...
 
-        if (rowCount == 0) {
+        if (rowCount == 0) {  // لیست خالی شده است
             rowToSelect = 0;
-            ui->tableBooks->selectRow( rowToSelect );
+            ui->tableBooks->setCurrentCell(rowToSelect, 0);
             fillFormFromTable();
 
             qApp->beep();
@@ -1017,11 +991,10 @@ void MainWindow::on_btnRemove_clicked()
         if( rowCount == 1 || currentRow == 0)
             rowToSelect = 0;
         else
-            rowToSelect = currentRow==rowCount ?  currentRow - 1 : currentRow ;
+            rowToSelect = currentRow == rowCount ?  currentRow - 1 : currentRow ;
         //...
 
-        //ui->tableBooks->setCurrentItem( ui->tableBooks->item(rowToSelect, 0) );
-        ui->tableBooks->selectRow( rowToSelect );
+        ui->tableBooks->setCurrentCell(rowToSelect, 0);
         fillFormFromTable();
     }
 }
@@ -1053,7 +1026,6 @@ void MainWindow::on_btnUpdateAndOk_clicked()
         setFormViewsLineEditsStylesheet("border: 2px solid lightblue");
         ui->ledBookRegisterNumber->setStyleSheet(QString());
 
-        //ui->ledBookRegisterNumber->setFocus();
         ui->ledBookTitle->setFocus();
 
         ui->btnInsertAndOk->setEnabled( false );
@@ -1078,7 +1050,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
         //...
 
         QString qryString;
-        QSqlQuery qry(";", appInfo.db);
+        QSqlQuery qry(QString(), appInfo.db);
 
         qryString = "UPDATE table_books SET "
                     "book_title = '%1' , book_writer = '%2' , book_translator = '%3' ,"
@@ -1097,7 +1069,7 @@ void MainWindow::on_btnUpdateAndOk_clicked()
                                        QPoint(), true, 1500, this)->show();
             //...
             setupTableBooks();
-            ui->tableBooks->selectRow( currRow );
+            ui->tableBooks->setCurrentCell(currRow, 0);
             fillFormFromTable();
         } else {
             qApp->beep();
@@ -1119,7 +1091,6 @@ void MainWindow::on_btnUpdateAndOk_clicked()
         ui->btnRemove->setEnabled( true );
         ui->btnUpdateAndOk->setIcon(QIcon(":/book-edit.png"));
     }
-
 }
 
 void MainWindow::on_actCheckVersion_triggered()
