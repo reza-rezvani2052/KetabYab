@@ -32,7 +32,8 @@ SOURCES += \
     databaseerrormanagementdialog.cpp \
     advancedsearchselectedcolumnsdialog.cpp \
     checkversiondialog.cpp \
-    changepassworddialog.cpp
+    changepassworddialog.cpp \
+    draggabledialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -45,7 +46,8 @@ HEADERS += \
     databaseerrormanagementdialog.h \
     advancedsearchselectedcolumnsdialog.h \
     checkversiondialog.h \
-    changepassworddialog.h
+    changepassworddialog.h \
+    draggabledialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -56,7 +58,8 @@ FORMS += \
     databaseerrormanagementdialog.ui \
     advancedsearchselectedcolumnsdialog.ui \
     checkversiondialog.ui \
-    changepassworddialog.ui
+    changepassworddialog.ui \
+    draggabledialog.ui
 
 RESOURCES += \
     rc/rc.qrc

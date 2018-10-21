@@ -9,7 +9,7 @@
 #include "dbconnection.h"
 
 DatabaseErrorManagementDialog::DatabaseErrorManagementDialog(QWidget *parent) :
-    QDialog(parent),
+    DraggableDialog(parent),
     ui(new Ui::DatabaseErrorManagementDialog)
 {
     ui->setupUi(this);

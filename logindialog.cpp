@@ -16,14 +16,11 @@ extern UserInfo userInfo;
 
 
 LoginDialog::LoginDialog(QWidget *parent) :
-    QDialog(parent),
+    DraggableDialog(parent),
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
-
-    m_startDraging = false;
     setWindowFlags(Qt::FramelessWindowHint);
-
     //...
 
     ui->cmbUsername->addItems( allUserNames() );
@@ -251,45 +248,4 @@ void LoginDialog::on_stackedWidgetMain_currentChanged(int arg1)
     default:
         break;
     }
-}
-
-//------------------------------------------------------------------------------
-
-void LoginDialog::keyPressEvent(QKeyEvent *e)
-{
-    //agar karbar dokmeye Escape ra mizad moshkel ijad mishod, in ra neveshtam
-    if( e->key() == Qt::Key_Escape )
-        reject(); //close();
-    //...
-    QDialog::keyPressEvent(e);
-}
-
-void LoginDialog::mouseMoveEvent(QMouseEvent *e)
-{
-    if ((e->buttons() & Qt::LeftButton) && m_startDraging)
-    {
-        move(e->globalPos() - m_dragPosition);
-        e->accept();
-    }
-    //...
-    QDialog::mouseMoveEvent(e);
-}
-
-void LoginDialog::mousePressEvent(QMouseEvent *e)
-{
-    if (e->button() == Qt::LeftButton)
-    {
-        m_startDraging = true;
-        m_dragPosition = e->globalPos() - frameGeometry().topLeft();
-        e->accept();
-    }
-    //...
-    QDialog::mousePressEvent(e);
-}
-
-void LoginDialog::mouseReleaseEvent(QMouseEvent *e)
-{
-    m_startDraging = false;
-    //...
-    QDialog::mouseReleaseEvent(e);
 }

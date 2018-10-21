@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableSearchResult->setModel(qrySearchResult);
 
     //...
-    qryTableBooks = new QSqlQuery(";", appInfo.db);  //SELECT * FROM table_books;
+    qryTableBooks = new QSqlQuery(QString(), appInfo.db);  //SELECT * FROM table_books;
     setupTableBooks();
     on_btnFirst_clicked();
     //...
@@ -764,10 +764,12 @@ void MainWindow::setupTableBooks()
 
     int row = 0;
 
+    int numOfRecord = getNumberOfRecord("table_books", "book_register_number");
+    ui->tableBooks->setRowCount( numOfRecord );
+
     while( qryTableBooks->next() )
     {
-        //TODO: ******** shayad beshavad khate zir ra ba: qryTableBooks->size() avaz kard, badan test konam
-        ui->tableBooks->setRowCount(row+1);
+        //ui->tableBooks->setRowCount(row+1);
 
         ui->tableBooks->setItem(row, BookRegisterNumber,
                                 new QTableWidgetItem(qryTableBooks->value(BookRegisterNumber).toString()));
@@ -781,7 +783,7 @@ void MainWindow::setupTableBooks()
                                 new QTableWidgetItem(qryTableBooks->value(BookPub).toString()));
         ui->tableBooks->setItem(row, BookTopic,
                                 new QTableWidgetItem(qryTableBooks->value(BookTopic).toString()));
-        row ++;
+        row++;
     }
     //...
     ui->tableBooks->resizeColumnsToContents();

@@ -4,7 +4,7 @@
 #include <QMovie>
 
 CheckVersionDialog::CheckVersionDialog(QWidget *parent) :
-    QDialog(parent),
+    DraggableDialog(parent),
     ui(new Ui::CheckVersionDialog)
 {
     ui->setupUi(this);

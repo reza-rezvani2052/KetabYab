@@ -3,11 +3,13 @@
 
 #include <QDialog>
 
+#include "draggabledialog.h"
+
 namespace Ui {
 class ChangePasswordDialog;
 }
 
-class ChangePasswordDialog : public QDialog
+class ChangePasswordDialog : public DraggableDialog
 {
     Q_OBJECT
 

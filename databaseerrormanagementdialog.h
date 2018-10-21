@@ -4,11 +4,13 @@
 #include <QDialog>
 #include <QStackedWidget>
 
+#include "draggabledialog.h"
+
 namespace Ui {
 class DatabaseErrorManagementDialog;
 }
 
-class DatabaseErrorManagementDialog : public QDialog
+class DatabaseErrorManagementDialog : public DraggableDialog
 {
     Q_OBJECT
 

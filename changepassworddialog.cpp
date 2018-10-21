@@ -5,11 +5,13 @@
 #include "dbconnection.h"
 
 ChangePasswordDialog::ChangePasswordDialog(QWidget *parent) :
-    QDialog(parent),
+    DraggableDialog(parent),
     ui(new Ui::ChangePasswordDialog)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
+    //...
+
 }
 
 ChangePasswordDialog::~ChangePasswordDialog()

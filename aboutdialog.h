@@ -4,11 +4,13 @@
 #include <QDialog>
 #include <QPropertyAnimation>
 
+#include "draggabledialog.h"
+
 namespace Ui {
 class AboutDialog;
 }
 
-class AboutDialog : public QDialog
+class AboutDialog : public DraggableDialog
 {
     Q_OBJECT
 

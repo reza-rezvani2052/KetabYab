@@ -8,11 +8,13 @@
 #include <QPropertyAnimation>
 #include <QNetworkAccessManager>
 
+#include "draggabledialog.h"
+
 namespace Ui {
 class CheckVersionDialog;
 }
 
-class CheckVersionDialog : public QDialog
+class CheckVersionDialog : public DraggableDialog
 {
     Q_OBJECT
 

@@ -4,12 +4,12 @@
 #include <QTimer>
 
 AboutDialog::AboutDialog(QWidget *parent) :
-    QDialog(parent),
+    DraggableDialog(parent),
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
-    setWindowFlags(Qt::SplashScreen);
 
+    setWindowFlags(Qt::SplashScreen);
     //...
 
     rectInWindow = ui->lblVersionInfo->geometry();

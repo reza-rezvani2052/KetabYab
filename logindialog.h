@@ -10,6 +10,7 @@ class QStackedWidget;
 #include <QMouseEvent>
 
 #include "popupdialog.h"
+#include "draggabledialog.h"
 
 class QKeyEvent ;    // baraye modiriate dokmeye 'Escape'
 
@@ -17,20 +18,13 @@ namespace Ui {
     class LoginDialog;
 }
 
-class LoginDialog : public QDialog
+class LoginDialog : public DraggableDialog
 {
     Q_OBJECT
 
 public:
     explicit LoginDialog(QWidget *parent = 0);
     ~LoginDialog();
-
-protected:
-    void keyPressEvent(QKeyEvent *e);
-
-    void mouseMoveEvent(QMouseEvent *e);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
 
 private slots:
     void on_btnLogIn_clicked();
@@ -50,9 +44,6 @@ private slots:
 private:
     Ui::LoginDialog *ui;
     QCompleter *compUserName;
-
-    bool m_startDraging;
-    QPoint m_dragPosition;
 
     bool isValidUser();
 
