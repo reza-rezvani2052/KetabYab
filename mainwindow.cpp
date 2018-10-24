@@ -186,6 +186,8 @@ void MainWindow::on_actSearch_triggered()
     //TODO: با روش زیر مطالب جستجو شده اخیر در برنامه در اجرای بعدی برنامه
     // نمایش داده میشود. به نظر این روش بد نیست
     if (completerSearchHistory == 0) {
+        //TODO: با مقادیر واقعی و حجم زیاد از اطلاعات این بخش را تست کنم
+
         QStringList mostSearchedPhrases =  getMostSearchedPhrases();
 
         completerSearchHistory = new QCompleter(mostSearchedPhrases, this);

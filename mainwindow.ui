@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>764</width>
-    <height>592</height>
+    <width>651</width>
+    <height>536</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -240,7 +240,7 @@ QGroupBox::title {
     subcontrol-position: top center; /* position at the top center */
     padding: 0 3px;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #FFOECE, stop: 1 #FFFFFF);
+                                      stop: 0 #FF0ECE, stop: 1 #FFFFFF);
 }
 </string>
               </property>
@@ -949,8 +949,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>764</width>
-     <height>31</height>
+     <width>651</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="mnuFile">
@@ -1162,6 +1162,10 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    </property>
   </action>
   <action name="actHelp">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/help.png</normaloff>:/help.png</iconset>
+   </property>
    <property name="text">
     <string>راهنما</string>
    </property>
@@ -1229,6 +1233,10 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    </property>
   </action>
   <action name="actChangeLoginPass">
+   <property name="icon">
+    <iconset resource="rc/rc.qrc">
+     <normaloff>:/change-pass.png</normaloff>:/change-pass.png</iconset>
+   </property>
    <property name="text">
     <string>تغییر کلمه عبور</string>
    </property>

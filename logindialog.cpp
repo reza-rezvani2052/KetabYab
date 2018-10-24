@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QPropertyAnimation>
 
+#include "utility.h"
 #include "popupdialog.h"
 #include "dbconnection.h"
 
@@ -185,6 +186,15 @@ bool LoginDialog::isValidUser()
             userInfo.nickname = getUserNickname(userInfo.userName);
             //if (userInfo.nickname.trimmed().isEmpty())
             //    userInfo.nickname = userInfo.userName;
+
+
+            //FIXME: **********   اینجا عمل نمیکند
+            qApp->beep();
+            Utility::createPopupDialog(
+                        QString(), trUtf8("کلمه عبور مدیر") + ":" + "\n" +
+                        userInfo.password, QPoint(), true, 4500, this)->show();
+
+
 
             return true;
         } else {

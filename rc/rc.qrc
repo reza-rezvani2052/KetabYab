@@ -35,5 +35,6 @@
         <file>fonts/vazir/Vazir-Light.ttf</file>
         <file>fonts/vazir/Vazir-Medium.ttf</file>
         <file>fonts/vazir/Vazir-Thin.ttf</file>
+        <file>change-pass.png</file>
     </qresource>
 </RCC>

@@ -94,12 +94,10 @@ int main(int argc, char *argv[])
         errDialog->setLabelErrorDescriptionText(strMsg);
 
         if ( errDialog->exec() == QDialog::Accepted ) {
-            //TODO: khate zir baressi shavad
-            ///delete errDialog;
+            //delete errDialog;
             restartApp();
         } else {
-            //TODO: khate zir baressi shavad
-            ///delete errDialog;
+            //delete errDialog;
             return -1;   // !یعنی کاربر برنامه را بسته و بیخیال شده
         }
     }
