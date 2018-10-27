@@ -92,6 +92,18 @@ bool createNewDatabase()
     query.exec("CREATE TABLE \"table_most_search\" (\n" + QString() +
                "\"phrase\" TEXT" +
                ");");
+
+    //    //TODO: داده با حجم زیاد برای تست
+    //    for (int i=1; i < 5000; i++) {
+    //        QString strQuery =
+    //                "INSERT INTO table_most_search VALUES ('" +
+    //                QString("تست_") + QString::number(i) + "');";
+    //        //qDebug() << strQuery;
+    //        qDebug() << i << " of " << 5000;
+    //        query.exec(strQuery);
+    //    }
+    //    qDebug() << "Table table_most_search created!";
+
     //...
 
     query.exec("DROP TABLE IF EXISTS table_users;");
@@ -118,6 +130,24 @@ bool createNewDatabase()
     // این بخش صرفا جهت تست میباشد. در انتشار نهایی حذف گردد
     // خط زیر چون انگلیسی نوشته شده مشکل ندارد
     // query.exec("INSERT INTO \"table_books\" VALUES (101, 'title', 'writer', 'translater', 'pub', 'topic');" );
+
+
+    //    //TODO: داده با حجم زیاد برای تست
+    //    for (int i=1; i < 30000; i++) {
+    //        QString strQuery =
+    //                "INSERT INTO table_books VALUES (" + QString::number(i) + "," +
+    //                "'" + QString("title_")      + QString::number(i) + "', " +
+    //                "'" + QString("writer_")     + QString::number(i) + "', " +
+    //                "'" + QString("translater_") + QString::number(i) + "', " +
+    //                "'" + QString("pub_")        + QString::number(i) + "', " +
+    //                "'" + QString("topic_")      + QString::number(i) + "');";
+
+    //        //qDebug() << strQuery;
+    //        qDebug() << i << " of " << 30000;
+    //        query.exec(strQuery);
+    //    }
+    //    qDebug() << "Table table_books created!";
+
 
     //    با توجه به فارسی نویسی، در محیط کیوت کریتور کمی جابجا نشان داده میشود و در اجرا مشکل  پیش می‌آید
     //    query.exec("INSERT INTO \"table_books\" VALUES('عنوان کتاب اول', 'نویسنده کتاب اول', 'مترجم کتاب اول', 'ناشر کتاب اول', 'موضوع کتاب اول', 101)");
