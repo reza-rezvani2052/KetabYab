@@ -8,7 +8,7 @@ DraggableDialog::DraggableDialog(QWidget *parent) :
     ui->setupUi(this);
 
     m_startDraging = false;
-    //setWindowFlags(Qt::FramelessWindowHint); // TODO: ?????
+    //setWindowFlags(Qt::FramelessWindowHint);
     //...
 
 }

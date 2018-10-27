@@ -54,7 +54,6 @@ private:
                                    int autoCloseDelay = 0,
                                    QWidget *parent = 0);   
 
-
 };
 
 #endif // LOGINDIALOG_H

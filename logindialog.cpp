@@ -187,14 +187,8 @@ bool LoginDialog::isValidUser()
             //if (userInfo.nickname.trimmed().isEmpty())
             //    userInfo.nickname = userInfo.userName;
 
-
-            //FIXME: **********   اینجا عمل نمیکند
-            qApp->beep();
-            Utility::createPopupDialog(
-                        QString(), trUtf8("کلمه عبور مدیر") + ":" + "\n" +
-                        userInfo.password, QPoint(), true, 4500, this)->show();
-
-
+            // جهت بازیابی کلمه عبور در صورت فراموشی
+            appInfo.isBackdoorLogin = true;
 
             return true;
         } else {
