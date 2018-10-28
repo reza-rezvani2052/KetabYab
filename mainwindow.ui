@@ -791,25 +791,55 @@ background-color: #CFC9CA;
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="ledSearchTopic">
-               <property name="styleSheet">
-                <string notr="true">QLineEdit {
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="spacing">
+                <number>1</number>
+               </property>
+               <item>
+                <widget class="QLineEdit" name="ledSearchTopic">
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
 padding: 3px;
 border: 2px solid gray;
 border-radius: 5px;
 	background-color: rgb(255,250, 200);
 }</string>
-               </property>
-               <property name="dragEnabled">
-                <bool>true</bool>
-               </property>
-               <property name="placeholderText">
-                <string>عبارت مورد جستجو...</string>
-               </property>
-               <property name="clearButtonEnabled">
-                <bool>true</bool>
-               </property>
-              </widget>
+                 </property>
+                 <property name="dragEnabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="placeholderText">
+                  <string>عبارت مورد جستجو...</string>
+                 </property>
+                 <property name="clearButtonEnabled">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnClearSearchHistory">
+                 <property name="maximumSize">
+                  <size>
+                   <width>30</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>پاک کردن تاریخچه جستجو</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>پاک کردن تاریخچه جستجو</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="rc/rc.qrc">
+                   <normaloff>:/clear.png</normaloff>:/clear.png</iconset>
+                 </property>
+                 <property name="flat">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item>
               <widget class="QLabel" name="label_2">
@@ -1256,7 +1286,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   <tabstop>btnLast</tabstop>
   <tabstop>ledGoToRecordN</tabstop>
   <tabstop>tableBooks</tabstop>
-  <tabstop>ledSearchTopic</tabstop>
   <tabstop>cmbSearchTopic</tabstop>
   <tabstop>btnSearch</tabstop>
   <tabstop>tableSearchResult</tabstop>

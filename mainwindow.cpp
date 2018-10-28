@@ -59,23 +59,17 @@ MainWindow::MainWindow(QWidget *parent) :
     //...
     readSettings();
     //...
+    DataBaseMode = NormalMode;
+    //...
+    QFont menuBarFont = ui->menuBar->font();
+    menuBarFont.setPointSize(menuBarFont.pointSize() + 1);
+    ui->menuBar->setFont(menuBarFont);
+    //...
 
     // Setup Table Search Result
     qrySearchResult = new QSqlQueryModel(this);
     //qrySearchResult->setQuery ("SELECT * FROM table_books", appInfo.db);
     ui->tableSearchResult->setModel(qrySearchResult);
-
-    //...
-    qryTableBooks = new QSqlQuery(QString(), appInfo.db);  //SELECT * FROM table_books;
-    setupTableBooks();
-    on_btnFirst_clicked();
-    //...
-    setAdminWidgetsEnable(userInfo.isAdmin);
-
-    if (userInfo.isAdmin) {
-        ui->tableBooks->setContextMenuPolicy(Qt::ActionsContextMenu);
-        ui->tableBooks->addActions( ui->mnuTableBooksContextMenu->actions() );
-    }
 
     //...
 
@@ -89,13 +83,27 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->actBooksManagement->setChecked(false);
 
     //...
-    DataBaseMode = NormalMode;
-    //...
-    QFont menuBarFont = ui->menuBar->font();
-    menuBarFont.setPointSize(menuBarFont.pointSize() + 1);
-    ui->menuBar->setFont(menuBarFont);
+
+    setAdminWidgetsEnable(userInfo.isAdmin);
+
+    if (userInfo.isAdmin) {
+        ui->tableBooks->setContextMenuPolicy(Qt::ActionsContextMenu);
+        ui->tableBooks->addActions( ui->mnuTableBooksContextMenu->actions() );
+    }
+
     //...
 
+    QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
+    this->show();
+
+    //TODO: در زمان لود با داده زیاد کمی زمانبر است
+    qryTableBooks = new QSqlQuery(QString(), appInfo.db);  //SELECT * FROM table_books;
+    setupTableBooks();
+    on_btnFirst_clicked();
+
+    QApplication::restoreOverrideCursor();
+
+    //..
 }
 
 MainWindow::~MainWindow()
@@ -152,12 +160,14 @@ void MainWindow::on_btnSearch_clicked()
     case BookWriter:        strQry += " book_writer LIKE " ;           break;
     case BookTranslator:    strQry += " book_translator LIKE " ;       break;
     case BookPub:           strQry += " book_pub LIKE " ;              break;
-    case BookTopic:         strQry += " book_topic LIKE " ;            break;    
+    case BookTopic:         strQry += " book_topic LIKE " ;            break;
     }
 
     strQry += QString("'\%%1\%'").arg( ui->ledSearchTopic->text().trimmed() );
 
+    //NOTE: اگر در هنگام کار با داده‌های بزرگ رابط کاربری فریز شد، در یک ترد بنویسم
     qrySearchResult->setQuery (strQry, appInfo.db);
+
     //...
     qrySearchResult->setHeaderData (0, Qt::Horizontal, "شماره ثبت");
     qrySearchResult->setHeaderData (1, Qt::Horizontal, "عنوان کتاب");
@@ -165,8 +175,8 @@ void MainWindow::on_btnSearch_clicked()
     qrySearchResult->setHeaderData (3, Qt::Horizontal, "مترجم");
     qrySearchResult->setHeaderData (4, Qt::Horizontal, "انتشارات");
     qrySearchResult->setHeaderData (5, Qt::Horizontal, "موضوع");
-
     //...
+
     if (qrySearchResult->rowCount() == 0) {
         qApp->beep();
         Utility::createPopupDialog(QString("موردی یافت نشد") , QString(),
@@ -174,7 +184,14 @@ void MainWindow::on_btnSearch_clicked()
     } else {
         setMostSearchedPhrase(searchString);
 
+        ui->tableSearchResult->setModel(qrySearchResult);
         ui->tableSearchResult->resizeColumnsToContents();
+
+        //FIXME: *** اشتباه نشان میدهد
+        ui->statusBar->showMessage(
+                    trUtf8("تعداد موارد یافت شده: ") +
+                    QString::number( ui->tableSearchResult-> aaaa ),
+                    5000 );
     }
 }
 
@@ -186,6 +203,7 @@ void MainWindow::on_actSearch_triggered()
     //TODO: با روش زیر مطالب جستجو شده اخیر در برنامه در اجرای بعدی برنامه
     // نمایش داده میشود. به نظر این روش بد نیست
     if (completerSearchHistory == 0) {
+
         //TODO: با مقادیر واقعی و حجم زیاد از اطلاعات این بخش را تست کنم
 
         QStringList mostSearchedPhrases =  getMostSearchedPhrases();
@@ -195,6 +213,22 @@ void MainWindow::on_actSearch_triggered()
         completerSearchHistory->setMaxVisibleItems(5);
 
         ui->ledSearchTopic->setCompleter(completerSearchHistory);
+    }
+}
+
+void MainWindow::on_btnClearSearchHistory_clicked()
+{
+    QMessageBox msgBox(this);
+    msgBox.addButton("بله", QMessageBox::YesRole);
+    msgBox.addButton("خیر", QMessageBox::NoRole);
+    msgBox.setWindowTitle("تایید حذف تاریخچه جستجو");
+    msgBox.setText( trUtf8("آیا مایل به حذف تاریخچه جستجو هستید؟") );
+    msgBox.setIcon(QMessageBox::Warning);
+
+    if (msgBox.exec() == QMessageBox::AcceptRole) {
+        clearSearchHistory();
+
+        //FIXME: ***
     }
 }
 
@@ -209,7 +243,6 @@ void MainWindow::on_actAdvancedSearch_triggered()
     //----------------------------------------------------------------
 
     AdvancedSearchDialog dialog(this);
-
     if ( dialog.exec()== QDialog::Accepted )
     {
         if (ui->tableBooks->rowCount() == 0)
@@ -295,6 +328,9 @@ void MainWindow::setAdminWidgetsEnable(bool val)
         ui->actBooksManagement->setStatusTip(str);
 
         ui->actCheckVersion->setStatusTip(str);
+
+        ui->btnClearSearchHistory->setEnabled(false);
+        ui->btnClearSearchHistory->setVisible(false);
 
         //ui->pageEditMode->setStatusTip(str);
     }
@@ -858,7 +894,7 @@ void MainWindow::on_btnInsertAndOk_clicked()
 
         QSqlQuery qryInsert(QString(), appInfo.db);
         QString   strQueryInsert = "INSERT INTO table_books "
-                                    "VALUES('%1', '%2', '%3', '%4', '%5', '%6');";
+                                   "VALUES('%1', '%2', '%3', '%4', '%5', '%6');";
         strQueryInsert = strQueryInsert.arg(
                     ui->ledBookRegisterNumber->text(),
                     ui->ledBookTitle->text(),

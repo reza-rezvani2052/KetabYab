@@ -165,7 +165,7 @@ bool createNewDatabase()
 
 int getNumberOfRecord( const QString &tableName, const QString &fieldName)
 {
-    QSqlQuery qry(QString("SELECT count(%1) FROM %2 ").arg(fieldName).arg(tableName) ,
+    QSqlQuery qry(QString("SELECT count(%1) FROM %2 ;").arg(fieldName).arg(tableName) ,
                   appInfo.db);
     qry.next();
 
@@ -174,7 +174,7 @@ int getNumberOfRecord( const QString &tableName, const QString &fieldName)
 
 bool isRegisterNumberExist(const QString &registerId)
 {
-    QSqlQuery qry(QString("SELECT book_register_number FROM table_books WHERE book_register_number='%1' ").
+    QSqlQuery qry(QString("SELECT book_register_number FROM table_books WHERE book_register_number='%1' ;").
                   arg(registerId), appInfo.db );
     return qry.next();
 }
@@ -232,7 +232,6 @@ QStringList getTableBooksRecord(const QString &registerNumber)
         allFields << qry.value(BookTranslator).toString();
         allFields << qry.value(BookPub).toString();
         allFields << qry.value(BookTopic).toString();
-
     }
 
     return allFields;
@@ -242,7 +241,7 @@ bool isPasswordSet(const QString &userName)
 {
     bool hasPassword = false;
 
-    QSqlQuery qry(QString("SELECT password FROM table_users WHERE username='%1' ").arg(userName),
+    QSqlQuery qry(QString("SELECT password FROM table_users WHERE username='%1' ;").arg(userName),
                   appInfo.db);
     if (qry.next())
         if (!qry.value(0).toString().trimmed().isEmpty())
@@ -254,7 +253,7 @@ bool isPasswordSet(const QString &userName)
 QString getUserPassword(const QString &userName)
 {
     QString userPassword = QString();
-    QSqlQuery qry(QString("SELECT password FROM table_users WHERE username='%1' ").arg(userName),
+    QSqlQuery qry(QString("SELECT password FROM table_users WHERE username='%1' ;").arg(userName),
                   appInfo.db);
     if (qry.next())
         userPassword = qry.value(0).toString();
@@ -265,7 +264,7 @@ QString getUserPassword(const QString &userName)
 QString getUserPassHint(const QString &userName)
 {
     QString passHint = QString();
-    QSqlQuery qry(QString("SELECT passhint FROM table_users WHERE username='%1' ").arg(userName),
+    QSqlQuery qry(QString("SELECT passhint FROM table_users WHERE username='%1' ;").arg(userName),
                   appInfo.db);
     if (qry.next())
         passHint = qry.value(0).toString();
@@ -276,7 +275,7 @@ QString getUserPassHint(const QString &userName)
 QString getUserNickname(const QString &userName)
 {
     QString nickname = QString();
-    QSqlQuery qry(QString("SELECT nickname FROM table_users WHERE username='%1' ").arg(userName),
+    QSqlQuery qry(QString("SELECT nickname FROM table_users WHERE username='%1' ;").arg(userName),
                   appInfo.db);
     if (qry.next())
         nickname = qry.value(0).toString();
@@ -348,7 +347,12 @@ bool setMostSearchedPhrase(const QString &phrase)
 
 bool isSearchPhraseExist(const QString &phrase)
 {
-    QSqlQuery qry( QString("SELECT phrase FROM table_most_search WHERE phrase='%1' ").
+    QSqlQuery qry( QString("SELECT phrase FROM table_most_search WHERE phrase='%1' ;").
                    arg(phrase.trimmed()), appInfo.db );
     return qry.next();
+}
+
+void clearSearchHistory()
+{
+    QSqlQuery qry( "DELETE FROM table_most_search;", appInfo.db );
 }

@@ -28,8 +28,9 @@ protected:
 
 private slots:
     void on_btnSearch_clicked();
-    void on_actSearch_triggered();
+    void on_actSearch_triggered();    
     void on_actAdvancedSearch_triggered();
+    void on_btnClearSearchHistory_clicked();
 
     void on_btnNext_clicked();
     void on_btnPrev_clicked();
@@ -67,7 +68,7 @@ private slots:
 
     void on_actReenter_triggered();
     void on_actChangeLoginPass_triggered();
-    void on_actQuit_triggered();
+    void on_actQuit_triggered();    
 
 private:
 
