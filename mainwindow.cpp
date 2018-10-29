@@ -183,15 +183,7 @@ void MainWindow::on_btnSearch_clicked()
                                    QPoint(), true, 1400, this)->show();
     } else {
         setMostSearchedPhrase(searchString);
-
-        ui->tableSearchResult->setModel(qrySearchResult);
         ui->tableSearchResult->resizeColumnsToContents();
-
-        //FIXME: *** اشتباه نشان میدهد
-        ui->statusBar->showMessage(
-                    trUtf8("تعداد موارد یافت شده: ") +
-                    QString::number( ui->tableSearchResult-> aaaa ),
-                    5000 );
     }
 }
 
@@ -200,13 +192,34 @@ void MainWindow::on_actSearch_triggered()
     if (ui->stackedWidget->currentWidget() != ui->pageSearch )
         switchBetweenStackedWidgets(ui->pageSearch, ui->stackedWidget);
 
+    //...
+
     //TODO: با روش زیر مطالب جستجو شده اخیر در برنامه در اجرای بعدی برنامه
     // نمایش داده میشود. به نظر این روش بد نیست
     if (completerSearchHistory == 0) {
 
-        //TODO: با مقادیر واقعی و حجم زیاد از اطلاعات این بخش را تست کنم
-
         QStringList mostSearchedPhrases =  getMostSearchedPhrases();
+
+        if (mostSearchedPhrases.size() > 1000 && userInfo.isAdmin ) {
+            QMessageBox msgBox(this);
+            msgBox.addButton("بله", QMessageBox::YesRole);
+            msgBox.addButton("خیر", QMessageBox::NoRole );
+            msgBox.setWindowTitle("حذف تاریخچه جستجو");
+            msgBox.setText(
+                        trUtf8("تاریخچه جستجو کمی حجیم شده است!") +
+                        QString("\n") +
+                        trUtf8("وجود تاریخچه جستجو حجیم ممکن است سبب اندکی کاهش سرعت در نمایش تاریخچه شود.")
+                        + QString("\n") + QString("\n") +
+                        trUtf8("آیا مایل به حذف تاریخچه جستجو هستید؟")
+                        );
+            msgBox.setIcon(QMessageBox::Information);
+
+            if (msgBox.exec() == QMessageBox::AcceptRole) {
+                clearSearchHistory(false);
+
+                mostSearchedPhrases.clear();
+            }
+        }
 
         completerSearchHistory = new QCompleter(mostSearchedPhrases, this);
         completerSearchHistory->setCaseSensitivity(Qt::CaseInsensitive);
@@ -216,20 +229,49 @@ void MainWindow::on_actSearch_triggered()
     }
 }
 
+void MainWindow::clearSearchHistory(bool askBeforeClear)
+{
+    if (askBeforeClear)
+    {
+        QMessageBox msgBox(this);
+        msgBox.addButton("بله", QMessageBox::YesRole);
+        msgBox.addButton("خیر", QMessageBox::NoRole );
+        msgBox.setWindowTitle("تایید حذف تاریخچه جستجو");
+        msgBox.setText( trUtf8("آیا مایل به حذف تاریخچه جستجو هستید؟") );
+        msgBox.setIcon(QMessageBox::Warning);
+
+        if (msgBox.exec() == QMessageBox::AcceptRole) {
+            clearAllSearchHistory();
+
+            //FIXME: *****  بصورت آنی تاریخچه اعمال شود؛ نه در اجرای بعدی برنامه
+            if (completerSearchHistory != 0) {
+                delete completerSearchHistory;
+                completerSearchHistory = new QCompleter( QStringList(), this);
+                completerSearchHistory->setCaseSensitivity(Qt::CaseInsensitive);
+                completerSearchHistory->setMaxVisibleItems(5);
+
+                ui->ledSearchTopic->setCompleter(completerSearchHistory);
+            }
+        }
+
+    } else {
+        clearAllSearchHistory();
+
+        //FIXME: *****  بصورت آنی تاریخچه اعمال شود؛ نه در اجرای بعدی برنامه
+        if (completerSearchHistory != 0) {
+            delete completerSearchHistory;
+            completerSearchHistory = new QCompleter( QStringList(), this);
+            completerSearchHistory->setCaseSensitivity(Qt::CaseInsensitive);
+            completerSearchHistory->setMaxVisibleItems(5);
+
+            ui->ledSearchTopic->setCompleter(completerSearchHistory);
+        }
+    }
+}
+
 void MainWindow::on_btnClearSearchHistory_clicked()
 {
-    QMessageBox msgBox(this);
-    msgBox.addButton("بله", QMessageBox::YesRole);
-    msgBox.addButton("خیر", QMessageBox::NoRole);
-    msgBox.setWindowTitle("تایید حذف تاریخچه جستجو");
-    msgBox.setText( trUtf8("آیا مایل به حذف تاریخچه جستجو هستید؟") );
-    msgBox.setIcon(QMessageBox::Warning);
-
-    if (msgBox.exec() == QMessageBox::AcceptRole) {
-        clearSearchHistory();
-
-        //FIXME: ***
-    }
+    clearSearchHistory();
 }
 
 void MainWindow::on_actAdvancedSearch_triggered()
@@ -881,7 +923,7 @@ void MainWindow::on_btnInsertAndOk_clicked()
             return;
         }
 
-        if ( isRegisterNumberExist(ui->ledBookRegisterNumber->text().trimmed()) ) {
+        if( isRegisterNumberExist(ui->ledBookRegisterNumber->text().trimmed()) ) {
             qApp->beep();
             Utility::createPopupDialog(QString("شماره ثبت تکراری می‌باشد.") +
                                        QString("\n") +

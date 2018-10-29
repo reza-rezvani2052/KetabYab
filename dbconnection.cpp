@@ -352,7 +352,7 @@ bool isSearchPhraseExist(const QString &phrase)
     return qry.next();
 }
 
-void clearSearchHistory()
+void clearAllSearchHistory()
 {
     QSqlQuery qry( "DELETE FROM table_most_search;", appInfo.db );
 }

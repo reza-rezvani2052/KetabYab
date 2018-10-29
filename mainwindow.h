@@ -91,6 +91,8 @@ private:
     void setAdminWidgetsEnable(bool val=true);
     void setReadonlyFormViewsLineEdits(bool val=true);
 
+    void clearSearchHistory(bool askBeforeClear = true);
+
     void readSettings();
     void writeSettings();
 
