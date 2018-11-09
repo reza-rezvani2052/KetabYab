@@ -59,8 +59,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //...
     readSettings();
     //...
-    DataBaseMode = NormalMode;
-    //...
     QFont menuBarFont = ui->menuBar->font();
     menuBarFont.setPointSize(menuBarFont.pointSize() + 1);
     ui->menuBar->setFont(menuBarFont);
@@ -101,6 +99,9 @@ MainWindow::MainWindow(QWidget *parent) :
     setupTableBooks();
     on_btnFirst_clicked();
 
+    // برای غیر فعال کردن دکمه های ناوبری به این نیاز است
+    fillFormFromTable();
+
     QApplication::restoreOverrideCursor();
 
     //..
@@ -130,7 +131,6 @@ void MainWindow::on_btnSearch_clicked()
         //اگر کاربر پنجره اصلی برنام را به گوشه برده باشد و این پیام نمایش داده شود
         //این پنجره از کادر خارج میشد؛ با کد زیر این مشکل را اصلاح کردم
         int screenWidth = Utility::getScreenWidth();
-
         //...
 
         PopupDialog *popupDialog = createPopupDialog(
@@ -623,8 +623,6 @@ void MainWindow::on_ledGoToRecordN_returnPressed()
 
 void MainWindow::on_tabWidgetBooks_currentChanged(int index)
 {
-    //TODO:  شاید نیاز به بررسی بیشتر داشته باشن
-    // تحت شرایط مختلف این کدها را تست کنم
     switch (index) {
     case TableView:
         if (ui->btnCancelInsertOrUpdate->isEnabled())
@@ -670,7 +668,7 @@ bool MainWindow::isFormViewsLineEditsEmpty(bool markLineEditIfIsEmpty)
     bool isLineEditsEmpty = false;
 
     static QString defaultStyleSheet = ui->ledBookRegisterNumber->styleSheet();
-    QString styleSheetNotOk = "border: 2px solid #D47D7E"; // Red
+    QString styleSheetNotOk = "border: 2px solid #D47D7E";    // Red
 
     //...
     setFormViewsLineEditsStylesheet(defaultStyleSheet);
@@ -737,7 +735,6 @@ void MainWindow::on_btnFirst_clicked()
 {
     RETURN_IF_TABLE_BOOKS_IS_EMPTY;
 
-    //TODO: برای لیست خالی این کد را بررسی کنم
     ui->tableBooks->setCurrentCell(0, 0);
     fillFormFromTable();
 }
@@ -748,11 +745,14 @@ void MainWindow::fillFormFromTable()
 
     const int currRow = ui->tableBooks->currentRow();
     if ( currRow == -1 )   // اگر جدول خالی باشد و یا انتخاب نشده باشد
-    {
-        //NOTE: بعدا یک پیام مناسبتر قرار دهم
-        ui->lblRecordStatistics->setText(" کتابی ثبت نشده است! ");
+    {      
+        ui->lblRecordStatistics->setText(" ");
+
+        ui->pageNavigationMode->setEnabled(false);
         return;
     }
+
+    ui->pageNavigationMode->setEnabled(true);
 
     QTableWidgetItem *itm;
     for( int col=0; col < DB_BOOKS_COLUMN_COUNT; col++ )
@@ -783,9 +783,6 @@ void MainWindow::fillFormFromTable()
         }
     }
 
-    //...
-    //NOTE: فعلن تست نکردم. شاید نیازی به این نباشد
-    //qryTableBooks->seek( currRow );
     //...
     updateLblRecordStatistics();
 }
@@ -880,12 +877,21 @@ void MainWindow::setReadonlyFormViewsLineEdits(bool val)
     ui->ledBookRegisterNumber->setReadOnly(val);
 
     //...
+
+    //TODO: برای تمیز شدن کدها بهتر است بخش زیر در توابع دیگری نوشته شوند
     ui->actNavigationMode->setEnabled(val);
 
     ui->actGoToRecordN->setEnabled(val);
     ui->ledGoToRecordN->setEnabled(val);
     ui->ledGoToRecordN->clear();
     ui->ledGoToRecordN->setVisible(false);
+
+
+    ui->actInsert->setEnabled(val);
+    ui->actRemove->setEnabled(val);
+    ui->actUpdate->setEnabled(val);
+
+    //...
 }
 
 void MainWindow::on_actInsert_triggered()
@@ -945,18 +951,14 @@ void MainWindow::on_btnInsertAndOk_clicked()
                     ui->ledBookPub->text(),
                     ui->ledBookTopic->text()
                     );
-        if( qryInsert.exec(strQueryInsert) )
+        if( !qryInsert.exec(strQueryInsert) )
         {
-            Utility::createPopupDialog(QString(),
-                                       QString(" کتاب با موفقیت به لیست اضافه گردید. "),
-                                       QPoint(), true, 1500, this)->show();
-        } else {
             qApp->beep();
             Utility::createPopupDialog(QString("خطا"),
                                        QString("در هنگام افزودن کتاب خطایی به شرح زیر رخ داده است:") +
                                        QString("\n") +
                                        qryInsert.lastError().text(),
-                                       QPoint(), true, 3000, this)->show();
+                                       QPoint(), true, 5000, this)->show();
             //...
             ui->ledBookRegisterNumber->setFocus();
             return;
@@ -973,6 +975,10 @@ void MainWindow::on_btnInsertAndOk_clicked()
         ui->btnUpdateAndOk->setEnabled( true );
 
         setReadonlyFormViewsLineEdits();
+        //...
+        Utility::createPopupDialog(QString(),
+                                   QString(" کتاب با موفقیت به لیست اضافه گردید. "),
+                                   QPoint(), true, 1500, this)->show();
     }
 }
 
@@ -1025,11 +1031,24 @@ void MainWindow::on_btnRemove_clicked()
 
     //...
 
+    QString strMessage = "آیا مایل به حذف کتاب با مشخصات زیر هستید؟";
+    strMessage += "\n\n";
+
+    QString bookTitle= ui->tableBooks->item(currentRow, BookTitle)->text();
+    strMessage += "نام کتاب: ";
+    strMessage += bookTitle;
+    strMessage += "\n";
+
+    QString bookRegisterNumber= ui->tableBooks->item(currentRow, BookRegisterNumber)->text();
+    strMessage += "شماره ثبت کتاب: ";
+    strMessage += bookRegisterNumber;
+    strMessage += "\n";
+
     QMessageBox msgBox(this);
     msgBox.addButton("بله", QMessageBox::YesRole);
     msgBox.addButton("خیر", QMessageBox::NoRole);
     msgBox.setWindowTitle("تایید حذف");
-    msgBox.setText("آیا مایل به حذف کتاب جاری هستید؟");
+    msgBox.setText(strMessage);
     msgBox.setIcon(QMessageBox::Warning);
 
     if (msgBox.exec() == QMessageBox::RejectRole)
@@ -1037,8 +1056,8 @@ void MainWindow::on_btnRemove_clicked()
 
     //...
 
-    QString qryString = QString("DELETE FROM table_books WHERE book_register_number=%1 ;")
-            .arg(ui->tableBooks->item(currentRow, BookRegisterNumber)->text());
+    QString qryString =
+            QString("DELETE FROM table_books WHERE book_register_number=%1 ;").arg(bookRegisterNumber);
 
     QSqlQuery qryDelete(QString() , appInfo.db);
     if( !qryDelete.exec(qryString) )
@@ -1145,12 +1164,12 @@ void MainWindow::on_btnUpdateAndOk_clicked()
 
         if( qry.exec(qryString) )
         {
-            Utility::createPopupDialog(QString(), QString(" ویرایش انجام شد "),
-                                       QPoint(), true, 1500, this)->show();
-            //...
             setupTableBooks();
             ui->tableBooks->setCurrentCell(currRow, 0);
             fillFormFromTable();
+            //...
+            Utility::createPopupDialog(QString(), QString(" ویرایش انجام شد "),
+                                       QPoint(), true, 1500, this)->show();
         } else {
             qApp->beep();
             Utility::createPopupDialog(QString("خطا!"),

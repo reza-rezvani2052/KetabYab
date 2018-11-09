@@ -74,8 +74,6 @@ private:
 
     enum TabViews { TableView, FormView };
 
-    enum { NormalMode, InsertionMode, UpdateMode } DataBaseMode;
-
     Ui::MainWindow *ui;
 
     QCompleter *completerSearchHistory;
