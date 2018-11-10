@@ -62,15 +62,18 @@ void Utility::saveDatabasePath()
 
 //---------------------------------------------------------------------------------------
 
-//TODO: ********* bool doBeep ra be in ezafe konam ta hardafe dar farakhani ...
 PopupDialog *Utility::createPopupDialog(QString title, QString body, QPoint xy,
-                                        bool animate, int autoCloseDelay, QWidget *parent)
+                                        bool animate, int autoCloseDelay,
+                                        bool playBeep, QWidget *parent)
 {
     PopupDialog *popupDialog = new PopupDialog(
                 title, body , xy , autoCloseDelay, parent );
 
     if (animate)
         popupDialog->animateWindow();
+
+    if(playBeep)
+        qApp->beep();
 
     //popupDialog->show();
     return popupDialog;

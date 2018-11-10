@@ -25,6 +25,7 @@ public:
                                           QPoint xy = QPoint(),
                                           bool animate = true,
                                           int autoCloseDelay = 0,
+                                          bool playBeep = true,
                                           QWidget *parent = 0);
 
     static void saveDatabasePath();

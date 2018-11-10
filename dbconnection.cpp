@@ -48,7 +48,6 @@ bool createNewDatabase()
         QFile file(filePath);
         if (!file.remove())
         {
-            //TODO: badan ba PopUpDialog benevisam
             QMessageBox::warning(0 , "خطا",
                                  "برنامه موفق به حذف فایل نشد" + QString("\n") +
                                  file.errorString()  );
@@ -62,7 +61,6 @@ bool createNewDatabase()
     db.setDatabaseName(filePath);
     if (!db.open())
     {
-        //TODO: badan ba PopUpDialog benevisam
         QMessageBox::critical(0, "خطا",
                               "هنگام ایجاد پایگاه داده یک خطا به شرح زیر رخ داده است:" +
                               QString("\n") + db.lastError().text(), QMessageBox::Ok);
@@ -93,7 +91,7 @@ bool createNewDatabase()
                "\"phrase\" TEXT" +
                ");");
 
-    //    //TODO: داده با حجم زیاد برای تست
+    //    // داده با حجم زیاد برای تست
     //    for (int i=1; i < 5000; i++) {
     //        QString strQuery =
     //                "INSERT INTO table_most_search VALUES ('" +
@@ -132,7 +130,7 @@ bool createNewDatabase()
     // query.exec("INSERT INTO \"table_books\" VALUES (101, 'title', 'writer', 'translater', 'pub', 'topic');" );
 
 
-    //    //TODO: داده با حجم زیاد برای تست
+    //    // داده با حجم زیاد برای تست
     //    for (int i=1; i < 30000; i++) {
     //        QString strQuery =
     //                "INSERT INTO table_books VALUES (" + QString::number(i) + "," +
