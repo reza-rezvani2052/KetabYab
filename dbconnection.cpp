@@ -42,21 +42,6 @@ bool createNewDatabase()
         return false;
     //...
 
-    //TODO: بعدا این را تست کنم
-    if( QFile::exists(filePath) )
-    {
-        QFile file(filePath);
-        if (!file.remove())
-        {
-            QMessageBox::warning(0 , "خطا",
-                                 "برنامه موفق به حذف فایل نشد" + QString("\n") +
-                                 file.errorString()  );
-            return false;
-        }
-    }
-
-    //...
-
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(filePath);
     if (!db.open())

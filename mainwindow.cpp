@@ -94,8 +94,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QApplication::setOverrideCursor( QCursor(Qt::WaitCursor) );
     this->show();
 
-    //TODO: در زمان لود با داده زیاد کمی زمانبر است
     qryTableBooks = new QSqlQuery(QString(), appInfo.db);  //SELECT * FROM table_books;
+    //TODO: در زمان لود با داده زیاد کمی زمانبر است
     setupTableBooks();
     on_btnFirst_clicked();
 

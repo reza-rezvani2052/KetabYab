@@ -56,8 +56,6 @@ int main(int argc, char *argv[])
 
     //...
 
-    //TODO: بعدا فونت های بیشتری به برنامه اضافه کنم
-    // و در تنظیمات برنامه اجازه تغییر فونت را به کاربر بدهم
     int id = QFontDatabase::addApplicationFont(":/fonts/Yekan.ttf");
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
     QFont appFont(family);
