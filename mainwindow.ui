@@ -525,7 +525,7 @@ border-radius: 5px;
                       </font>
                      </property>
                      <property name="toolTip">
-                      <string>ویرایش کتاب - Ctrl+R</string>
+                      <string>ویرایش کتاب - Ctrl+E</string>
                      </property>
                      <property name="layoutDirection">
                       <enum>Qt::RightToLeft</enum>
@@ -538,7 +538,7 @@ border-radius: 5px;
                        <normaloff>:/book-edit.png</normaloff>:/book-edit.png</iconset>
                      </property>
                      <property name="shortcut">
-                      <string notr="true">Ctrl+R</string>
+                      <string>Ctrl+E</string>
                      </property>
                      <property name="flat">
                       <bool>true</bool>
