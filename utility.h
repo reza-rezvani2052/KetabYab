@@ -16,7 +16,7 @@ public:
 
     void delay(int msec);
 
-    static QSize getScreenُSize();
+    static QSize getScreenSize();
     static int getScreenWidth();
     static int getScreenHeight();
 

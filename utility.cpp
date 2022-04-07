@@ -26,7 +26,7 @@ void Utility::delay(int msec)
 
 //---------------------------------------------------------------------------------------
 
-QSize Utility::getScreenُSize()
+QSize Utility::getScreenSize()
 {
     //    QRect rec = QApplication::desktop()->screenGeometry();
     //    int height = rec.height();
